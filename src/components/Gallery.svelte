@@ -1,6 +1,5 @@
-<div class="grid grid-cols-2 gap-4 p-4">
-    {#each Array(4) as _, i}
-      <div key={i} class="w-full aspect-[4/3] bg-secondary-light border border-secondary-dark rounded-lg shadow-sm"></div>
-    {/each}
-  </div>
-  
+<div class="text-center m-4 p-4 bg-primary-light rounded-lg shadow-lg">
+  <h1 class="text-xl font-semibold text-gray-700">Oops! 🛠️</h1>
+  <p class="text-lg text-gray-600">Our gallery is under construction, but stay tuned! 💖</p>
+  <p class="text-sm text-gray-500">We’re working hard to bring you something beautiful! 🌸</p>
+</div>
