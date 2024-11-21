@@ -1,9 +1,21 @@
 <script>
-    import "../app.css";
-</script>
+    import Header from '../components/Header.svelte';
+    import StatsPanel from '../components/StatsPanel.svelte';
+    import Gallery from '../components/Gallery.svelte';
+    import Footer from '../components/Footer.svelte';
 
-<h1 class="bg-lime-400">Welcome to SvelteKit</h1>
-<p>
-    Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the
-    documentation
-</p>
+    import "../app.css";
+  
+    let unlockedFrames = 4;
+    let savedCO2 = 0.5; // kg
+  </script>
+  
+  <div class="flex flex-col h-screen bg-orange-50">
+    <Header />
+    <main class="flex-1 overflow-y-auto">
+      <StatsPanel {unlockedFrames} {savedCO2} />
+      <Gallery />
+    </main>
+    <Footer />
+  </div>
+  
