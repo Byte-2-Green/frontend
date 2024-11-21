@@ -19,6 +19,9 @@ export default {
           dark: '#1F2937',
         },
       },
+      fontFamily: {
+        digital: ["Aladin"],
+      },
     },
   },
   plugins: [],
