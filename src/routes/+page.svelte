@@ -10,7 +10,7 @@
     let savedCO2 = 0.5; // kg
 </script>
 
-<div class="flex flex-col h-screen bg-orange-50">
+<div class="flex flex-col h-screen bg-secondary-light">
     <Header />
     <main class="flex-1 overflow-y-auto">
         <StatsPanel {unlockedFrames} {savedCO2} />

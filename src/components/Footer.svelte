@@ -29,7 +29,7 @@
   </section>
 
   <!-- Center home button -->
-  <button class="absolute -top-8 mx-auto w-16 h-16 rounded-full bg-primary-light flex items-center justify-center">
+  <button class="absolute -top-8 mx-auto w-16 h-16 rounded-full bg-secondary-light flex items-center justify-center">
     <img width="150" height="150" src="https://img.icons8.com/bubbles/150/museum.png" alt="museum"/>
   </button>
 </nav>
