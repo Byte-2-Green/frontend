@@ -1,7 +1,5 @@
-<nav class="sticky bg-white h-20 b-0 flex justify-around items-center shadow-md">
+<footer class="relative bg-white h-20 flex justify-around items-center shadow-md w-full">
   <!-- Navigation items -->
-  <!--Icons provided by icons8.com-->
-
   <section class="flex w-full justify-between px-6">
     <!-- Statistics -->
     <a href="/statistics">
@@ -57,6 +55,7 @@
   <!-- Center home button -->
   <button
     class="absolute -top-8 mx-auto w-16 h-16 rounded-full bg-secondary-light flex items-center justify-center"
+
   >
     <a href="/">
       <img
@@ -67,4 +66,4 @@
       />
     </a>
   </button>
-</nav>
+</footer>

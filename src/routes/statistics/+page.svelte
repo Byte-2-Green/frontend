@@ -8,7 +8,7 @@
     <!-- Header -->
     <Header />
 
-    <section class="flex flex-col ">
+    <section class="flex flex-col mb-6">
         <div class="flex space-x-4 px-4">
             <a
                 class="bg-secondary px-4 py-2 rounded-md {window.location.pathname === '/statistics' ? 'font-bold' : ''}"

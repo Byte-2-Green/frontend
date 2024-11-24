@@ -126,8 +126,7 @@
         <div>Edit Profile Content</div>
       {/if}
     </article>
-
-    <!-- Footer -->
-    <Footer />
   </section>
+  <!-- Footer -->
+  <Footer />
 </main>
