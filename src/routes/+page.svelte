@@ -40,7 +40,7 @@
     let savedCO2 = 0.5;
 </script>
 
-<div class="flex flex-col h-screen bg-secondary-light">
+<section class="flex flex-col h-screen bg-secondary-light">
     <Header />
     <main class="flex-1 overflow-y-auto">
         <StatsPanel {unlockedFrames} {savedCO2} />
@@ -72,4 +72,4 @@
         {/if}
     </main>
     <Footer />
-</div>
+</section>
