@@ -66,7 +66,7 @@
     <!-- Invite and View Friends Buttons -->
     <article class="text-center m-4 text-lg">
       <button
-        class="w-full bg-secondary px-6 py-3 rounded-lg shadow-md hover:bg-secondary-dark mb-4 flex items-center"
+        class="w-full bg-secondary px-6 py-3 rounded-lg shadow-md mb-4 flex items-center"
       >
         <img
           src="/images/friendsIcon.png"
@@ -75,9 +75,7 @@
         />
         Invite your friends
       </button>
-      <button
-        class="w-full bg-secondary px-6 py-3 rounded-lg shadow-md hover:bg-secondary-dark mb-5"
-      >
+      <button class="w-full bg-secondary px-6 py-3 rounded-lg shadow-md mb-5">
         View friends' galleries
       </button>
     </article>
@@ -111,13 +109,39 @@
     </section>
 
     <!-- Dynamic Content Based on Selected Tab -->
-    <article class="mt-6">
+    <article
+      class="mt-4 bg-secondary-dark text-white text-center mx-4 rounded-lg px-6 py-6"
+    >
       {#if selectedTab == "stats"}
-        <div class="text-center text-secondary-dark">Statistics Content</div>
+        <div class="flex justify-around items-center">
+          <!-- Column 1 -->
+          <div class="flex flex-col items-center text-center w-1/3">
+            <span class="text-2xl font-bold">1</span>
+            <span class="text-sm">completed challenges</span>
+          </div>
+
+          <!-- Vertical Divider -->
+          <div class="h-20 w-[1px] bg-white"></div>
+
+          <!-- Column 2 -->
+          <div class="flex flex-col items-center text-center w-1/3">
+            <span class="text-2xl font-bold">20</span>
+            <span class="text-sm">minutes in the app</span>
+          </div>
+
+          <!-- Vertical Divider -->
+          <div class="h-20 w-[1px] bg-white"></div>
+
+          <!-- Column 3 -->
+          <div class="flex flex-col items-center text-center w-1/3">
+            <span class="text-2xl font-bold">1</span>
+            <span class="text-sm">challenges  streak</span>
+          </div>
+        </div>
       {:else if selectedTab == "global"}
-        <div class="text-center text-secondary-dark">Global Content</div>
+        <div>Global Content</div>
       {:else if selectedTab == "edit"}
-        <div class="text-center text-secondary-dark">Edit Profile Content</div>
+        <div>Edit Profile Content</div>
       {/if}
     </article>
   </section>
