@@ -12,15 +12,15 @@
 
     const facts = [
         {
-            icon: "/images/video-icon.png",
+            icon: "fas fa-video-slash",
             fact: "Streaming one hour of video in HD generates about 1 kg of CO2, equivalent to driving a car for 6 kilometers.",
         },
         {
-            icon: "/images/car-icon.png",
+            icon: "fas fa-car",
             fact: "An email with a large attachment emits 50g of CO2, the same as a 1 km drive in a car.",
         },
         {
-            icon: "/images/data-icon.png",
+            icon: "fas fa-database",
             fact: "Storing data in the cloud for a year can emit the same CO2 as running a refrigerator for 2 months.",
         },
     ];
@@ -48,31 +48,27 @@
 
         <!-- Modal -->
         {#if showModal}
-            <div class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-                <div class="bg-secondary-light text-secondary-dark rounded-lg shadow-lg p-6 w-10/12 md:w-1/3 lg:w-1/4 relative">
+            <section class="fixed inset-0 bg-black bg-opacity-50 z-50">
+                <article class="bg-secondary-light text-secondary-dark rounded-lg shadow-lg p-6 w-full h-full flex flex-col justify-center items-center relative">
                     <!-- Close Icon -->
-                    <button on:click={closeModal} class="absolute top-4 right-4 text-secondary-dark hover:text-red-600">
+                    <button on:click={closeModal} class="absolute top-4 right-4 text-secondary-dark">
                         ✖
                     </button>
 
                     <!-- Icon -->
-                    <div class="flex justify-center mb-4">
-                        <img
-                            src={randomFact.icon}
-                            alt="Fact Icon"
-                            class="w-16 h-16 object-contain"
-                        />
+                    <div class="flex justify-center mb-4 ml-4">
+                        <i class="{randomFact.icon} w-20 h-20 text-6xl"></i>
                     </div>
 
                     <!-- Title -->
-                    <h2 class="text-center text-xl font-bold mb-2">
+                    <h2 class="text-center text-4xl font-bold mb-6">
                         Did you know?
                     </h2>
 
                     <!-- Fact -->
-                    <p class="text-center">{randomFact.fact}</p>
-                </div>
-            </div>
+                    <p class="text-center text-2xl">{randomFact.fact}</p>
+                </article>
+            </section>
         {/if}
     </main>
     <Footer />
