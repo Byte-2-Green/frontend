@@ -1,18 +1,20 @@
-<nav class="relative bg-white h-20 flex justify-around items-center shadow-md">
+<nav class="sticky bg-white h-20 b-0 flex justify-around items-center shadow-md">
   <!-- Navigation items -->
   <!--Icons provided by icons8.com-->
 
   <section class="flex w-full justify-between px-6">
     <!-- Statistics -->
-    <button class="flex flex-col items-center">
-      <img
-        width="30"
-        height="30"
-        src="https://img.icons8.com/ios/50/rebalance-portfolio.png"
-        alt="rebalance-portfolio"
-      />
-      <span class="text-sm font-medium text-black">Statistics</span>
-    </button>
+    <a href="/statistics">
+      <button class="flex flex-col items-center">
+        <img
+          width="30"
+          height="30"
+          src="https://img.icons8.com/ios/50/rebalance-portfolio.png"
+          alt="rebalance-portfolio"
+        />
+        <span class="text-sm font-medium text-black">Statistics</span>
+      </button>
+    </a>
 
     <!-- Challenges -->
     <button class="flex flex-col items-center">
@@ -26,15 +28,17 @@
     </button>
 
     <!-- Shop -->
-    <button class="flex flex-col items-center">
-      <img
-        width="30"
-        height="30"
-        src="https://img.icons8.com/ios/50/shop--v1.png"
-        alt="shop--v1"
-      />
-      <span class="text-sm font-medium text-black">Shop</span>
-    </button>
+    <a href="/shop">
+      <button class="flex flex-col items-center">
+        <img
+          width="30"
+          height="30"
+          src="https://img.icons8.com/ios/50/shop--v1.png"
+          alt="shop--v1"
+        />
+        <span class="text-sm font-medium text-black">Shop</span>
+      </button>
+    </a>
 
     <!-- Profile -->
     <a href="/profile">

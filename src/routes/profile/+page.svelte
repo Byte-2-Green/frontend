@@ -1,5 +1,6 @@
 <script>
   import Footer from "../../components/Footer.svelte";
+  import ProgressBar from "../../components/ProgressBar.svelte";
 
   let selectedTab = "stats";
 </script>
@@ -42,26 +43,7 @@
     </p>
 
     <!-- Progress Section -->
-    <article
-      class="m-4 mb-10 bg-secondary-dark text-white rounded-lg px-6 py-2"
-    >
-      <div class="text-lg flex justify-between mb-1">
-        <span class="uppercase">Name</span>
-        <p class="text-right text-lg">
-          <span class="text-secondary">6</span>/20
-        </p>
-      </div>
-      <div class="h-2 bg-white rounded-full relative overflow-hidden">
-        <div
-          class="h-full bg-secondary absolute top-0 left-0"
-          style="width: 30%;"
-        ></div>
-      </div>
-      <div class="text-sm flex justify-between mt-1">
-        <span class="uppercase">bronze</span>
-        <span class="uppercase">silver</span>
-      </div>
-    </article>
+    <ProgressBar />
 
     <!-- Invite and View Friends Buttons -->
     <article class="text-center m-4 text-lg">
@@ -135,7 +117,7 @@
           <!-- Column 3 -->
           <div class="flex flex-col items-center text-center w-1/3">
             <span class="text-2xl font-bold">1</span>
-            <span class="text-sm">challenges  streak</span>
+            <span class="text-sm">challenges streak</span>
           </div>
         </div>
       {:else if selectedTab == "global"}
@@ -144,8 +126,8 @@
         <div>Edit Profile Content</div>
       {/if}
     </article>
-  </section>
 
-  <!-- Footer -->
-  <Footer />
+    <!-- Footer -->
+    <Footer />
+  </section>
 </main>
