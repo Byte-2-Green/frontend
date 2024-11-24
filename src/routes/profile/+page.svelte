@@ -42,7 +42,9 @@
     </p>
 
     <!-- Progress Section -->
-    <article class="m-4 mb-10 bg-secondary-dark text-white rounded-lg px-6 py-2">
+    <article
+      class="m-4 mb-10 bg-secondary-dark text-white rounded-lg px-6 py-2"
+    >
       <div class="text-lg flex justify-between mb-1">
         <span class="uppercase">Name</span>
         <p class="text-right text-lg">
@@ -64,13 +66,17 @@
     <!-- Invite and View Friends Buttons -->
     <article class="text-center m-4 text-lg">
       <button
-        class="w-full bg-secondary px-6 py-2 rounded-lg shadow-md hover:bg-secondary-dark mb-3 flex items-center"
+        class="w-full bg-secondary px-6 py-3 rounded-lg shadow-md hover:bg-secondary-dark mb-4 flex items-center"
       >
-      <img src="/images/friendsIcon.png" alt="Friends Icon" class="-ml-4 mr-4 -mb-2 -mt-8 w-24 h-24" />
-      Invite your friends
+        <img
+          src="/images/friendsIcon.png"
+          alt="Friends Icon"
+          class="-ml-4 mr-4 -mb-3 -mt-8 w-24 h-24"
+        />
+        Invite your friends
       </button>
       <button
-        class="w-full bg-secondary px-6 py-2 rounded-lg shadow-md hover:bg-secondary-dark mb-3"
+        class="w-full bg-secondary px-6 py-3 rounded-lg shadow-md hover:bg-secondary-dark mb-5"
       >
         View friends' galleries
       </button>
@@ -79,17 +85,26 @@
     <!-- Stats, Global, Edit Buttons (Clickable Tabs) -->
     <section class="flex justify-around mt-4 text-lg">
       <button
-        class="bg-secondary px-4 py-2 rounded-lg shadow-md hover:bg-secondary-dark hover:text-white"
+        class="bg-secondary px-6 py-2 rounded-lg shadow-md hover:bg-secondary-dark hover:text-white"
+        class:bg-secondary-dark={selectedTab === "stats"}
+        class:text-white={selectedTab === "stats"}
+        on:click={() => (selectedTab = "stats")}
       >
         Stats
       </button>
       <button
-        class="bg-secondary px-4 py-2 rounded-lg shadow-md hover:bg-secondary-dark hover:text-white"
+        class="bg-secondary px-6 py-2 rounded-lg shadow-md hover:bg-secondary-dark hover:text-white"
+        class:bg-secondary-dark={selectedTab === "global"}
+        class:text-white={selectedTab === "global"}
+        on:click={() => (selectedTab = "global")}
       >
         Global
       </button>
       <button
-        class="bg-secondary px-4 py-2 rounded-lg shadow-md hover:bg-secondary-dark hover:text-white"
+        class="bg-secondary px-6 py-2 rounded-lg shadow-md hover:bg-secondary-dark hover:text-white"
+        class:bg-secondary-dark={selectedTab === "edit"}
+        class:text-white={selectedTab === "edit"}
+        on:click={() => (selectedTab = "edit")}
       >
         Edit
       </button>
