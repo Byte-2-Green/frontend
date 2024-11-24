@@ -7,9 +7,15 @@
 <main class="bg-secondary-light min-h-screen flex flex-col">
   <!-- Top Gradient Lines -->
   <section class="relative z-0">
-    <div class="absolute t-0 w-full h-5 bg-secondary-dark opacity-80 rounded-b-full" ></div>
-    <div class="absolute t-0 w-full h-10 bg-secondary-dark opacity-60 rounded-b-3xl" ></div>
-    <div class="absolute t-0 w-full h-16 bg-secondary-dark opacity-40 rounded-b-3xl" ></div>
+    <div
+      class="absolute t-0 w-full h-5 bg-secondary-dark opacity-80 rounded-b-full"
+    ></div>
+    <div
+      class="absolute t-0 w-full h-10 bg-secondary-dark opacity-60 rounded-b-3xl"
+    ></div>
+    <div
+      class="absolute t-0 w-full h-16 bg-secondary-dark opacity-40 rounded-b-3xl"
+    ></div>
   </section>
 
   <!-- Profile Header -->
@@ -31,13 +37,17 @@
     </article>
 
     <!-- Username -->
-    <p class="text-2xl font-semibold text-center mt-2 mb-8 text-secondary-dark">me</p>
+    <p class="text-2xl font-semibold text-center mt-2 mb-8 text-secondary-dark">
+      me
+    </p>
 
     <!-- Progress Section -->
-    <article class="m-4 bg-secondary-dark text-white rounded-lg px-6 py-2">
+    <article class="m-4 mb-10 bg-secondary-dark text-white rounded-lg px-6 py-2">
       <div class="text-lg flex justify-between mb-1">
         <span class="uppercase">Name</span>
-        <p class="text-right text-lg"><span class="text-secondary">6</span>/20</p>
+        <p class="text-right text-lg">
+          <span class="text-secondary">6</span>/20
+        </p>
       </div>
       <div class="h-2 bg-white rounded-full relative overflow-hidden">
         <div
@@ -49,15 +59,15 @@
         <span class="uppercase">bronze</span>
         <span class="uppercase">silver</span>
       </div>
-      
     </article>
 
     <!-- Invite and View Friends Buttons -->
     <article class="text-center m-4 text-lg">
       <button
-        class="w-full bg-secondary px-6 py-2 rounded-lg shadow-md hover:bg-secondary-dark mb-3"
+        class="w-full bg-secondary px-6 py-2 rounded-lg shadow-md hover:bg-secondary-dark mb-3 flex items-center"
       >
-        Invite your friends
+      <img src="/images/friendsIcon.png" alt="Friends Icon" class="-ml-4 mr-4 -mb-2 -mt-8 w-24 h-24" />
+      Invite your friends
       </button>
       <button
         class="w-full bg-secondary px-6 py-2 rounded-lg shadow-md hover:bg-secondary-dark mb-3"
