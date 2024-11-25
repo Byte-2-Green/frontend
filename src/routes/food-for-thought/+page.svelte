@@ -1,28 +1,37 @@
 <script>
     import { onMount } from "svelte";
-// @ts-nocheck
+    // @ts-nocheck
 
-    /** * @type {{ description: string }[]} */
-    export let foodForThought = [];
-    console.log(foodForThought);
+    // variable to fetch the array of thoughts from the api
+    /** * @type {{ Description: string }[]} */
+    export const foodForThought = [];
 
-    onMount(async() => {
-        const res = await fetch(`http://localhost:3011/foodForThought`);
-        const data = await res.json();
-        console.log(data);
-    })
+    // variable to store a random thought
+    /** * @type {{ Description: any; } | null}
+   */
+    let randomThought = null;
+
+    // function that runs when the component is mounted
+    onMount(async () => {
+        try {
+            const res = await fetch(`http://localhost:3011/foodForThought`);
+            const data = await res.json();
+
+            // choose a random thought from the array
+            if (data.length > 0) {
+                randomThought = data[Math.floor(Math.random() * data.length)];
+            }
+            console.log(randomThought);
+        } catch (error) {
+            console.error("Failed to fetch data", error);
+        }
+    });
 </script>
 
-
 <h1>Food for Thought</h1>
-{#if foodForThought.length > 0}
-    <ul>
-        {#each foodForThought as thought}
-            <li>
-                <p>{thought.description}</p>
-            </li>
-        {/each}
-    </ul>
+<!-- loops through the whole array and picks a random thought to be displayed-->
+{#if randomThought}
+    <p>{randomThought.Description}</p>
 {:else}
     <p>Loading...</p>
 {/if}
