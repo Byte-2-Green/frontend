@@ -1,4 +1,6 @@
 <script>
+// @ts-nocheck
+
     import Header from "../components/Header.svelte";
     import StatsPanel from "../components/StatsPanel.svelte";
     import Gallery from "../components/Gallery.svelte";
@@ -10,26 +12,28 @@
 
     let showModal = true;
 
-    const facts = [
-        {
-            icon: "fas fa-video-slash",
-            fact: "Streaming one hour of video in HD generates about 1 kg of CO2, equivalent to driving a car for 6 kilometers.",
-        },
-        {
-            icon: "fas fa-car",
-            fact: "An email with a large attachment emits 50g of CO2, the same as a 1 km drive in a car.",
-        },
-        {
-            icon: "fas fa-database",
-            fact: "Storing data in the cloud for a year can emit the same CO2 as running a refrigerator for 2 months.",
-        },
-    ];
+    /** * variable to fetch the array of thoughts from the api */
+    /** * @type {{ Description: string }[]} */
+    export const foodForThought = [];
 
-    let randomFact = facts[0];
+    /** * variable to store a random thought */
+    /** * @type {{ Description: any; } | null} */
+    let randomThought = null;
 
-    onMount(() => {
-        const randomIndex = Math.floor(Math.random() * facts.length);
-        randomFact = facts[randomIndex];
+    /** * function that runs when the component is mounted */
+    onMount(async () => {
+        try {
+            const res = await fetch(`http://localhost:3011/foodForThought`);
+            const data = await res.json();
+
+            /** * choose a random thought from the array */
+            if (data.length > 0) {
+                randomThought = data[Math.floor(Math.random() * data.length)];
+            }
+            console.log(randomThought);
+        } catch (error) {
+            console.error("Failed to fetch data", error);
+        }
     });
 
     function closeModal() {
@@ -55,18 +59,20 @@
                         ✖
                     </button>
 
-                    <!-- Icon -->
-                    <div class="flex justify-center mb-4 ml-4">
-                        <i class="{randomFact.icon} w-20 h-20 text-6xl"></i>
-                    </div>
-
-                    <!-- Title -->
-                    <h2 class="text-center text-4xl font-bold mb-6">
-                        Did you know?
-                    </h2>
-
-                    <!-- Fact -->
-                    <p class="text-center text-2xl">{randomFact.fact}</p>
+                    {#if randomThought}
+                        <!-- Icon -->
+                        <div class="flex justify-center mb-4 ml-4">
+                            <i class="{randomThought.Icon} w-20 h-20 text-6xl"></i>
+                        </div>
+                        <!-- Title -->
+                        <h2 class="text-center text-4xl font-bold mb-6">
+                            Did you know?
+                        </h2>
+                        <!-- Description -->
+                        <p>{randomThought.Description}</p>
+                    {:else}
+                        <p>Loading...</p>
+                    {/if}
                 </article>
             </section>
         {/if}
