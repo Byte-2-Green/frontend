@@ -7,11 +7,10 @@ services:
       - .:/app
       - /app/node_modules
     ports:
-      - "${PORT}:${PORT}"
-    command: sh -c "npm install && npm run dev"
-     environment:
-      - NODE_ENV=${NODE_ENV}
-      - API_URL=${API_URL}
+      - "5173:5173"
+    command: bash -c "npm install && npm run dev -- --host" # the --host flag exposes the application to external networks
+    environment:
+      - NODE_ENV=development
     networks:
       - frontend-network
 
