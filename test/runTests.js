@@ -21,10 +21,10 @@ const runTest = (script) =>
 (async () => {
   try {
     // Run foodForThought.test.js (unit test for foodForThought)
-    await runTest('foodForThought.test.js'); 
+    await runTest('test/foodForThought.test.js'); 
    
     // Run system test
-    await runTest('systemTest.js');
+    await runTest('test/systemTest.js');
  
     console.log('🎉 All tests passed!');
   } catch (err) {
