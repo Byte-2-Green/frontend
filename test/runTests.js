@@ -28,7 +28,7 @@ const runTest = (script) =>
  
     console.log('🎉 All tests passed!');
   } catch (err) {
-    console.error('❌ One or more tests failed!');
+    console.error('❌ One or more tests failed!' + err);
     process.exit(1); // Exit with non-zero status code
   }
 })();

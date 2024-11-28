@@ -24,6 +24,7 @@ jobs:
 
       - name: Run linting
         run: |
+          npm install eslint
           npm run lint
 
       - name: Run tests
