@@ -13,7 +13,7 @@ export default [
       "**/vite.config.js",  
       "**/postcss.config.js", 
       "**/svelte.config.js", 
-      "**/build/**",         
+      "**/build/**",    
     ],
     languageOptions: {
       parserOptions: {

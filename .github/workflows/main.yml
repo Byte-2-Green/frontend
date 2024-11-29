@@ -9,24 +9,48 @@ jobs:
   build: 
     runs-on: ubuntu-22.04
  
-    steps: 
-    - name: Checkout code 
-      uses: actions/checkout@v3
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: |
+          npm install
+
+      - name: Run linting
+        run: |
+          npm install eslint
+          npm run lint
+
+      - name: Run tests
+        run: |
+          npm test
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build frontend Docker image
+        run: |
+          docker build -t frontend-image ./frontend
+
+      - name: Run frontend in Docker
+        run: |
+          docker run -d --name frontend-container frontend-image
+
+      - name: Clean up Docker
+        run: |
+          docker stop frontend-container
+          docker rm frontend-container
+          docker rmi frontend-image
  
-    - name: Set up Node.js 
-      uses: actions/setup-node@v3 
-      with: 
-        node-version: 18
- 
-    - name: Install dependencies 
-      run: npm install
- 
-    - name: Build the app 
-      run: npm run build
- 
-    - name: Trigger backend deployment 
-      run: | 
-        curl -X POST \
-        -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-        --data '{"event_type": "deploy-backend"}' \
-        https://github.com/Byte-2-Green/backend/dispatches
+      - name: Trigger backend deployment 
+        run: | 
+          curl -X POST \
+          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          --data '{"event_type": "deploy-backend"}' \
+          https://github.com/Byte-2-Green/backend/dispatches
