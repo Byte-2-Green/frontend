@@ -23,7 +23,7 @@
     /** * function that runs when the component is mounted */
     onMount(async () => {
         try {
-            const res = await fetch(`http://localhost:3011/foodForThought`);
+            const res = await fetch(`http://localhost:3010/educational/foodForThought`);
             const data = await res.json();
 
             /** * choose a random thought from the array */
