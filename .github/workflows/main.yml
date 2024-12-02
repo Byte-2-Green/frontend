@@ -20,7 +20,19 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm install
+          npm ci
+
+      - name: Trigger backend deployment 
+        run: | 
+          curl -X POST \
+          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          --data '{"event_type": "deploy-backend"}' \
+          https://api.github.com/repos/Byte-2-Green/backend/dispatches
+
+      - name: Wait for backend to be ready
+        run: |
+          echo "Waiting for backend..."
+          timeout 60 bash -c 'until curl -sf http://localhost:${PORT}; do echo "Backend is not ready yet..."; sleep 5; done'
 
       - name: Run linting
         run: |
@@ -47,10 +59,3 @@ jobs:
           docker stop frontend-container
           docker rm frontend-container
           docker rmi frontend-image
- 
-      - name: Trigger backend deployment 
-        run: | 
-          curl -X POST \
-          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-          --data '{"event_type": "deploy-backend"}' \
-          https://github.com/Byte-2-Green/backend/dispatches
