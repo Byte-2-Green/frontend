@@ -7,11 +7,9 @@
     import "../app.css";
 
     let showModal = true;
-    let infographicUrl = "";
     export const foodForThought = [];
     let randomThought = null;
 
-    // Fetch data
     onMount(async () => {
         try {
             const res = await fetch(`http://localhost:3011/foodForThought`);
@@ -37,50 +35,55 @@
     ];
 
     let placeholders = [
-        { top: "100px", left: "200px" },
-        { top: "150px", left: "500px" },
-        { top: "400px", left: "300px" },
-        { top: "600px", left: "700px" },
+        { top: "130px", left: "70px", innerWidth: "100px", innerHeight: "100px" },
+        { top: "100px", left: "300px", innerWidth: "100px", innerHeight: "100px" },
+        { top: "80px", left: "650px", innerWidth: "100px", innerHeight: "100px" },
+        { top: "200px", left: "650px", innerWidth: "100px", innerHeight: "100px" },
     ];
 
-    let positionedImages = []; // Will store images with their positions
-    let currentImageIndex = 0; // Track the current image being placed
+    let positionedImages = [];
+    let currentImageIndex = 0;
+
+    function allowDrop(event) {
+        event.preventDefault();
+    }
+
+    function dropImage(event, index) {
+        event.preventDefault();
+        const imageIndex = event.dataTransfer.getData("imageIndex");
+        const newPosition = placeholders[index];
+        positionedImages[imageIndex].position = newPosition;
+        positionedImages = [...positionedImages];
+    }
+
+    function dragImage(event, index) {
+        event.dataTransfer.setData("imageIndex", index);
+    }
 
     function randomizeImage() {
-    console.log("Button clicked");
+        if (galleryImages.length > 0 && placeholders.length > 0) {
+            const randomPlaceholderIndex = Math.floor(Math.random() * placeholders.length);
+            const randomPlaceholder = placeholders[randomPlaceholderIndex];
+            const randomImageIndex = Math.floor(Math.random() * galleryImages.length);
+            const imageToPlace = galleryImages[randomImageIndex];
 
-    if (galleryImages.length > 0 && placeholders.length > 0) {
-        // Randomize the placeholder
-        const randomPlaceholderIndex = Math.floor(Math.random() * placeholders.length);
-        const randomPlaceholder = placeholders[randomPlaceholderIndex];
+            positionedImages = [
+                ...positionedImages,
+                {
+                    src: imageToPlace.src,
+                    text: imageToPlace.text,
+                    position: randomPlaceholder,
+                },
+            ];
 
-        // Pick a random image from galleryImages
-        const randomImageIndex = Math.floor(Math.random() * galleryImages.length);
-        const imageToPlace = galleryImages[randomImageIndex];
+            galleryImages.splice(randomImageIndex, 1);
+            placeholders.splice(randomPlaceholderIndex, 1);
+        }
 
-        // Add the image and its position to positionedImages
-        positionedImages = [
-            ...positionedImages,
-            {
-                src: imageToPlace.src,
-                text: imageToPlace.text,
-                position: randomPlaceholder,
-            },
-        ];
-
-        // Remove the placed image from galleryImages (if you don't want it placed again)
-        galleryImages.splice(randomImageIndex, 1);
-        // Optionally, you can also remove the placeholder, so you don't place multiple images in the same position
-        placeholders.splice(randomPlaceholderIndex, 1);
-        
-        console.log(positionedImages); // Log updated array
+        if (galleryImages.length === 0 || placeholders.length === 0) {
+            currentImageIndex = 0;
+        }
     }
-
-    if (galleryImages.length === 0 || placeholders.length === 0) {
-        currentImageIndex = 0; // Reset index to allow clicking again
-    }
-}
-
 </script>
 
 <section class="flex flex-col h-screen bg-secondary-light">
@@ -88,41 +91,28 @@
     <main class="flex-1 overflow-y-auto">
         <StatsPanel {unlockedFrames} {savedCO2} />
 
-        <!-- Button to randomize the image and text -->
         <button
             class="m-4 px-6 py-3 bg-secondary-dark text-white font-semibold rounded transition-all"
             on:click={randomizeImage}
-            disabled={currentImageIndex >= galleryImages.length ||
-                currentImageIndex >= placeholders.length}
+            disabled={currentImageIndex >= galleryImages.length || currentImageIndex >= placeholders.length}
         >
             Randomize Image
         </button>
 
-        <!-- Pass positioned images to the Gallery component -->
-        <Gallery {positionedImages} />
+        <Gallery {positionedImages} {allowDrop} {dropImage} {dragImage} />
 
         <!-- Modal -->
         {#if showModal}
             <section class="fixed inset-0 bg-black bg-opacity-50 z-50">
-                <article
-                    class="bg-secondary-light text-secondary-dark rounded-lg shadow-lg p-6 w-full h-full flex flex-col justify-center items-center relative"
-                >
+                <article class="bg-secondary-light text-secondary-dark rounded-lg shadow-lg p-6 w-full h-full flex flex-col justify-center items-center relative">
                     <!-- Close Icon -->
-                    <button
-                        on:click={closeModal}
-                        class="absolute top-4 right-4 text-secondary-dark"
-                    >
-                        ✖
-                    </button>
+                    <button on:click={closeModal} class="absolute top-4 right-4 text-secondary-dark">✖</button>
 
                     {#if randomThought}
                         <div class="flex justify-center mb-4 ml-4">
-                            <i class="{randomThought.Icon} w-20 h-20 text-6xl"
-                            ></i>
+                            <i class="{randomThought.Icon} w-20 h-20 text-6xl"></i>
                         </div>
-                        <h2 class="text-center text-4xl font-bold mb-6">
-                            Did you know?
-                        </h2>
+                        <h2 class="text-center text-4xl font-bold mb-6">Did you know?</h2>
                         <p>{randomThought.Description}</p>
                     {:else}
                         <p>Loading...</p>
