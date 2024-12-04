@@ -1,42 +1,46 @@
 <script>
     // @ts-nocheck
-    
-        import Header from "../../components/Header.svelte";
-        import Footer from "../../components/Footer.svelte";
-    
-        import { onMount } from "svelte";
-    
-        let showModal = true;
-    
-        /** * variable to fetch the array of challenges from the api */
-        /** * @type {{ Description: string }[]} */
-        export const Challenges = [];
-    
-        /** * variable to store a random challenge */
-        /** * @type {{ Description: any; } | null} */
-        let randomChallenge = null;
-    
-        /** * function that runs when the component is mounted */
-        onMount(async () => {
-            try {
-                const res = await fetch(`http://localhost:3010/challenges/challenges`);
-                console.log(res);
-                const data = await res.json();
-    
-                /** * choose a random challenge from the array */
-                if (data.length > 0) {
-                    randomChallenge = data[Math.floor(Math.random() * data.length)];
-                }
-                console.log(randomChallenge);
-            } catch (error) {
-                console.error("Failed to fetch data", error);
+
+    import Header from "../../components/Header.svelte";
+    import Footer from "../../components/Footer.svelte";
+
+    import { onMount } from "svelte";
+
+    let showModal = false; // Inicialmente, o modal está fechado.
+
+    /** * variable to fetch the array of challenges from the api */
+    /** * @type {{ Description: string }[]} */
+    export const Challenges = [];
+
+    /** * variable to store a random challenge */
+    /** * @type {{ Description: any; } | null} */
+    let randomChallenge = null;
+
+    /** * function that runs when the component is mounted */
+    onMount(async () => {
+        try {
+            const res = await fetch(`http://localhost:3010/challenges/challenges`);
+            console.log(res);
+            const data = await res.json();
+
+            /** * choose a random challenge from the array */
+            if (data.length > 0) {
+                randomChallenge = data[Math.floor(Math.random() * data.length)];
             }
-        });
-    
-        function closeModal() {
-            showModal = false;
+            console.log(randomChallenge);
+        } catch (error) {
+            console.error("Failed to fetch data", error);
         }
-    </script>
+    });
+
+    function closeModal() {
+        showModal = false;
+    }
+
+    function openModal() {
+        showModal = true;
+    }
+</script>
 
 <section class="flex flex-col h-screen bg-secondary-light">
     <Header />
@@ -66,7 +70,7 @@
                             <p>{randomChallenge.Timeframe} min</p>
                         </h2>
                         <!-- CO2 Emission -->
-                         <p>You are saving </p>
+                        <p>You are saving </p>
                         <h2 class="text-center text-4xl font-bold mb-6">
                             <p>{randomChallenge.C02_emission} g</p>
                         </h2>
@@ -77,6 +81,13 @@
                 </article>
             </section>
         {/if}
+        <div class="flex items-center justify-center">
+            <button 
+                on:click={openModal} 
+                class="bg-orange-700 text-white font-bold py-4 px-4 rounded hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-600 focus:ring-offset-2">
+              New Challenge
+            </button>
+        </div>
     </main>
     <Footer />
 </section>
