@@ -1,37 +1,24 @@
 <script>
-    // @ts-nocheck
-
     import Header from "../components/Header.svelte";
     import StatsPanel from "../components/StatsPanel.svelte";
     import Gallery from "../components/Gallery.svelte";
     import Footer from "../components/Footer.svelte";
-
-    import "../app.css";
-
     import { onMount } from "svelte";
+    import "../app.css";
 
     let showModal = true;
     let infographicUrl = "";
-
-    /** * variable to fetch the array of thoughts from the api */
-    /** * @type {{ Description: string }[]} */
     export const foodForThought = [];
-
-    /** * variable to store a random thought */
-    /** * @type {{ Description: any; } | null} */
     let randomThought = null;
 
-    /** * function that runs when the component is mounted */
+    // Fetch data
     onMount(async () => {
         try {
             const res = await fetch(`http://localhost:3011/foodForThought`);
             const data = await res.json();
-
-            /** * choose a random thought from the array */
             if (data.length > 0) {
                 randomThought = data[Math.floor(Math.random() * data.length)];
             }
-            console.log(randomThought);
         } catch (error) {
             console.error("Failed to fetch data", error);
         }
@@ -44,33 +31,56 @@
     let unlockedFrames = 4;
     let savedCO2 = 0.5;
 
-    const images = [
-        "/images/template1.png",
-        "/images/template2.png",
+    let galleryImages = [
+        { src: "/images/template1.png", text: "Artwork 1" },
+        { src: "/images/template2.png", text: "Artwork 2" },
     ];
 
-    let galleryImages = [];
+    let placeholders = [
+        { top: "100px", left: "200px" },
+        { top: "150px", left: "500px" },
+        { top: "400px", left: "300px" },
+        { top: "600px", left: "700px" },
+    ];
+
+    let positionedImages = []; // Will store images with their positions
+    let currentImageIndex = 0; // Track the current image being placed
 
     function randomizeImage() {
-        if (images.length === 0) return;
+    console.log("Button clicked");
 
-        const randomIndex = Math.floor(Math.random() * images.length);
-        const selectedImage = images[randomIndex];
+    if (galleryImages.length > 0 && placeholders.length > 0) {
+        // Randomize the placeholder
+        const randomPlaceholderIndex = Math.floor(Math.random() * placeholders.length);
+        const randomPlaceholder = placeholders[randomPlaceholderIndex];
 
-        images.splice(randomIndex, 1);
+        // Pick a random image from galleryImages
+        const randomImageIndex = Math.floor(Math.random() * galleryImages.length);
+        const imageToPlace = galleryImages[randomImageIndex];
 
-        galleryImages = [
-            ...galleryImages,
+        // Add the image and its position to positionedImages
+        positionedImages = [
+            ...positionedImages,
             {
-                src: selectedImage,
-                text: "Random Text: " + Math.random().toString(36).substring(7),
-                position: {
-                    top: `${Math.floor(Math.random() * 50)}%`,
-                    left: `${Math.floor(Math.random() * 50)}%`,
-                },
+                src: imageToPlace.src,
+                text: imageToPlace.text,
+                position: randomPlaceholder,
             },
         ];
+
+        // Remove the placed image from galleryImages (if you don't want it placed again)
+        galleryImages.splice(randomImageIndex, 1);
+        // Optionally, you can also remove the placeholder, so you don't place multiple images in the same position
+        placeholders.splice(randomPlaceholderIndex, 1);
+        
+        console.log(positionedImages); // Log updated array
     }
+
+    if (galleryImages.length === 0 || placeholders.length === 0) {
+        currentImageIndex = 0; // Reset index to allow clicking again
+    }
+}
+
 </script>
 
 <section class="flex flex-col h-screen bg-secondary-light">
@@ -79,11 +89,17 @@
         <StatsPanel {unlockedFrames} {savedCO2} />
 
         <!-- Button to randomize the image and text -->
-        <button class="px-6 py-3 bg-green-500 text-white font-semibold rounded hover:bg-green-400 transition-all"
-            on:click={randomizeImage} > Randomize Image </button>
+        <button
+            class="m-4 px-6 py-3 bg-secondary-dark text-white font-semibold rounded transition-all"
+            on:click={randomizeImage}
+            disabled={currentImageIndex >= galleryImages.length ||
+                currentImageIndex >= placeholders.length}
+        >
+            Randomize Image
+        </button>
 
-        <!-- Pass gallery images to the Gallery component -->
-        <Gallery {galleryImages} />
+        <!-- Pass positioned images to the Gallery component -->
+        <Gallery {positionedImages} />
 
         <!-- Modal -->
         {#if showModal}
@@ -100,16 +116,13 @@
                     </button>
 
                     {#if randomThought}
-                        <!-- Icon -->
                         <div class="flex justify-center mb-4 ml-4">
                             <i class="{randomThought.Icon} w-20 h-20 text-6xl"
                             ></i>
                         </div>
-                        <!-- Title -->
                         <h2 class="text-center text-4xl font-bold mb-6">
                             Did you know?
                         </h2>
-                        <!-- Description -->
                         <p>{randomThought.Description}</p>
                     {:else}
                         <p>Loading...</p>
