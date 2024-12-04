@@ -1,8 +1,7 @@
 <script>
   export let positionedImages = [];
-  export let allowDrop;
-  export let dropImage;
-  export let dragImage;
+  // export let placeholders = [];
+  export let isEditingGallery = false;
 </script>
 
 <section class="relative overflow-x-auto w-full mt-5">
@@ -13,25 +12,21 @@
       </div>
     </section>
 
-    {#each positionedImages as { src, text, position }, index}
+    {#each positionedImages as { src, text, position }}
       <div
-          class="absolute"
-          style="top: {position.top}; left: {position.left}; z-index: 10;"
-          on:dragover={allowDrop}
-          on:drop={(event) => dropImage(event, index)}
-          role="region"
-          aria-label="Drop image here"
+        class="absolute {isEditingGallery ? 'border-2 border-yellow-500 shadow-lg' : ''}"
+        style="top: {position.top}; left: {position.left}; width: {position.width}; height: {position.height}; z-index: 10;"
       >
-          <img 
-            src={src} 
-            alt="Gallery" 
-            class="object-contain w-20 h-20 rounded-md z-10"
-            draggable="true"
-            on:dragstart={(event) => dragImage(event, index)}
-          />
-          <div class="absolute text-white font-bold text-sm top-full left-0 transform translate-x-[-50%]">
-              {text}
-          </div>
+        <img
+          src={src}
+          alt="Gallery"
+          class="object-cover w-full h-full rounded-md"
+        />
+        <div
+          class="absolute text-white font-bold text-sm top-full left-0 transform translate-x-[-50%]"
+        >
+          {text}
+        </div>
       </div>
     {/each}
   </div>
