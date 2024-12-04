@@ -22,10 +22,10 @@
 
   // Fixed stone placeholders with starting points and fixed width/height
   const placeholders = [
-    { top: "130px", left: "70px", width: "100px", height: "100px" },
-    { top: "100px", left: "300px", width: "100px", height: "100px" },
-    { top: "80px", left: "650px", width: "100px", height: "100px" },
-    { top: "200px", left: "650px", width: "100px", height: "100px" },
+    { top: "125px", left: "65px", width: "125px", height: "180px" },
+    { top: "165px", left: "320px", width: "150px", height: "100px" },
+    { top: "125px", left: "610px", width: "90px", height: "90px" },
+    { top: "250px", left: "620px", width: "70px", height: "70px" },
   ];
 
   // Array to store positioned images
