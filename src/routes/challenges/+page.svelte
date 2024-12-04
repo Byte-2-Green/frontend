@@ -8,13 +8,13 @@
     
         let showModal = true;
     
-        /** * variable to fetch the array of thoughts from the api */
+        /** * variable to fetch the array of challenges from the api */
         /** * @type {{ Description: string }[]} */
-        export const foodForThought = [];
+        export const Challenges = [];
     
-        /** * variable to store a random thought */
+        /** * variable to store a random challenge */
         /** * @type {{ Description: any; } | null} */
-        let randomThought = null;
+        let randomChallenge = null;
     
         /** * function that runs when the component is mounted */
         onMount(async () => {
@@ -23,11 +23,11 @@
                 console.log(res);
                 const data = await res.json();
     
-                /** * choose a random thought from the array */
+                /** * choose a random challenge from the array */
                 if (data.length > 0) {
-                    randomThought = data[Math.floor(Math.random() * data.length)];
+                    randomChallenge = data[Math.floor(Math.random() * data.length)];
                 }
-                console.log(randomThought);
+                console.log(randomChallenge);
             } catch (error) {
                 console.error("Failed to fetch data", error);
             }
