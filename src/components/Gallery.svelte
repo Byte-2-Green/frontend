@@ -22,7 +22,15 @@
         selectedImage = null;
         console.log("Deselected Image.");
       } else {
-        console.warn("An image is already selected. Use it or deselect first.");
+        const parentOfSelectedImage = selectedImage.parentElement;
+        const parentOfClickedImage = image.parentElement;
+        parentOfSelectedImage.appendChild(image);
+        parentOfClickedImage.appendChild(selectedImage);
+
+        console.log("Swapped images:", selectedImage, image);
+
+        selectedImage.classList.remove("opacity-50");
+        selectedImage = null;
       }
     } else {
       console.warn("Gallery is not in editing mode.");
@@ -82,11 +90,11 @@
           "shadow-lg",
         );
         img.onclick = (event) => {
-        event.stopPropagation();
-        handleImageClick(img);
-      };
-      placeholder.appendChild(img);
-    }
+          event.stopPropagation();
+          handleImageClick(img);
+        };
+        placeholder.appendChild(img);
+      }
     });
   }
 </script>
