@@ -7,8 +7,11 @@
   import "../app.css";
 
   let showModal = true;
+  // @ts-ignore
   let infographicUrl = "";
+  // @ts-ignore
   export const foodForThought = [];
+  // @ts-ignore
   let randomThought = null;
 
   // Image and placeholder handling
@@ -21,15 +24,17 @@
   ];
 
   // Array to store positioned images
+  // @ts-ignore
   let positionedImages = [];
 
-// Add an image to the gallery (placeholder)
-function addImageToGallery() {
+  // Add an image to the gallery (placeholder)
+  function addImageToGallery() {
     if (galleryImages.length > 0) {
       const randomImageIndex = Math.floor(Math.random() * galleryImages.length);
       const selectedImage = galleryImages[randomImageIndex];
 
       positionedImages = [
+        // @ts-ignore
         ...positionedImages,
         {
           ...selectedImage,
@@ -38,14 +43,37 @@ function addImageToGallery() {
 
       galleryImages.splice(randomImageIndex, 1);
     }
+    // @ts-ignore
     console.log(positionedImages);
   }
 
-  // Toggle the edit mode to allow randomizing image positions
+  // Toggle the edit mode to allow switching image positions
   let isEditingGallery = false;
 
   function toggleEditMode() {
     isEditingGallery = !isEditingGallery;
+  }
+
+  // Handle image click and switch to placeholder
+  let selectedImage = null;
+
+  function handleImageClick(image) {
+    if (isEditingGallery) {
+      selectedImage = image;
+    }
+  }
+
+  function handlePlaceholderClick(placeholderId) {
+    if (isEditingGallery && selectedImage) {
+      const updatedImages = positionedImages.map((img) => {
+        if (img === selectedImage) {
+          return { ...img, placeholderId };
+        }
+        return img;
+      });
+      positionedImages = updatedImages;
+      selectedImage = null; // Reset selection
+    }
   }
 
   // Fetch random facts (modal behavior)
@@ -79,10 +107,10 @@ function addImageToGallery() {
 
     <!-- Edit Mode Toggle Button -->
     <button on:click={toggleEditMode} class="m-4 px-6 py-3 bg-secondary-dark text-white font-semibold rounded transition-all">
-      {isEditingGallery ? 'End Edit Mode' : 'Edit Gallery'}
+      {isEditingGallery ? 'Save Changes' : 'Edit Gallery'}
     </button>
 
-    <Gallery {positionedImages} />
+    <Gallery {positionedImages} on:imageClick={handleImageClick} on:placeholderClick={handlePlaceholderClick} />
 
     <!-- Modal -->
     {#if showModal}
