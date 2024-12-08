@@ -107,7 +107,7 @@
     <div class="flex justify-start items-start w-max h-full">
       {#each [1, 2, 3, 4] as column}
         <section
-          class="relative flex justify-center items-start w-[100vw] h-[60vh] px-2"
+          class="relative flex justify-center items-start w-[80vw] h-[60vh] px-2"
         >
           <div
             class="absolute bottom-0 left-0 right-0 h-[27%] bg-secondary z-0"
