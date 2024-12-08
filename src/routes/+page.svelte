@@ -20,35 +20,25 @@
     { src: "/images/template2.png", text: "Artwork 2" },
   ];
 
-  // Fixed stone placeholders with starting points and fixed width/height
-  const placeholders = [
-    { top: "125px", left: "65px", width: "125px", height: "180px" },
-    { top: "165px", left: "320px", width: "150px", height: "100px" },
-    { top: "125px", left: "610px", width: "90px", height: "90px" },
-    { top: "250px", left: "620px", width: "70px", height: "70px" },
-  ];
-
   // Array to store positioned images
   let positionedImages = [];
 
-  // Add an image to the gallery (placeholder)
-  function addImageToGallery() {
-    if (galleryImages.length > 0 && placeholders.length > 0) {
+// Add an image to the gallery (placeholder)
+function addImageToGallery() {
+    if (galleryImages.length > 0) {
       const randomImageIndex = Math.floor(Math.random() * galleryImages.length);
-      const randomPlaceholderIndex = Math.floor(Math.random() * placeholders.length);
       const selectedImage = galleryImages[randomImageIndex];
-      const selectedPlaceholder = placeholders[randomPlaceholderIndex];
 
       positionedImages = [
         ...positionedImages,
         {
           ...selectedImage,
-          position: selectedPlaceholder,
         },
       ];
 
-      galleryImages.splice(randomImageIndex, 1); // Remove the added image from the gallery
+      galleryImages.splice(randomImageIndex, 1);
     }
+    console.log(positionedImages);
   }
 
   // Toggle the edit mode to allow randomizing image positions
@@ -56,15 +46,6 @@
 
   function toggleEditMode() {
     isEditingGallery = !isEditingGallery;
-  }
-
-  // Randomize images within placeholders
-  function randomizeImages() {
-    positionedImages = positionedImages.map(image => {
-      const randomPlaceholderIndex = Math.floor(Math.random() * placeholders.length);
-      const newPosition = placeholders[randomPlaceholderIndex];
-      return { ...image, position: newPosition };
-    });
   }
 
   // Fetch random facts (modal behavior)
@@ -101,13 +82,7 @@
       {isEditingGallery ? 'End Edit Mode' : 'Edit Gallery'}
     </button>
 
-    {#if isEditingGallery}
-      <button on:click={randomizeImages} class="m-4 px-6 py-3 bg-secondary-dark text-white font-semibold rounded transition-all">
-        Randomize Image Positions
-      </button>
-    {/if}
-
-    <Gallery {positionedImages} {placeholders} {isEditingGallery} />
+    <Gallery {positionedImages} />
 
     <!-- Modal -->
     {#if showModal}
