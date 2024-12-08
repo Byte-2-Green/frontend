@@ -1,8 +1,5 @@
 <script>
   // @ts-ignore
-  import { onMount } from "svelte";
-
-  // @ts-ignore
   export let positionedImages = [];
 
   // Function to position images inside the selected placeholder
@@ -14,22 +11,28 @@
     do {
       placeholderId = `placeholder${Math.floor(Math.random() * 4) + 1}`;
       placeholder = document.getElementById(placeholderId);
-    } while (placeholder && placeholder.querySelector('img'));
+    } while (placeholder && placeholder.querySelector("img"));
 
     if (placeholder) {
-      const img = document.createElement('img');
+      const img = document.createElement("img");
       img.src = src;
       img.alt = text;
-      img.classList.add('object-contain', 'w-full', 'h-full', 'rounded-lg', 'shadow-lg');
-      
+      img.classList.add(
+        "object-cover",
+        "w-[75vw]",
+        "h-[100%]",
+        "rounded-lg",
+        "shadow-lg",
+      );
+
       placeholder.appendChild(img);
       console.log(`Image added to ${placeholderId}`);
     } else {
-      console.log('No empty placeholder found');
+      console.log("No empty placeholder found");
     }
   }
 
-   $: {
+  $: {
     // @ts-ignore
     positionedImages.forEach(({ src, text }) => {
       // Ensure image is not already added
@@ -201,12 +204,10 @@
               />
             </div>
             <!-- Placeholder 4 -->
-            <div
-              class="h-[50%] flex justify-center items-center"
-              id="placeholder4"
-            >
+            <div class="h-[50%] flex justify-center items-center">
               <div
                 class="w-[75vw] h-[100%] bg-gradient-to-br from-primary-light to-primary relative border-8 border-orange-200 rounded shadow-lg"
+                id="placeholder4"
               ></div>
             </div>
             <!-- Rope -->
