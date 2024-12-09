@@ -116,7 +116,7 @@
           </article>
         </section>
       {/if}
-  
+ 
       <!-- Active Notification Push -->
       {#if activeNotification}
         <section class="p-6 bg-blue-100 shadow-md rounded-lg mt-6">
@@ -133,21 +133,5 @@
     </main>
     <Footer />
   </section>
-  
-  <style>
-    section {
-      margin-top: 20px;
-    }
-    ul {
-      list-style-type: none;
-      padding: 0;
-    }
-    li {
-      background: #f9f9f9;
-      margin-bottom: 10px;
-      padding: 15px;
-      border-radius: 5px;
-      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    }
-  </style>
+
   
