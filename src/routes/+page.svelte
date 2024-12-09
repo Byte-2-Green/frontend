@@ -1,81 +1,137 @@
 <script>
-// @ts-nocheck
-
+    // @ts-nocheck
+  
     import Header from "../components/Header.svelte";
     import StatsPanel from "../components/StatsPanel.svelte";
     import Gallery from "../components/Gallery.svelte";
     import Footer from "../components/Footer.svelte";
-
+  
     import "../app.css";
-
+  
     import { onMount } from "svelte";
-
+  
     let showModal = true;
-
+  
     /** * variable to fetch the array of thoughts from the api */
     /** * @type {{ Description: string }[]} */
-    export const foodForThought = [];
-
+    export let foodForThought = [];
+  
     /** * variable to store a random thought */
     /** * @type {{ Description: any; } | null} */
     let randomThought = null;
-
+  
+    /** * variable to fetch the array of notifications from the backend */
+    /** * @type {{ Title: string, Description: string, timestamp?: string }[]} */
+    let notifications = [];
+  
+    /** * variable to store the active notification */
+    let activeNotification = null;
+  
+    /** * index to track the current notification being displayed */
+    let notificationIndex = 0;
+  
     /** * function that runs when the component is mounted */
     onMount(async () => {
-        try {
-            const res = await fetch(`http://localhost:3011/foodForThought`);
-            const data = await res.json();
-
-            /** * choose a random thought from the array */
-            if (data.length > 0) {
-                randomThought = data[Math.floor(Math.random() * data.length)];
-            }
-            console.log(randomThought);
-        } catch (error) {
-            console.error("Failed to fetch data", error);
+      try {
+        // Fetching random food for thought
+        const foodRes = await fetch(`http://localhost:3011/foodForThought`);
+        const foodData = await foodRes.json();
+  
+        if (foodData.length > 0) {
+          randomThought = foodData[Math.floor(Math.random() * foodData.length)];
         }
+  
+        // Fetching notifications
+        const notifRes = await fetch(`http://localhost:3010/challenges/notifications`);
+        notifications = await notifRes.json();
+  
+        if (notifications.length > 0) {
+          // Set the initial active notification
+          activeNotification = notifications[notificationIndex];
+        }
+  
+        console.log("Random Thought:", randomThought);
+        console.log("Notifications:", notifications);
+        console.log("Active Notification:", activeNotification);
+      } catch (error) {
+        console.error("Failed to fetch data", error);
+      }
     });
-
+  
+    // Function to close the modal
     function closeModal() {
-        showModal = false;
+      showModal = false;
     }
-
+  
+    // Periodically cycle through notifications for push notifications
+    let cyclingInterval;
+    onMount(() => {
+      cyclingInterval = setInterval(() => {
+        if (notifications.length > 0) {
+          // Cycle to the next notification
+          notificationIndex = (notificationIndex + 1) % notifications.length;
+          activeNotification = notifications[notificationIndex];
+        }
+      }, 5000); // Change notification every 5 seconds
+  
+      return () => clearInterval(cyclingInterval); // Cleanup cycling interval on component destroy
+    });
+  
     let unlockedFrames = 4;
     let savedCO2 = 0.5;
-</script>
-
-<section class="flex flex-col h-screen bg-secondary-light">
+  </script>
+  
+  <section class="flex flex-col h-screen bg-secondary-light">
     <Header />
     <main class="flex-1 overflow-y-auto">
-        <StatsPanel {unlockedFrames} {savedCO2} />
-        <Gallery />
-
-        <!-- Modal -->
-        {#if showModal}
-            <section class="fixed inset-0 bg-black bg-opacity-50 z-50">
-                <article class="bg-secondary-light text-secondary-dark rounded-lg shadow-lg p-6 w-full h-full flex flex-col justify-center items-center relative">
-                    <!-- Close Icon -->
-                    <button on:click={closeModal} class="absolute top-4 right-4 text-secondary-dark">
-                        ✖
-                    </button>
-
-                    {#if randomThought}
-                        <!-- Icon -->
-                        <div class="flex justify-center mb-4 ml-4">
-                            <i class="{randomThought.Icon} w-20 h-20 text-6xl"></i>
-                        </div>
-                        <!-- Title -->
-                        <h2 class="text-center text-4xl font-bold mb-6">
-                            Did you know?
-                        </h2>
-                        <!-- Description -->
-                        <p>{randomThought.Description}</p>
-                    {:else}
-                        <p>Loading...</p>
-                    {/if}
-                </article>
-            </section>
-        {/if}
+      <StatsPanel {unlockedFrames} {savedCO2} />
+      <Gallery />
+  
+      <!-- Modal -->
+      {#if showModal}
+        <section class="fixed inset-0 bg-black bg-opacity-50 z-50">
+          <article
+            class="bg-secondary-light text-secondary-dark rounded-lg shadow-lg p-6 w-full h-full flex flex-col justify-center items-center relative"
+          >
+            <!-- Close Icon -->
+            <button
+              on:click={closeModal}
+              class="absolute top-4 right-4 text-secondary-dark"
+            >
+              ✖
+            </button>
+  
+            {#if randomThought}
+              <!-- Icon -->
+              <div class="flex justify-center mb-4 ml-4">
+                <i class="{randomThought.Icon} w-20 h-20 text-6xl"></i>
+              </div>
+              <!-- Title -->
+              <h2 class="text-center text-4xl font-bold mb-6">Did you know?</h2>
+              <!-- Description -->
+              <p>{randomThought.Description}</p>
+            {:else}
+              <p>Loading...</p>
+            {/if}
+          </article>
+        </section>
+      {/if}
+ 
+      <!-- Active Notification Push -->
+      {#if activeNotification}
+        <section class="p-6 bg-blue-100 shadow-md rounded-lg mt-6">
+          <h2 class="text-xl font-bold">Push Notification</h2>
+          <div class="p-4 bg-blue-200 rounded-lg">
+            <h3 class="font-semibold text-lg">{activeNotification.Title}</h3>
+            <p>{activeNotification.Description}</p>
+            {#if activeNotification.timestamp}
+              <span class="text-sm text-gray-500">{activeNotification.timestamp}</span>
+            {/if}
+          </div>
+        </section>
+      {/if}
     </main>
     <Footer />
-</section>
+  </section>
+
+  
