@@ -47,17 +47,18 @@
             showModal = true;
         } else {
             console.error("No challenges available");
+            console.log(challenges);
         }
     }
 
     // reject the challenge and update the lists
     async function denyChallenge(id) {
         try {
-            await fetch(`http://localhost:3010/challenges/deny/${id}`, { method: 'POST' });
+            await fetch(`http://localhost:3010/challenges/challenges/deny/${id}`, { method: 'POST' });
             // Refresh both lists
             await fetchChallenges();
             await fetchDeniedChallenges();
-            closeModal(); // Close modal after rejection
+            closeModal();
         } catch (error) {
             console.error("Failed to deny challenge", error);
         }
