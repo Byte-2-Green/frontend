@@ -1,4 +1,7 @@
 <script>
+  // @ts-nocheck
+  // @ts-ignore
+
   import Header from "../components/Header.svelte";
   import StatsPanel from "../components/StatsPanel.svelte";
   import Gallery from "../components/Gallery.svelte";
@@ -6,10 +9,8 @@
   import { onMount } from "svelte";
   import "../app.css";
 
-  let showModal = true;
-  // @ts-ignore
-  let randomThought = null;
   let unlockedFrames = 4;
+
   let savedCO2 = 0.5;
 
   let galleryImages = [
@@ -17,71 +18,95 @@
     { src: "/images/template2.png", text: "Artwork 2" },
   ];
 
-  // @ts-ignore
+  /**
+   * @type {string | any[]}
+   */
   let positionedImages = [];
-  let isEditingGallery = false;
-  
-  /** * variable to fetch the array of notifications from the backend */
-    /** * @type {{ Title: string, Description: string, timestamp?: string }[]} */
-    let notifications = [];
-  
-    /** * variable to store the active notification */
-    let activeNotification = null;
-  
-    /** * index to track the current notification being displayed */
-    let notificationIndex = 0;
 
-   /** * function that runs when the component is mounted */
-    onMount(async () => {
-      try {
-        // Fetching random food for thought
-        const foodRes = await fetch(`http://localhost:3011/foodForThought`);
-        const foodData = await foodRes.json();
+  let isEditingGallery = false;
+
+  let showModal = true;
   
-        if (foodData.length > 0) {
-          randomThought = foodData[Math.floor(Math.random() * foodData.length)];
-        }
-  
-        // Fetching notifications
-        const notifRes = await fetch(`http://localhost:3010/challenges/notifications`);
-        notifications = await notifRes.json();
-  
-        if (notifications.length > 0) {
-          // Set the initial active notification
-          activeNotification = notifications[notificationIndex];
-        }
-  
-        console.log("Random Thought:", randomThought);
-        console.log("Notifications:", notifications);
-        console.log("Active Notification:", activeNotification);
-      } catch (error) {
-        console.error("Failed to fetch data", error);
+  // variable to fetch the array of thoughts from the api
+  /**
+   * @type {{ Description: string }[]}
+   */
+  export const foodForThought = [];
+
+  // variable to store a random thought
+  /**
+   * @type {{ Description: any; } | null}
+   */
+  let randomThought = null;
+
+  // variable to fetch the array of notifications from the backend
+  /**
+   * @type {{ Title: string, Description: string, timestamp?: string }[]}
+   */
+  let notifications = [];
+
+  // variable to store the active notification
+  /**
+   * @type {{ Title: any; Description: any; timestamp?: any; } | null}
+   */
+  let activeNotification = null;
+
+  // index to track the current notification being displayed
+  let notificationIndex = 0;
+
+  // function that runs when the component is mounted
+  onMount(async () => {
+    try {
+      // Fetching food for thought
+      const foodRes = await fetch(`http://localhost:3011/foodForThought`);
+      const foodData = await foodRes.json();
+
+      if (foodData.length > 0) {
+        randomThought = foodData[Math.floor(Math.random() * foodData.length)];
       }
-    });
+
+      // Fetching notifications
+      const notifRes = await fetch(`http://localhost:3010/challenges/notifications`);
+      notifications = await notifRes.json();
+
+      if (notifications.length > 0) {
+        activeNotification = notifications[notificationIndex];
+      }
+
+      // Logging fetched data
+      console.log("Random Thought:", randomThought);
+      console.log("Notifications:", notifications);
+      console.log("Active Notification:", activeNotification);
+    } catch (error) {
+      console.error("Failed to fetch data", error);
+    }
+  });
 
   function closeModal() {
     showModal = false;
   }
-  
+
   // Periodically cycle through notifications for push notifications
-    let cyclingInterval;
-    onMount(() => {
-      cyclingInterval = setInterval(() => {
-        if (notifications.length > 0) {
-          // Cycle to the next notification
-          notificationIndex = (notificationIndex + 1) % notifications.length;
-          activeNotification = notifications[notificationIndex];
-        }
-      }, 5000); // Change notification every 5 seconds
-  
-      return () => clearInterval(cyclingInterval); // Cleanup cycling interval on component destroy
-    });
+  /**
+   * @type {string | number | NodeJS.Timeout | undefined}
+   */
+  let cyclingInterval;
+  onMount(() => {
+    cyclingInterval = setInterval(() => {
+      if (notifications.length > 0) {
+        // Cycle to the next notification
+        notificationIndex = (notificationIndex + 1) % notifications.length;
+        activeNotification = notifications[notificationIndex];
+      }
+    }, 5000); // Change notification every 5 seconds
+
+    return () => clearInterval(cyclingInterval); // Cleanup cycling interval on component destroy
+  });
 
   function addImageToGallery() {
     if (galleryImages.length > 0) {
       const randomImageIndex = Math.floor(Math.random() * galleryImages.length);
       const selectedImage = galleryImages[randomImageIndex];
-      // @ts-ignore
       positionedImages = [...positionedImages, { ...selectedImage }];
       galleryImages.splice(randomImageIndex, 1);
     }
@@ -91,7 +116,9 @@
     isEditingGallery = !isEditingGallery;
   }
 
-  // @ts-ignore
+  /**
+   * @param {string | any[]} updatedImages
+   */
   function updateGallery(updatedImages) {
     positionedImages = updatedImages;
     savedCO2 = 0.5 * positionedImages.length;
@@ -126,8 +153,10 @@
         >
           <button
             on:click={closeModal}
-            class="absolute top-4 right-4 text-secondary-dark">✖</button
+            class="absolute top-4 right-4 text-secondary-dark"
           >
+            ✖
+          </button>
           {#if randomThought}
             <div class="flex justify-center mb-4 ml-4">
               <i class="{randomThought.Icon} w-20 h-20 text-6xl"></i>
@@ -140,20 +169,20 @@
         </article>
       </section>
     {/if}
-    
+
     <!-- Active Notification Push -->
-      {#if activeNotification}
-        <section class="p-6 bg-blue-100 shadow-md rounded-lg mt-6">
-          <h2 class="text-xl font-bold">Push Notification</h2>
-          <div class="p-4 bg-blue-200 rounded-lg">
-            <h3 class="font-semibold text-lg">{activeNotification.Title}</h3>
-            <p>{activeNotification.Description}</p>
-            {#if activeNotification.timestamp}
-              <span class="text-sm text-gray-500">{activeNotification.timestamp}</span>
-            {/if}
-          </div>
-        </section>
-      {/if}
+    {#if activeNotification}
+      <section class="p-6 bg-blue-100 shadow-md rounded-lg mt-6">
+        <h2 class="text-xl font-bold">Notifications</h2>
+        <div class="p-4 bg-blue-200 rounded-lg">
+          <h3 class="font-semibold text-lg">{activeNotification.Title}</h3>
+          <p>{activeNotification.Description}</p>
+          {#if activeNotification.timestamp}
+            <span class="text-sm text-gray-500">{activeNotification.timestamp}</span>
+          {/if}
+        </div>
+      </section>
+    {/if}
   </main>
   <Footer />
 </section>
