@@ -20,23 +20,62 @@
   // @ts-ignore
   let positionedImages = [];
   let isEditingGallery = false;
+  
+  /** * variable to fetch the array of notifications from the backend */
+    /** * @type {{ Title: string, Description: string, timestamp?: string }[]} */
+    let notifications = [];
+  
+    /** * variable to store the active notification */
+    let activeNotification = null;
+  
+    /** * index to track the current notification being displayed */
+    let notificationIndex = 0;
 
-  // Fetch random facts (modal behavior)
-  onMount(async () => {
-    try {
-      const res = await fetch(`http://localhost:3011/foodForThought`);
-      const data = await res.json();
-      if (data.length > 0) {
-        randomThought = data[Math.floor(Math.random() * data.length)];
+   /** * function that runs when the component is mounted */
+    onMount(async () => {
+      try {
+        // Fetching random food for thought
+        const foodRes = await fetch(`http://localhost:3011/foodForThought`);
+        const foodData = await foodRes.json();
+  
+        if (foodData.length > 0) {
+          randomThought = foodData[Math.floor(Math.random() * foodData.length)];
+        }
+  
+        // Fetching notifications
+        const notifRes = await fetch(`http://localhost:3010/challenges/notifications`);
+        notifications = await notifRes.json();
+  
+        if (notifications.length > 0) {
+          // Set the initial active notification
+          activeNotification = notifications[notificationIndex];
+        }
+  
+        console.log("Random Thought:", randomThought);
+        console.log("Notifications:", notifications);
+        console.log("Active Notification:", activeNotification);
+      } catch (error) {
+        console.error("Failed to fetch data", error);
       }
-    } catch (error) {
-      console.error("Failed to fetch data", error);
-    }
-  });
+    });
 
   function closeModal() {
     showModal = false;
   }
+  
+  // Periodically cycle through notifications for push notifications
+    let cyclingInterval;
+    onMount(() => {
+      cyclingInterval = setInterval(() => {
+        if (notifications.length > 0) {
+          // Cycle to the next notification
+          notificationIndex = (notificationIndex + 1) % notifications.length;
+          activeNotification = notifications[notificationIndex];
+        }
+      }, 5000); // Change notification every 5 seconds
+  
+      return () => clearInterval(cyclingInterval); // Cleanup cycling interval on component destroy
+    });
 
   function addImageToGallery() {
     if (galleryImages.length > 0) {
@@ -101,6 +140,20 @@
         </article>
       </section>
     {/if}
+    
+    <!-- Active Notification Push -->
+      {#if activeNotification}
+        <section class="p-6 bg-blue-100 shadow-md rounded-lg mt-6">
+          <h2 class="text-xl font-bold">Push Notification</h2>
+          <div class="p-4 bg-blue-200 rounded-lg">
+            <h3 class="font-semibold text-lg">{activeNotification.Title}</h3>
+            <p>{activeNotification.Description}</p>
+            {#if activeNotification.timestamp}
+              <span class="text-sm text-gray-500">{activeNotification.timestamp}</span>
+            {/if}
+          </div>
+        </section>
+      {/if}
   </main>
   <Footer />
 </section>

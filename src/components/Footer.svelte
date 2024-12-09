@@ -15,15 +15,17 @@
     </a>
 
     <!-- Challenges -->
-    <button class="flex flex-col items-center">
-      <img
-        width="30"
-        height="30"
-        src="https://img.icons8.com/ios/50/mission-of-a-company.png"
-        alt="mission-of-a-company"
-      />
-      <span class="text-sm font-medium text-black">Challenges</span>
-    </button>
+    <a href="/challenges">
+      <button class="flex flex-col items-center">
+        <img
+          width="30"
+          height="30"
+          src="https://img.icons8.com/ios/50/mission-of-a-company.png"
+          alt="mission-of-a-company"
+        />
+        <span class="text-sm font-medium text-black">Challenges</span>
+      </button>
+    </a> 
 
     <!-- Shop -->
     <a href="/shop">
