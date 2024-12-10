@@ -82,6 +82,10 @@
     }
   });
 
+  function goToChallenges() {
+    window.location.href = "/challenges";
+  }
+
   function closeModal() {
     showModal = false;
   }
@@ -173,14 +177,16 @@
     <!-- Active Notification Push -->
     {#if activeNotification}
       <section class="p-6 bg-blue-100 shadow-md rounded-lg mt-6">
-        <h2 class="text-xl font-bold">Notifications</h2>
-        <div class="p-4 bg-blue-200 rounded-lg">
-          <h3 class="font-semibold text-lg">{activeNotification.Title}</h3>
-          <p>{activeNotification.Description}</p>
-          {#if activeNotification.timestamp}
-            <span class="text-sm text-gray-500">{activeNotification.timestamp}</span>
-          {/if}
-        </div>
+        <button on:click={goToChallenges} class="notification-button">
+          <h2 class="text-xl font-bold">Notifications</h2>
+          <div class="p-4 bg-blue-200 rounded-lg">
+            <h3 class="font-semibold text-lg">{activeNotification.Title}</h3>
+            <p>{activeNotification.Description}</p>
+            {#if activeNotification.timestamp}
+              <span class="text-sm text-gray-500">{activeNotification.timestamp}</span>
+            {/if}
+          </div>
+        </button>
       </section>
     {/if}
   </main>
