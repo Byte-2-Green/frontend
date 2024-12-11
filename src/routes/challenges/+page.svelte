@@ -257,16 +257,6 @@
             </section>
         {/if}
 
-        <!--button to open the first modal -->
-        <div class="flex items-center justify-center mt-6">
-            <button
-                on:click={openModal}
-                class="bg-orange-700 text-white font-bold py-4 px-4 rounded hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-600 focus:ring-offset-2"
-            >
-                New Challenge
-            </button>
-        </div>
-
         <!-- Challenge Accepted -->
         <div class="mt-8 p-4">
             <h2 class="text-2xl font-bold mb-4">Challenges Accepted</h2>
