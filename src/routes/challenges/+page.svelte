@@ -9,17 +9,115 @@
 
     let showModal = true;
 
-    // Variable to fetch the array of challenges from the API
+    // Function to open the first modal and select a random challenge
+    function openModal() {
+        if (challenges.length > 0) {
+            randomChallenge =
+                challenges[Math.floor(Math.random() * challenges.length)];
+            showModal = true;
+        } else {
+            console.error("No challenges available");
+            console.log(challenges);
+        }
+    }
+
+    // variable to fetch the array of challenges from the api
     /** * @type {{ Description: string, Title: string, Timeframe: number, C02_emission: number, id: number }[]} */
     let challenges = [];
 
-    // Variable to store a random challenge
+    // variable to store a random challenge
     /** * @type {{ Description: string, Title: string, Timeframe: number, C02_emission: number, id: number } | null} */
     let randomChallenge = null;
 
-    // Variable to store the denied challenges
+    // variable to store the denied challenges
     /** * @type {{ Description: string, Title: string, Timeframe: number, C02_emission: number, id: number }[]} */
     let deniedChallenges = [];
+
+    // variable to store the accepted challenges
+    /** * @type {{ Description: string, Title: string, Timeframe: number, C02_emission: number, id: number }[]} */
+    let acceptedChallenges = [];
+
+    // fetch the challenges from the API
+    async function fetchChallenges() {
+        try {
+            const res = await fetch(
+                `http://localhost:3010/challenges/challenges`,
+            );
+            challenges = await res.json();
+
+            if (challenges.length > 0) {
+                randomChallenge = challenges[Math.floor(Math.random() * challenges.length)];
+            }
+        } catch (error) {
+            console.error("Failed to fetch challenges", error);
+        }
+    }
+
+    // fetch the denied challenges from the API
+    async function fetchDeniedChallenges() {
+        try {
+            const response = await fetch(
+                "http://localhost:3010/challenges/denied-challenges",
+            );
+            deniedChallenges = await response.json();
+        } catch (error) {
+            console.error("Failed to fetch denied challenges", error);
+        }
+    }
+
+    // reject the challenge and update the lists
+    async function denyChallenge(id) {
+        try {
+            await fetch(
+                `http://localhost:3010/challenges/challenges/deny/${id}`,
+                { method: "POST" },
+            );
+            // Refresh both lists
+            await fetchChallenges();
+            await fetchDeniedChallenges();
+            closeModal();
+        } catch (error) {
+            console.error("Failed to deny challenge", error);
+        }
+    }
+
+    // fetch the accepted challenges from the API
+    async function fetchAcceptedChallenges() {
+        try {
+            const response = await fetch(
+                "http://localhost:3010/challenges/accepted-challenges",
+            );
+            acceptedChallenges = [...await response.json()];
+            console.log(acceptedChallenges);
+        } catch (error) {
+            console.error("Failed to fetch accepted challenges", error);
+        }
+    }
+
+    // function to accept a challenge, update the lists, and open the second modal
+    async function handleAcceptChallenge(id) {
+        try {
+            await fetch(
+                `http://localhost:3010/challenges/challenges/accept/${id}`,
+                { method: "POST" },
+            );
+
+            // Atualiza a lista de desafios aceitos
+            await fetchAcceptedChallenges();
+
+            if (randomChallenge && randomChallenge.Timeframe) {
+                console.log("Challenge accepted!");
+                showChallengeModal = true;
+                startTimer(randomChallenge.Timeframe);
+            } else {
+                console.error("Invalid challenge or timeframe missing.");
+            }
+
+            closeModal();
+        } catch (error) {
+            console.error("Failed to accept challenge", error);
+        }
+    }
 
     // Variable to control the timer
     let timerActive = false;
@@ -63,77 +161,11 @@
         remainingTime = 0;
     }
 
-    // Function to fetch challenges from the API
-    async function fetchChallenges() {
-        try {
-            const res = await fetch(
-                `http://localhost:3010/challenges/challenges`,
-            );
-            challenges = await res.json();
-
-            if (challenges.length > 0) {
-                randomChallenge = challenges[Math.floor(Math.random() * challenges.length)];
-            }
-        } catch (error) {
-            console.error("Failed to fetch challenges", error);
-        }
-    }
-
-    // fetch the denied challenges from the API
-    async function fetchDeniedChallenges() {
-        try {
-            const response = await fetch(
-                "http://localhost:3010/challenges/denied-challenges",
-            );
-            deniedChallenges = await response.json();
-        } catch (error) {
-            console.error("Failed to fetch denied challenges", error);
-        }
-    }
-
-    // Function to open the first modal and select a random challenge
-    function openModal() {
-        if (challenges.length > 0) {
-            randomChallenge =
-                challenges[Math.floor(Math.random() * challenges.length)];
-            showModal = true;
-        } else {
-            console.error("No challenges available");
-            console.log(challenges);
-        }
-    }
-
-    // reject the challenge and update the lists
-    async function denyChallenge(id) {
-        try {
-            await fetch(
-                `http://localhost:3010/challenges/challenges/deny/${id}`,
-                { method: "POST" },
-            );
-            // Refresh both lists
-            await fetchChallenges();
-            await fetchDeniedChallenges();
-            closeModal();
-        } catch (error) {
-            console.error("Failed to deny challenge", error);
-        }
-    }
-
-    // Function to close the first modal
-    function closeModal() {
-        showModal = false;
-    }
-
-    // Function to accept a challenge and open the second modal
-    function acceptChallenge() {
-        if (randomChallenge && randomChallenge.Timeframe) {
-            console.log("Challenge accepted!");
-            showChallengeModal = true; // Show the second modal
-            startTimer(randomChallenge.Timeframe); // Start the timer
-            closeModal(); // Close the first modal
-        } else {
-            console.error("Invalid challenge or timeframe missing.");
-        }
+    // Function to handle the "Completed" button
+    function completedChallenge() {
+        // Functionality to be implemented
+        console.log("Challenge completed!");
+        closeChallengeModal();
     }
 
     // Function to close the second modal
@@ -144,17 +176,16 @@
         clearInterval(interval);
     }
 
-    // Function to handle the "Completed" button
-    function completedChallenge() {
-        // Functionality to be implemented
-        console.log("Challenge completed!");
-        closeChallengeModal();
+    // Function to close the first modal
+    function closeModal() {
+        showModal = false;
     }
 
-    // Fetch challenges and denied challenges when the component mounts
+    // fetch challenges, denied challenges and accepted challenges on component mount
     onMount(() => {
         fetchChallenges();
         fetchDeniedChallenges();
+        fetchAcceptedChallenges();
     });
 </script>
 
@@ -195,7 +226,7 @@
                     <!-- Accept and deny buttons -->
                     <div class="flex space-x-4 mt-6">
                         <button
-                            on:click={acceptChallenge}
+                            on:click={() => handleAcceptChallenge(randomChallenge.Challenge_ID)}
                             class="bg-green-600 text-white font-bold py-2 px-4 rounded hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2"
                         >
                             Accept
@@ -257,11 +288,6 @@
             </section>
         {/if}
 
-        <!-- Challenge Accepted -->
-        <div class="mt-8 p-4">
-            <h2 class="text-2xl font-bold mb-4">Challenges Accepted</h2>
-        </div>
-
         <!-- Timer-->
         {#if timerActive}
             <div
@@ -281,6 +307,23 @@
                 </div>
             </div>
         {/if}
+        
+        <!-- Challenge Accepted -->
+        <div class="mt-8 p-4">
+            <h2 class="text-2xl font-bold mb-4">Challenges Accepted</h2>
+            {#if acceptedChallenges.length > 0}
+                <ul>
+                    {#each acceptedChallenges as challenge}
+                        <li class="border p-4 mb-2 rounded shadow">
+                            <h3 class="font-bold">{challenge.Title}</h3>
+                            <p>{challenge.Description}</p>
+                        </li>
+                    {/each}
+                </ul>
+            {:else}
+                <p>No challenges accepted yet.</p>
+            {/if}
+        </div>
 
         <!-- Denied challenges -->
         <div class="mt-8 p-4">
