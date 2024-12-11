@@ -1,10 +1,6 @@
 <script>
-<<<<<<< HEAD
-// @ts-nocheck
-=======
   // @ts-nocheck
   // @ts-ignore
->>>>>>> development
 
   import Header from "../components/Header.svelte";
   import StatsPanel from "../components/StatsPanel.svelte";
@@ -13,11 +9,8 @@
   import { onMount } from "svelte";
   import "../app.css";
 
-<<<<<<< HEAD
   let showModal = true;
-  let randomThought = null;
-=======
->>>>>>> development
+
   let unlockedFrames = 4;
 
   let savedCO2 = 0.5;
@@ -27,31 +20,13 @@
     { src: "/images/template2.png", text: "Artwork 2" },
   ];
 
-<<<<<<< HEAD
-  let positionedImages = [];
   let isEditingGallery = false;
-  
-  /** * variable to fetch the array of notifications from the backend */
-    /** * @type {{ Title: string, Description: string, timestamp?: string }[]} */
-    let notifications = [];
-  
-    /** * variable to store the active notification */
-    // @ts-ignore
-    let activeNotification = null;
-  
-    /** * index to track the current notification being displayed */
-    let notificationIndex = 0;
-=======
+
   /**
    * @type {string | any[]}
    */
   let positionedImages = [];
->>>>>>> development
 
-  let isEditingGallery = false;
-
-  let showModal = true;
-  
   // variable to fetch the array of thoughts from the api
   /**
    * @type {{ Description: string }[]}
@@ -91,7 +66,9 @@
       }
 
       // Fetching notifications
-      const notifRes = await fetch(`http://localhost:3010/challenges/notifications`);
+      const notifRes = await fetch(
+        `http://localhost:3010/challenges/notifications`,
+      );
       notifications = await notifRes.json();
 
       if (notifications.length > 0) {
@@ -145,12 +122,9 @@
     isEditingGallery = !isEditingGallery;
   }
 
-<<<<<<< HEAD
-=======
   /**
    * @param {string | any[]} updatedImages
    */
->>>>>>> development
   function updateGallery(updatedImages) {
     positionedImages = updatedImages;
     savedCO2 = 0.5 * positionedImages.length;
@@ -211,7 +185,9 @@
             <h3 class="font-semibold text-lg">{activeNotification.Title}</h3>
             <p>{activeNotification.Description}</p>
             {#if activeNotification.timestamp}
-              <span class="text-sm text-gray-500">{activeNotification.timestamp}</span>
+              <span class="text-sm text-gray-500"
+                >{activeNotification.timestamp}</span
+              >
             {/if}
           </div>
         </button>
