@@ -6,7 +6,7 @@
 
     import { onMount } from "svelte";
 
-    let showModal = false;
+    let showModal = true;
 
     // variable to fetch the array of challenges from the api
     /** * @type {{ Description: string, Title: string, Timeframe: number, C02_emission: number, id: number }[]} */
@@ -25,8 +25,12 @@
         try {
             const res = await fetch(`http://localhost:3010/challenges/challenges`);
             challenges = await res.json();
+
+            if (challenges.length > 0) {
+                randomChallenge = challenges[Math.floor(Math.random() * challenges.length)];
+            }
         } catch (error) {
-            console.error("Failed to fetch data", error);
+            console.error("Failed to fetch challenges", error);
         }
     }
 
@@ -119,15 +123,6 @@
                 </article>
             </section>
         {/if}
-        
-        <!-- Button to open the modal -->
-        <div class="flex items-center justify-center mt-6">
-            <button 
-                on:click={openModal} 
-                class="bg-orange-700 text-white font-bold py-4 px-4 rounded hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-600 focus:ring-offset-2">
-                New Challenge
-            </button>
-        </div>
 
         <!-- Accepted challenges -->
         <div class="mt-8 p-4">
