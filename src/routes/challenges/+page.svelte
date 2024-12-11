@@ -5,8 +5,9 @@
     import Footer from "../../components/Footer.svelte";
     import { onMount } from "svelte";
 
-    let showModal = false;
     let showChallengeModal = false;
+
+    let showModal = true;
 
     // Variable to fetch the array of challenges from the API
     /** * @type {{ Description: string, Title: string, Timeframe: number, C02_emission: number, id: number }[]} */
@@ -69,8 +70,12 @@
                 `http://localhost:3010/challenges/challenges`,
             );
             challenges = await res.json();
+
+            if (challenges.length > 0) {
+                randomChallenge = challenges[Math.floor(Math.random() * challenges.length)];
+            }
         } catch (error) {
-            console.error("Failed to fetch data", error);
+            console.error("Failed to fetch challenges", error);
         }
     }
 
