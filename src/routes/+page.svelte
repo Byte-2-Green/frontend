@@ -9,6 +9,8 @@
   import { onMount } from "svelte";
   import "../app.css";
 
+  let showModal = true;
+
   let unlockedFrames = 4;
 
   let savedCO2 = 0.5;
@@ -18,15 +20,13 @@
     { src: "/images/template2.png", text: "Artwork 2" },
   ];
 
+  let isEditingGallery = false;
+
   /**
    * @type {string | any[]}
    */
   let positionedImages = [];
 
-  let isEditingGallery = false;
-
-  let showModal = true;
-  
   // variable to fetch the array of thoughts from the api
   /**
    * @type {{ Description: string }[]}
@@ -66,7 +66,9 @@
       }
 
       // Fetching notifications
-      const notifRes = await fetch(`http://localhost:3010/challenges/notifications`);
+      const notifRes = await fetch(
+        `http://localhost:3010/challenges/notifications`,
+      );
       notifications = await notifRes.json();
 
       if (notifications.length > 0) {
@@ -183,7 +185,9 @@
             <h3 class="font-semibold text-lg">{activeNotification.Title}</h3>
             <p>{activeNotification.Description}</p>
             {#if activeNotification.timestamp}
-              <span class="text-sm text-gray-500">{activeNotification.timestamp}</span>
+              <span class="text-sm text-gray-500"
+                >{activeNotification.timestamp}</span
+              >
             {/if}
           </div>
         </button>
