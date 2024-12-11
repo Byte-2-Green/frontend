@@ -1,4 +1,6 @@
 <script>
+// @ts-nocheck
+
   import Header from "../components/Header.svelte";
   import StatsPanel from "../components/StatsPanel.svelte";
   import Gallery from "../components/Gallery.svelte";
@@ -7,7 +9,6 @@
   import "../app.css";
 
   let showModal = true;
-  // @ts-ignore
   let randomThought = null;
   let unlockedFrames = 4;
   let savedCO2 = 0.5;
@@ -17,7 +18,6 @@
     { src: "/images/template2.png", text: "Artwork 2" },
   ];
 
-  // @ts-ignore
   let positionedImages = [];
   let isEditingGallery = false;
   
@@ -26,6 +26,7 @@
     let notifications = [];
   
     /** * variable to store the active notification */
+    // @ts-ignore
     let activeNotification = null;
   
     /** * index to track the current notification being displayed */
@@ -91,7 +92,6 @@
     isEditingGallery = !isEditingGallery;
   }
 
-  // @ts-ignore
   function updateGallery(updatedImages) {
     positionedImages = updatedImages;
     savedCO2 = 0.5 * positionedImages.length;
