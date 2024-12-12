@@ -102,7 +102,7 @@
                 { method: "POST" },
             );
 
-            // Atualiza a lista de desafios aceitos
+            // updates the list of accepted challenges
             await fetchAcceptedChallenges();
 
             if (randomChallenge && randomChallenge.Timeframe) {
