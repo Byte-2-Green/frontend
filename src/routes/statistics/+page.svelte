@@ -93,7 +93,7 @@
         <div class="px-6">
             <div class="space-y-6">
                 <div>
-                    <h3 class="font-semibold text-lg">CO2 Saved per Challenge</h3>
+                    <h3 class="font-semibold text-lg">CO2 Saved per Week</h3>
                     <div class="bg-gray-200 mt-4 rounded-md p-4">
                         {#if loading}
                             <p>Loading...</p>
@@ -122,7 +122,7 @@
                 </div>
                 <div>
                     <h3 class="font-semibold text-lg">
-                        Overall CO2 Saved per Month
+                        Overall CO2 Saved per Year
                     </h3>
                     <div class="h-48 bg-gray-200 mt-4 rounded-md"></div>
                 </div>
