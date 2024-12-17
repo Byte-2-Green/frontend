@@ -96,9 +96,15 @@
                         {:else if showAcceptedChallenge.length > 0}
                             <ul>
                                 {#each getCombinedChallenges() as combinedChallenge}
-                                    <li>
-                                        <h3 class="font-bold">{combinedChallenge.Title}</h3>
-                                        <p>CO2 Saved: {combinedChallenge.C02_emission} g</p>
+                                    <li class="flex justify-between gap-x-2 py-1">
+                                        <div class="flex min-w-0 gap-x-4">
+                                            <div class="min-w-0 flex-auto">
+                                                <p class="text-sm/6 font-semibold text-gray-900">{combinedChallenge.Title}</p>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm/6 text-gray-900">{combinedChallenge.C02_emission} g CO₂ Saved</p>
+                                        </div>
                                     </li>
                                 {/each}
                             </ul>
@@ -107,7 +113,6 @@
                         {/if}
                     </div>
                 </div>
-
                 <div>
                     <h3 class="font-semibold text-lg">
                         Overall CO2 Saved per Month
