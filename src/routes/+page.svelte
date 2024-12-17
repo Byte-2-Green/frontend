@@ -22,23 +22,16 @@
 
   let isEditingGallery = false;
 
-
   /**
    * @type {string | any[]}
    */
   let positionedImages = [];
 
-    /** * function that runs when the component is mounted */
-    onMount(async () => {
-        try {
-            const res = await fetch(`http://localhost:3010/educational/foodForThought`);
-            const data = await res.json();
-
   // variable to fetch the array of thoughts from the api
   /**
    * @type {{ Description: string }[]}
    */
-  export const foodForThought = [];
+  const foodForThought = [];
 
   // variable to store a random thought
   /**
@@ -81,11 +74,6 @@
       if (notifications.length > 0) {
         activeNotification = notifications[notificationIndex];
       }
-
-      // Logging fetched data
-      console.log("Random Thought:", randomThought);
-      console.log("Notifications:", notifications);
-      console.log("Active Notification:", activeNotification);
     } catch (error) {
       console.error("Failed to fetch data", error);
     }
