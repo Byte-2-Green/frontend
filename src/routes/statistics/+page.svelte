@@ -59,6 +59,10 @@
             })
             .filter((combinedChallenge) => combinedChallenge !== null); // Remove valores null explicitamente
     }
+
+    function getTotalCO2Saved() {
+        return getCombinedChallenges().reduce((total, challenge) => total + challenge.C02_emission, 0);
+    }
 </script>
 
 <section class="min-h-screen bg-secondary-light flex flex-col">
@@ -90,7 +94,7 @@
             <div class="space-y-6">
                 <div>
                     <h3 class="font-semibold text-lg">CO2 Saved per Challenge</h3>
-                    <div class="h-48 bg-gray-200 mt-4 rounded-md">
+                    <div class="bg-gray-200 mt-4 rounded-md p-4">
                         {#if loading}
                             <p>Loading...</p>
                         {:else if showAcceptedChallenge.length > 0}
@@ -107,6 +111,9 @@
                                         </div>
                                     </li>
                                 {/each}
+                                <div class="mt-4 pt-4 border-t border-gray-300">
+                                    <p class="font-bold text-gray-900">Total CO₂ Saved: {getTotalCO2Saved()} g</p>
+                                </div>
                             </ul>
                         {:else}
                             <p>No challenges accepted yet.</p>
