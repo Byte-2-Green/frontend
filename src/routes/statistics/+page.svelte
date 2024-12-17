@@ -5,9 +5,31 @@
     import { onMount } from "svelte";
 
     /**
-   * @type {string | any[]}
-   */
+     * @type {{ Challenge_ID: number, Title: string, Description: string, C02_emission: number, Timeframe: number, Icon: string }[]}
+     */
+    let challenges = [];
+
+    /**
+     * @type {{ id: number, Challenge_ID: number, denied_at: string, photo: string | null }[]}
+     */
     let showAcceptedChallenge = [];
+
+    /** 
+     * @type {boolean} 
+    */
+    let loading = true;
+
+    async function fetchChallenges() {
+        try {
+            const res = await fetch(
+                `http://localhost:3010/challenges/challenges`,
+            );
+            challenges = await res.json();
+            console.log(challenges);
+        } catch (error) {
+            console.error("Failed to fetch challenges", error);
+        }
+    }
 
     // fetch the accepted challenges from the API
     async function fetchAcceptedChallenges() {
@@ -22,9 +44,21 @@
         }
     }
 
-    onMount(() => {
-        fetchAcceptedChallenges();
+    onMount(async () => {
+        await fetchChallenges();
+        await fetchAcceptedChallenges();
+        loading = false;
     });
+
+    // combines the challenges and accepted challenges
+    function getCombinedChallenges() {
+        return showAcceptedChallenge
+            .map((accepted) => {
+                const challenge = challenges.find((c) => c.Challenge_ID === accepted.Challenge_ID);
+                return challenge ? { ...challenge, id: accepted.id } : null;
+            })
+            .filter((combinedChallenge) => combinedChallenge !== null); // Remove valores null explicitamente
+    }
 </script>
 
 <section class="min-h-screen bg-secondary-light flex flex-col">
@@ -55,16 +89,16 @@
         <div class="px-6">
             <div class="space-y-6">
                 <div>
-                    <h3 class="font-semibold text-lg">
-                        CO2 Saved per Challenge
-                    </h3>
+                    <h3 class="font-semibold text-lg">CO2 Saved per Challenge</h3>
                     <div class="h-48 bg-gray-200 mt-4 rounded-md">
-                        {#if showAcceptedChallenge.length > 0}
+                        {#if loading}
+                            <p>Loading...</p>
+                        {:else if showAcceptedChallenge.length > 0}
                             <ul>
-                                {#each showAcceptedChallenge as challenge}
-                                    <li class="border p-4 mb-2 rounded shadow">
-                                        <h3 class="font-bold">{challenge.Title}</h3>
-                                        <p>{challenge.C02_emission}</p>
+                                {#each getCombinedChallenges() as combinedChallenge}
+                                    <li>
+                                        <h3 class="font-bold">{combinedChallenge.Title}</h3>
+                                        <p>CO2 Saved: {combinedChallenge.C02_emission} g</p>
                                     </li>
                                 {/each}
                             </ul>
