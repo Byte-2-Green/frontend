@@ -1,4 +1,7 @@
 <script>
+    // @ts-nocheck
+    // @ts-ignore
+
     import Header from "../../components/Header.svelte";
     import Footer from "../../components/Footer.svelte";
     import ProgressBar from "../../components/ProgressBar.svelte";  
@@ -19,6 +22,7 @@
     */
     let loading = true;
 
+    // fetch the challenges from the API
     async function fetchChallenges() {
         try {
             const res = await fetch(
@@ -57,7 +61,7 @@
                 const challenge = challenges.find((c) => c.Challenge_ID === accepted.Challenge_ID);
                 return challenge ? { ...challenge, id: accepted.id } : null;
             })
-            .filter((combinedChallenge) => combinedChallenge !== null); // Remove valores null explicitamente
+            .filter((combinedChallenge) => combinedChallenge !== null);
     }
 
     function getTotalCO2Saved() {
