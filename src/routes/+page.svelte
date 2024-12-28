@@ -22,12 +22,11 @@
 
   let isEditingGallery = false;
 
-    // variable to fetch the array of thoughts from the api
+  // variable to fetch the array of thoughts from the api
   /**
    * @type {{ Description: string }[]}
    */
-   export const foodForThought = [];
-
+  export const foodForThought = [];
 
   /**
    * @type {string | any[]}
@@ -132,10 +131,34 @@
   }
 </script>
 
-<section class="flex flex-col h-screen bg-primary-light">
+<section class="flex flex-col h-screen bg-moody-dark">
   <Header />
+
+  <!-- Active Notification Push -->
+  {#if activeNotification}
+    <section class="p-6 bg-blue-100 shadow-md rounded-lg mt-6">
+      <button on:click={goToChallenges} class="notification-button">
+        <h2 class="text-xl font-bold">Notifications</h2>
+        <div class="p-4 bg-blue-200 rounded-lg">
+          <h3 class="font-semibold text-lg">{activeNotification.Title}</h3>
+          <p>{activeNotification.Description}</p>
+          {#if activeNotification.timestamp}
+            <span class="text-sm text-gray-500"
+              >{activeNotification.timestamp}</span
+            >
+          {/if}
+        </div>
+      </button>
+    </section>
+  {/if}
+
   <main class="flex-1 overflow-y-auto">
-    <StatsPanel {unlockedFrames} {savedCO2} />
+    <Gallery
+      {positionedImages}
+      {isEditingGallery}
+      on:updateGallery={updateGallery}
+    />
+
     <button
       on:click={addImageToGallery}
       class="m-4 px-6 py-3 bg-primary-dark text-white font-semibold rounded transition-all"
@@ -148,11 +171,10 @@
     >
       {isEditingGallery ? "Save Changes" : "Edit Gallery"}
     </button>
-    <Gallery
-      {positionedImages}
-      {isEditingGallery}
-      on:updateGallery={updateGallery}
-    />
+
+    <StatsPanel {unlockedFrames} {savedCO2} />
+
+    <!--Food for thought modal-->
     {#if showModal}
       <section class="fixed inset-0 bg-black bg-opacity-50 z-50">
         <article
@@ -174,24 +196,6 @@
             <p>Loading...</p>
           {/if}
         </article>
-      </section>
-    {/if}
-
-    <!-- Active Notification Push -->
-    {#if activeNotification}
-      <section class="p-6 bg-blue-100 shadow-md rounded-lg mt-6">
-        <button on:click={goToChallenges} class="notification-button">
-          <h2 class="text-xl font-bold">Notifications</h2>
-          <div class="p-4 bg-blue-200 rounded-lg">
-            <h3 class="font-semibold text-lg">{activeNotification.Title}</h3>
-            <p>{activeNotification.Description}</p>
-            {#if activeNotification.timestamp}
-              <span class="text-sm text-gray-500"
-                >{activeNotification.timestamp}</span
-              >
-            {/if}
-          </div>
-        </button>
       </section>
     {/if}
   </main>

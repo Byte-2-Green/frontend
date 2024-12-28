@@ -102,16 +102,16 @@
 <section class="relative overflow-x-auto w-full">
   <div
     class="relative flex justify-start items-start w-full"
-    style="height: 60vh;"
+    style="height: 40vh;"
   >
     <div class="flex justify-start items-start w-max h-full">
       {#each [1, 2, 3, 4] as column}
         <section
           class="relative flex justify-center items-start w-[80vw] h-[60vh] px-2"
         >
-          <div
+          <!-- <div
             class="absolute bottom-0 left-0 right-0 h-[27%] bg-primary z-0"
-          ></div>
+          ></div> -->
           <div class="w-full h-full p-4 rounded-lg relative">
             <div class="flex flex-col w-full h-full">
               <!-- Lamp -->
@@ -142,21 +142,22 @@
               </div>
 
               <!-- Rope -->
-              <div class="h-[12%] flex justify-center items-center z-0">
+              <!-- <div class="h-[12%] flex justify-center items-center z-0">
                 <img
                   src="/images/rope.png"
                   alt="rope"
                   class="object-contain w-[75vw] h-auto"
                 />
-              </div>
+              </div> -->
+
               <!-- Bench -->
-              <div class="h-[18%] flex justify-center items-center">
+              <!-- <div class="h-[18%] flex justify-center items-center">
                 <img
                   src="/images/bench.png"
                   alt="bench"
                   class="object-contain w-[90%] h-auto"
                 />
-              </div>
+              </div> -->
             </div>
           </div>
         </section>
