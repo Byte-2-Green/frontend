@@ -9,11 +9,7 @@
   import { onMount } from "svelte";
   import "../app.css";
 
-  let showModal = true;
-
-  let unlockedFrames = 4;
-
-  let savedCO2 = 0.5;
+  let showModal = false;
 
   let galleryImages = [
     { src: "/images/template1.png", text: "Artwork 1" },
@@ -159,20 +155,38 @@
       on:updateGallery={updateGallery}
     />
 
-    <button
-      on:click={addImageToGallery}
-      class="m-4 px-6 py-3 bg-primary-dark text-white font-semibold rounded transition-all"
-    >
-      Add Image
-    </button>
-    <button
-      on:click={toggleEditMode}
-      class="m-4 px-6 py-3 bg-primary-dark text-white font-semibold rounded transition-all"
-    >
-      {isEditingGallery ? "Save Changes" : "Edit Gallery"}
-    </button>
+    <section class="flex justify-center items-center">
+      <button
+        on:click={addImageToGallery}
+        class="m-4 px-6 py-3 bg-primary-dark text-white font-semibold rounded transition-all"
+      >
+        Add Image
+      </button>
+      <button
+        on:click={toggleEditMode}
+        class="m-4 px-6 py-3 bg-primary-dark text-white font-semibold rounded transition-all"
+      >
+        {isEditingGallery ? "Save Changes" : "Edit Gallery"}
+      </button>
+    </section>
 
-    <StatsPanel {unlockedFrames} {savedCO2} />
+    <!--Challenges streak-->
+    <section class="text-center mt-6">
+      <div
+        class="flex flex-row items-center justify-center bg-primary-dark text-white p-4"
+      >
+        <iframe
+          src="https://giphy.com/embed/47GPQ7ZzivsemHKPvB"
+          width="60"
+          height="60"
+          class="giphy-embed"
+          title="fire burning gif emoji"
+        ></iframe>
+        <h2 class="ml-5 text-xl font-bold uppercase">12 Challenges</h2>
+      </div>
+    </section>
+
+    <StatsPanel />
 
     <!--Food for thought modal-->
     {#if showModal}

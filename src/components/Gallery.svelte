@@ -102,7 +102,7 @@
 <section class="relative overflow-x-auto w-full">
   <div
     class="relative flex justify-start items-start w-full"
-    style="height: 40vh;"
+    style="height: 37vh;"
   >
     <div class="flex justify-start items-start w-max h-full">
       {#each [1, 2, 3, 4] as column}

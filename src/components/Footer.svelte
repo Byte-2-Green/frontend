@@ -1,4 +1,4 @@
-<footer class="relative bg-white h-20 flex justify-around items-center shadow-md w-full">
+<footer class="relative bg-primary h-20 flex justify-around items-center shadow-md w-full">
   <!-- Navigation items -->
   <section class="flex w-full justify-between px-6">
     <!-- Statistics -->
@@ -56,7 +56,7 @@
 
   <!-- Center home button -->
   <button
-    class="absolute -top-8 mx-auto w-16 h-16 rounded-full bg-primary-light flex items-center justify-center"
+    class="absolute -top-8 mx-auto w-16 h-16 rounded-full bg-primary flex items-center justify-center"
 
   >
     <a href="/">
