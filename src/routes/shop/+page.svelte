@@ -62,7 +62,7 @@
   }
 </script>
 
-<section class="min-h-screen bg-secondary-light flex flex-col">
+<section class="min-h-screen bg-primary-light flex flex-col">
   <!-- Header -->
   <Header />
 
@@ -72,10 +72,10 @@
 
     <!-- Categories -->
     <div class="flex space-x-4">
-      <button class="bg-secondary px-4 py-2 rounded-md hover:bg-secondary">
+      <button class="bg-primary px-4 py-2 rounded-md hover:bg-primary">
         Category
       </button>
-      <button class="bg-secondary px-4 py-2 rounded-md hover:bg-secondary">
+      <button class="bg-primary px-4 py-2 rounded-md hover:bg-primary">
         Price
       </button>
     </div>
@@ -91,7 +91,7 @@
     <div class="overflow-x-auto flex space-x-2 mt-6 max-w-full">
       {#each items as item}
         <button
-          class="bg-secondary rounded-lg shadow-lg p-6 w-48 flex flex-col items-center relative transition-transform"
+          class="bg-primary rounded-lg shadow-lg p-6 w-48 flex flex-col items-center relative transition-transform"
           on:click={() => openModal(item)}
         >
           <!-- Icon -->
@@ -99,7 +99,7 @@
 
           <!-- Item Price -->
           <div
-            class="bg-secondary-dark p-2 absolute bottom-0 left-0 right-0 rounded-md flex items-center justify-center w-full"
+            class="bg-primary-dark p-2 absolute bottom-0 left-0 right-0 rounded-md flex items-center justify-center w-full"
           >
             <p class="text-lg font-semibold text-white">${item.price}</p>
           </div>
@@ -111,7 +111,7 @@
     <div class="overflow-x-auto flex space-x-2 mt-6 max-w-full">
       {#each items as item}
         <button
-          class="bg-secondary rounded-lg shadow-lg p-6 w-48 flex flex-col items-center relative transition-transform"
+          class="bg-primary rounded-lg shadow-lg p-6 w-48 flex flex-col items-center relative transition-transform"
           on:click={() => openModal(item)}
         >
           <!-- Icon -->
@@ -119,7 +119,7 @@
 
           <!-- Item Price -->
           <div
-            class="bg-secondary-dark p-2 absolute bottom-0 left-0 right-0 rounded-md flex items-center justify-center w-full"
+            class="bg-primary-dark p-2 absolute bottom-0 left-0 right-0 rounded-md flex items-center justify-center w-full"
           >
             <p class="text-lg font-semibold text-white">${item.price}</p>
           </div>
@@ -131,24 +131,24 @@
     {#if modalVisible}
       <section class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
         <article class="bg-black p-6 rounded-lg text-center shadow-lg w-80 flex flex-col items-center" >
-          <button on:click={closeModal} class="absolute top-2 right-2 text-secondary-light" > ✖ </button>
+          <button on:click={closeModal} class="absolute top-2 right-2 text-primary-light" > ✖ </button>
           {#if selectedItem}
-            <div class="bg-secondary rounded-lg shadow-lg p-6 w-48 flex flex-col items-center relative">
+            <div class="bg-primary rounded-lg shadow-lg p-6 w-48 flex flex-col items-center relative">
               <i class={`${selectedItem.icon} text-3xl text-white mb-12`}></i>
-              <div class="bg-secondary-dark p-2 absolute bottom-0 left-0 right-0 rounded-md flex items-center justify-center w-full" >
+              <div class="bg-primary-dark p-2 absolute bottom-0 left-0 right-0 rounded-md flex items-center justify-center w-full" >
                 <p class="text-lg font-semibold text-white">
                   ${selectedItem.price}
                 </p>
               </div>
             </div>
 
-            <h3 class="text-xl font-semibold text-secondary-light mt-6">
+            <h3 class="text-xl font-semibold text-primary-light mt-6">
               {selectedItem.name}
             </h3>
-            <p class="text-lg text-secondary-light mt-2">
+            <p class="text-lg text-primary-light mt-2">
               {selectedItem.description}
             </p>
-            <p class="text-lg font-semibold text-secondary-light mt-4">
+            <p class="text-lg font-semibold text-primary-light mt-4">
               ${selectedItem.price}
             </p>
           {/if}

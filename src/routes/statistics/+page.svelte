@@ -4,20 +4,20 @@
     import ProgressBar from "../../components/ProgressBar.svelte";
 </script>
 
-<section class="min-h-screen bg-secondary-light flex flex-col">
+<section class="min-h-screen bg-primary-light flex flex-col">
     <!-- Header -->
     <Header />
 
     <section class="flex flex-col mb-6">
         <div class="flex space-x-4 px-4">
             <a
-                class="bg-secondary px-4 py-2 rounded-md {window.location.pathname === '/statistics' ? 'font-bold' : ''}"
+                class="bg-primary px-4 py-2 rounded-md {window.location.pathname === '/statistics' ? 'font-bold' : ''}"
                 href="/statistics"
             >
                 Overview
             </a>
             <a
-                class="bg-secondary px-4 py-2 rounded-md {window.location.pathname === '/statistics/faq' ? 'font-bold' : ''}"
+                class="bg-primary px-4 py-2 rounded-md {window.location.pathname === '/statistics/faq' ? 'font-bold' : ''}"
                 href="/statistics/faq"
             >
                 FAQ

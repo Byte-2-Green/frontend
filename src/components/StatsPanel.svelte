@@ -5,7 +5,7 @@
 
 <section class="flex flex-row gap-3 mx-4">
   <!-- Unlocked Frames -->
-  <article class="bg-secondary text-black p-3 rounded-lg shadow-sm w-1/2">
+  <article class="bg-primary text-black p-3 rounded-lg shadow-sm w-1/2">
     <div class="flex items-start gap-4">
       <!-- Frames Icon -->
       <div class="w-14 h-14 flex justify-center items-center">
@@ -51,7 +51,7 @@
 
   <!-- Saved CO2 -->
   <article
-    class="bg-secondary text-black p-3 rounded-lg shadow-sm w-1/2"
+    class="bg-primary text-black p-3 rounded-lg shadow-sm w-1/2"
   >
     <div class="flex items-start gap-4">
       <!-- CO2 Icon -->

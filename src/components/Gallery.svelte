@@ -110,7 +110,7 @@
           class="relative flex justify-center items-start w-[80vw] h-[60vh] px-2"
         >
           <div
-            class="absolute bottom-0 left-0 right-0 h-[27%] bg-secondary z-0"
+            class="absolute bottom-0 left-0 right-0 h-[27%] bg-primary z-0"
           ></div>
           <div class="w-full h-full p-4 rounded-lg relative">
             <div class="flex flex-col w-full h-full">

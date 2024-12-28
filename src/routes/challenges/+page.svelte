@@ -189,18 +189,18 @@
     });
 </script>
 
-<section class="flex flex-col h-screen bg-secondary-light">
+<section class="flex flex-col h-screen bg-primary-light">
     <Header />
     <main class="flex-1 overflow-y-auto">
         <!-- Modal -->
         {#if showModal}
             <section class="fixed inset-0 bg-black bg-opacity-50 z-50">
                 <article
-                    class="bg-secondary-light text-secondary-dark rounded-lg shadow-lg p-6 w-full h-full flex flex-col justify-center items-center relative"
+                    class="bg-primary-light text-primary-dark rounded-lg shadow-lg p-6 w-full h-full flex flex-col justify-center items-center relative"
                 >
                     <button
                         on:click={closeModal}
-                        class="absolute top-4 right-4 text-secondary-dark"
+                        class="absolute top-4 right-4 text-primary-dark"
                         >✖</button
                     >
                     {#if randomChallenge}
@@ -247,11 +247,11 @@
         {#if showChallengeModal}
             <section class="fixed inset-0 bg-black bg-opacity-50 z-50">
                 <article
-                    class="bg-secondary-light text-secondary-dark rounded-lg shadow-lg p-6 w-full h-full flex flex-col justify-center items-center relative"
+                    class="bg-primary-light text-primary-dark rounded-lg shadow-lg p-6 w-full h-full flex flex-col justify-center items-center relative"
                 >
                     <button
                         on:click={closeChallengeModal}
-                        class="absolute top-4 right-4 text-secondary-dark"
+                        class="absolute top-4 right-4 text-primary-dark"
                         >✖</button
                     >
                     {#if randomChallenge}

@@ -5,17 +5,17 @@
   let selectedTab = "stats";
 </script>
 
-<main class="bg-secondary-light min-h-screen flex flex-col">
+<main class="bg-primary-light min-h-screen flex flex-col">
   <!-- Top Gradient Lines -->
   <section class="relative z-0">
     <div
-      class="absolute t-0 w-full h-5 bg-secondary-dark opacity-80 rounded-b-full"
+      class="absolute t-0 w-full h-5 bg-primary-dark opacity-80 rounded-b-full"
     ></div>
     <div
-      class="absolute t-0 w-full h-10 bg-secondary-dark opacity-60 rounded-b-3xl"
+      class="absolute t-0 w-full h-10 bg-primary-dark opacity-60 rounded-b-3xl"
     ></div>
     <div
-      class="absolute t-0 w-full h-16 bg-secondary-dark opacity-40 rounded-b-3xl"
+      class="absolute t-0 w-full h-16 bg-primary-dark opacity-40 rounded-b-3xl"
     ></div>
   </section>
 
@@ -23,7 +23,7 @@
   <section class="flex-grow z-10">
     <!-- Profile Picture -->
     <article
-      class="mt-6 rounded-full bg-secondary w-24 h-24 mx-auto flex justify-center items-center shadow-lg border-2 border-secondary-dark"
+      class="mt-6 rounded-full bg-primary w-24 h-24 mx-auto flex justify-center items-center shadow-lg border-2 border-primary-dark"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -38,7 +38,7 @@
     </article>
 
     <!-- Username -->
-    <p class="text-2xl font-semibold text-center mt-2 mb-8 text-secondary-dark">
+    <p class="text-2xl font-semibold text-center mt-2 mb-8 text-primary-dark">
       me
     </p>
 
@@ -48,7 +48,7 @@
     <!-- Invite and View Friends Buttons -->
     <article class="text-center m-4 text-lg">
       <button
-        class="w-full bg-secondary px-6 py-3 rounded-lg shadow-md mb-4 flex items-center"
+        class="w-full bg-primary px-6 py-3 rounded-lg shadow-md mb-4 flex items-center"
       >
         <img
           src="/images/friendsIcon.png"
@@ -57,7 +57,7 @@
         />
         Invite your friends
       </button>
-      <button class="w-full bg-secondary px-6 py-3 rounded-lg shadow-md mb-5">
+      <button class="w-full bg-primary px-6 py-3 rounded-lg shadow-md mb-5">
         View friends' galleries
       </button>
     </article>
@@ -65,24 +65,24 @@
     <!-- Stats, Global, Edit Buttons (Clickable Tabs) -->
     <section class="flex justify-around mt-4 text-lg">
       <button
-        class="bg-secondary px-6 py-2 rounded-lg shadow-md hover:bg-secondary-dark hover:text-white"
-        class:bg-secondary-dark={selectedTab === "stats"}
+        class="bg-primary px-6 py-2 rounded-lg shadow-md hover:bg-primary-dark hover:text-white"
+        class:bg-primary-dark={selectedTab === "stats"}
         class:text-white={selectedTab === "stats"}
         on:click={() => (selectedTab = "stats")}
       >
         Stats
       </button>
       <button
-        class="bg-secondary px-6 py-2 rounded-lg shadow-md hover:bg-secondary-dark hover:text-white"
-        class:bg-secondary-dark={selectedTab === "global"}
+        class="bg-primary px-6 py-2 rounded-lg shadow-md hover:bg-primary-dark hover:text-white"
+        class:bg-primary-dark={selectedTab === "global"}
         class:text-white={selectedTab === "global"}
         on:click={() => (selectedTab = "global")}
       >
         Global
       </button>
       <button
-        class="bg-secondary px-6 py-2 rounded-lg shadow-md hover:bg-secondary-dark hover:text-white"
-        class:bg-secondary-dark={selectedTab === "edit"}
+        class="bg-primary px-6 py-2 rounded-lg shadow-md hover:bg-primary-dark hover:text-white"
+        class:bg-primary-dark={selectedTab === "edit"}
         class:text-white={selectedTab === "edit"}
         on:click={() => (selectedTab = "edit")}
       >
@@ -92,7 +92,7 @@
 
     <!-- Dynamic Content Based on Selected Tab -->
     <article
-      class="mt-4 bg-secondary-dark text-white text-center mx-4 rounded-lg px-6 py-6"
+      class="mt-4 bg-primary-dark text-white text-center mx-4 rounded-lg px-6 py-6"
     >
       {#if selectedTab == "stats"}
         <div class="flex justify-around items-center">

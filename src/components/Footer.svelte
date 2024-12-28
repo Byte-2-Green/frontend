@@ -56,7 +56,7 @@
 
   <!-- Center home button -->
   <button
-    class="absolute -top-8 mx-auto w-16 h-16 rounded-full bg-secondary-light flex items-center justify-center"
+    class="absolute -top-8 mx-auto w-16 h-16 rounded-full bg-primary-light flex items-center justify-center"
 
   >
     <a href="/">
