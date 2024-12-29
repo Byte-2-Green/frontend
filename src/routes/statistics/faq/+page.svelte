@@ -26,7 +26,7 @@
     ];
 </script>
 
-<section class="min-h-screen bg-primary-light flex flex-col">
+<section class="min-h-screen bg-moody-dark flex flex-col">
     <!-- Header -->
     <Header />
 
@@ -47,14 +47,14 @@
         </div>
 
         <!-- Description -->
-        <p class="text-lg max-w-lg mt-8 mb-8">
+        <p class="text-lg max-w-lg mt-8 mb-8 text-white">
             Here you can find some important information about some bad digital
             habits you might have and might not be aware they are bad at all.
             There are also some suggestions as to what you can do.
         </p>
 
         <!-- FAQ Section -->
-        <dl class="space-y-2">
+        <dl class="space-y-2 text-white">
             {#each faqs as faq}
                 <details class="group">
                     <summary

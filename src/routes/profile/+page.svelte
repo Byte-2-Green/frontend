@@ -5,7 +5,7 @@
   let selectedTab = "stats";
 </script>
 
-<main class="bg-primary-light min-h-screen flex flex-col">
+<main class="bg-moody-dark min-h-screen flex flex-col">
   <!-- Top Gradient Lines -->
   <section class="relative z-0">
     <div

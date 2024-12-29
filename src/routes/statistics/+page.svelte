@@ -4,7 +4,7 @@
     import ProgressBar from "../../components/ProgressBar.svelte";
 </script>
 
-<section class="min-h-screen bg-primary-light flex flex-col">
+<section class="min-h-screen bg-moody-dark flex flex-col">
     <!-- Header -->
     <Header />
 
@@ -32,14 +32,14 @@
         <div class="px-6">
             <div class="space-y-6">
                 <div>
-                    <h3 class="font-semibold text-lg">
+                    <h3 class="font-semibold text-lg text-white">
                         CO2 Spent per Challenge
                     </h3>
                     <div class="h-48 bg-gray-200 mt-4 rounded-md"></div>
                 </div>
 
                 <div>
-                    <h3 class="font-semibold text-lg">
+                    <h3 class="font-semibold text-lg text-white">
                         Overall CO2 Spent per Month
                     </h3>
                     <div class="h-48 bg-gray-200 mt-4 rounded-md"></div>
