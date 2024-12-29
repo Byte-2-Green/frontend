@@ -1,18 +1,15 @@
 <script>
+  // @ts-nocheck
   // @ts-ignore
+
   export let positionedImages = [];
-  // @ts-ignore
   export let isEditingGallery;
 
-  // @ts-ignore
   let selectedImage = null;
 
   // Handles image selection
-  // @ts-ignore
   function handleImageClick(image) {
-    // @ts-ignore
     if (isEditingGallery) {
-      // @ts-ignore
       if (!selectedImage) {
         selectedImage = image;
         selectedImage.classList.add("opacity-50");
@@ -38,15 +35,12 @@
   }
 
   // Handles placeholder clicks to move or swap images
-  // @ts-ignore
   function handlePlaceholderClick(placeholderId) {
-    // @ts-ignore
     if (!isEditingGallery) {
       console.warn("Gallery is not in editing mode.");
       return;
     }
 
-    // @ts-ignore
     if (!selectedImage) {
       console.warn("No image selected to move!");
       return;
@@ -75,7 +69,6 @@
   }
 
   $: {
-    // @ts-ignore
     positionedImages.forEach(({ src, text }, index) => {
       const placeholder = document.getElementById(`placeholder${index + 1}`);
       if (placeholder && !placeholder.querySelector("img")) {
@@ -95,6 +88,18 @@
         };
         placeholder.appendChild(img);
       }
+
+      const lamps = document.querySelectorAll("#lamp");
+      const placeholders = document.querySelectorAll("[id^='placeholder']");
+      placeholders.forEach((placeholder, index) => {
+        const lamp = lamps[index];
+
+        if (placeholder.querySelector("img")) {
+          lamp?.classList.remove("filter", "grayscale", "opacity-50");
+        } else {
+          lamp?.classList.add("filter", "grayscale", "opacity-50");
+        }
+      });
     });
   }
 </script>
@@ -109,9 +114,6 @@
         <section
           class="relative flex justify-center items-start w-[80vw] h-[60vh] px-2"
         >
-          <!-- <div
-            class="absolute bottom-0 left-0 right-0 h-[27%] bg-primary z-0"
-          ></div> -->
           <div class="w-full h-full p-4 rounded-lg relative">
             <div class="flex flex-col w-full h-full">
               <!-- Lamp -->
@@ -119,7 +121,8 @@
                 <img
                   src="/images/lamp.png"
                   alt="lamp"
-                  class="object-contain w-[90%] h-auto"
+                  id="lamp"
+                  class="object-contain w-[90%] h-auto filter grayscale opacity-50"
                 />
               </div>
               <!-- Placeholder -->
@@ -136,28 +139,10 @@
                 aria-label={`Placeholder ${column}`}
               >
                 <div
-                  class="w-[75vw] h-[100%] bg-gradient-to-br from-primary-light to-primary relative border-8 border-orange-200 rounded shadow-lg"
+                  class="w-[75vw] h-[100%] bg-gradient-to-br from-moody-light to-moody-darkrelative border-8 border-orange-200 rounded shadow-lg"
                   id={`placeholder${column}`}
                 ></div>
               </div>
-
-              <!-- Rope -->
-              <!-- <div class="h-[12%] flex justify-center items-center z-0">
-                <img
-                  src="/images/rope.png"
-                  alt="rope"
-                  class="object-contain w-[75vw] h-auto"
-                />
-              </div> -->
-
-              <!-- Bench -->
-              <!-- <div class="h-[18%] flex justify-center items-center">
-                <img
-                  src="/images/bench.png"
-                  alt="bench"
-                  class="object-contain w-[90%] h-auto"
-                />
-              </div> -->
             </div>
           </div>
         </section>
