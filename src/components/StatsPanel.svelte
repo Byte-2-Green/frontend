@@ -3,7 +3,7 @@
   export let savedCO2 = 498;
 </script>
 
-<section class="flex justify-center items-center bg-moody-dark text-white mt-6">
+<section class="flex justify-center items-center text-white mt-6">
   <!-- Unlocked Frames -->
   <div class="flex flex-col items-center mx-4">
     <p class="text-sm text-gray-300">Unlocked</p>

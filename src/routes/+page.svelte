@@ -127,8 +127,15 @@
   }
 </script>
 
-<section class="flex flex-col h-screen bg-moody-dark">
+<section class="flex flex-col h-screen bg-gradient-to-b from-moody-brown to-moody">
   <Header />
+  <div class="absolute top-0 left-0 h-[40%]">
+    <img 
+      src="images/ornaments.jpg" 
+      alt="Ornaments" 
+      class="object-cover mix-blend-multiply opacity-70" 
+    />
+  </div>
 
   <!-- Active Notification Push -->
   {#if activeNotification}
@@ -158,13 +165,13 @@
     <section class="flex justify-center items-center">
       <button
         on:click={addImageToGallery}
-        class="m-4 px-6 py-3 bg-primary-dark text-white font-semibold rounded transition-all"
+        class="m-4 px-6 py-3 bg-moody-dark text-white font-semibold rounded transition-all"
       >
         Add Image
       </button>
       <button
         on:click={toggleEditMode}
-        class="m-4 px-6 py-3 bg-primary-dark text-white font-semibold rounded transition-all"
+        class="m-4 px-6 py-3 bg-moody-dark text-white font-semibold rounded transition-all"
       >
         {isEditingGallery ? "Save Changes" : "Edit Gallery"}
       </button>

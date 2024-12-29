@@ -7,6 +7,10 @@
 
   let selectedImage = null;
 
+  let numFrames = 5;
+  let frameWidth = 250;
+  let frameHeight = 400;
+
   // Handles image selection
   function handleImageClick(image) {
     if (isEditingGallery) {
@@ -104,6 +108,25 @@
   }
 </script>
 
+<section class="relative overflow-x-auto">
+  <!-- Container for the images -->
+  <div class="flex items-center space-x-6 w-64 h-full">
+    {#each Array(numFrames) as _, index}
+      <!-- Create a unique layout based on the index -->
+      <img
+        src="images/frame.png"
+        alt={`Frame ${index + 1}`}
+        class={`transition-all duration-500 ease-in-out`}
+        style="
+          width: ${frameWidth}px;
+          height: ${frameHeight}px;
+          object-fit: cover;"
+      />
+    {/each}
+  </div>
+</section>
+
+<!--
 <section class="relative overflow-x-auto w-full">
   <div
     class="relative flex justify-start items-start w-full"
@@ -116,7 +139,7 @@
         >
           <div class="w-full h-full p-4 rounded-lg relative">
             <div class="flex flex-col w-full h-full">
-              <!-- Lamp -->
+              
               <div class="h-[10%] flex justify-center items-center z-10">
                 <img
                   src="/images/lamp.png"
@@ -125,7 +148,7 @@
                   class="object-contain w-[90%] h-auto filter grayscale opacity-50"
                 />
               </div>
-              <!-- Placeholder -->
+              
               <div
                 class="h-[50%] flex justify-center items-center"
                 role="button"
@@ -150,3 +173,4 @@
     </div>
   </div>
 </section>
+-->

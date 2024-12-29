@@ -16,7 +16,9 @@ export default {
         },
         moody: {
           light: '#444444',
-          dark: '#222222'
+          dark: '#222222',
+          DEFAULT: '#141413',
+          brown: '#766d63'
         },
       },
       fontFamily: {
