@@ -2,6 +2,7 @@
     import Header from "../../components/Header.svelte";
     import Footer from "../../components/Footer.svelte";
     import ProgressBar from "../../components/ProgressBar.svelte";
+    import "../../app.css";
 </script>
 
 <section class="min-h-screen bg-moody-dark flex flex-col">

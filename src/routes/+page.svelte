@@ -127,15 +127,26 @@
   }
 </script>
 
-<section class="flex flex-col h-screen bg-gradient-to-b from-moody-brown to-moody">
-  <Header />
-  <div class="absolute top-0 left-0 h-[40%]">
-    <img 
-      src="images/ornaments.jpg" 
-      alt="Ornaments" 
-      class="object-cover mix-blend-multiply opacity-70" 
-    />
-  </div>
+<section
+  class="flex flex-col h-screen bg-gradient-to-b from-moody-brown via-moody to-black"
+>
+  <!-- Gallery Section with Header Over the Image -->
+  <a href="/gallery">
+    <div
+      class="relative h-[50vh] bg-cover bg-center"
+      style="background-image: url('images/gallery01.jpg');"
+    >
+      <!-- Header placed over the image -->
+      <div class="absolute top-0 left-0 right-0">
+        <Header />
+      </div>
+
+      <!-- Optional Gradient Overlay -->
+      <div
+        class="absolute inset-0 bg-gradient-to-b from-transparent to-moody opacity-90"
+      ></div>
+    </div>
+  </a>
 
   <!-- Active Notification Push -->
   {#if activeNotification}
@@ -156,44 +167,19 @@
   {/if}
 
   <main class="flex-1 overflow-y-auto">
-    <Gallery
-      {positionedImages}
-      {isEditingGallery}
-      on:updateGallery={updateGallery}
-    />
+    <StatsPanel />
 
-    <section class="flex justify-center items-center">
-      <button
-        on:click={addImageToGallery}
-        class="m-4 px-6 py-3 bg-moody-dark text-white font-semibold rounded transition-all"
-      >
-        Add Image
-      </button>
-      <button
-        on:click={toggleEditMode}
-        class="m-4 px-6 py-3 bg-moody-dark text-white font-semibold rounded transition-all"
-      >
-        {isEditingGallery ? "Save Changes" : "Edit Gallery"}
-      </button>
-    </section>
-
-    <!--Challenges streak-->
-    <section class="text-center mt-6">
-      <div
-        class="flex flex-row items-center justify-center bg-primary-dark text-white p-4"
-      >
-        <iframe
-          src="https://giphy.com/embed/47GPQ7ZzivsemHKPvB"
-          width="60"
-          height="60"
-          class="giphy-embed"
-          title="fire burning gif emoji"
-        ></iframe>
-        <h2 class="ml-5 text-xl font-bold uppercase">12 Challenges</h2>
+    <section class="relative text-white p-6">
+      <div class="flex flex-col items-center text-center">
+        <h2 class="text-xl font-semibold text-teal-100">
+          Small Actions, Big Results
+        </h2>
+        <p class="text-sm text-teal-200 mt-6">
+          Each small change we make can have a profound impact on the planet’s
+          future. You have the power to shape the outcome.
+        </p>
       </div>
     </section>
-
-    <StatsPanel />
 
     <!--Food for thought modal-->
     {#if showModal}

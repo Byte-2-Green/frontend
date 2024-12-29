@@ -3,6 +3,7 @@
 
     import Header from "../../components/Header.svelte";
     import Footer from "../../components/Footer.svelte";
+    import "../../app.css";
     import { onMount } from "svelte";
 
     let showChallengeModal = false;

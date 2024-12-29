@@ -1,6 +1,7 @@
 <script>
   import Header from "../../components/Header.svelte";
   import Footer from "../../components/Footer.svelte";
+  import "../../app.css";
 
   // Shop items array
   const items = [
@@ -62,7 +63,7 @@
   }
 </script>
 
-<section class="min-h-screen bg-primary-light flex flex-col">
+<section class="min-h-screen bg-moody flex flex-col">
   <!-- Header -->
   <Header />
 
