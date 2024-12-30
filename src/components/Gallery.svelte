@@ -110,14 +110,15 @@
   }
 </script>
 
-<section class="relative overflow-x-auto mt-6">
+<!--One line-->
+<!-- <section class="relative overflow-x-auto mt-6 ">
   <div class="flex items-center space-x-4 h-max w-[400vw]">
     {#each Array(numFrames) as _, index}
       <article class="relative">
         <img
           src="images/frame.png"
           alt={`Frame ${index + 1}`}
-          class="transition-all duration-500 ease-in-out z-10"
+          class="transition-all duration-700 ease-in-out z-10"
           style="
             width: ${frameWidth * 1.5}px; /* Increase the frame width */
             height: ${frameHeight * 1.5}px; /* Increase the frame height */
@@ -144,10 +145,46 @@
       </article>
     {/each}
   </div>
+</section> -->
+
+<!--Tilted columns-->
+<section class="mt-6">
+  <div class="grid grid-cols-2 gap-4 p-3">
+    {#each Array(numFrames) as _, index}
+      <article class="relative">
+        <img
+          src="images/frame.png"
+          alt={`Frame ${index + 1}`}
+          class="transition-all duration-700 ease-in-out z-10 transform {index % 2 === 0 ? '' : '-'}rotate-2"
+          style="
+            width: ${frameWidth * 1.5}px;
+            height: ${frameHeight * 1.5}px;
+            object-fit: cover;
+          "
+        />
+
+        <div
+          class="absolute inset-0 flex justify-center items-center z-3"
+          role="button"
+          tabindex="0"
+          on:click={() => handlePlaceholderClick(index)}
+          on:keydown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              handlePlaceholderClick(index);
+            }
+          }}
+          aria-label={`Placeholder ${index}`}
+        >
+          <div
+            class="w-[30vw] h-[73%] border-2 border-black rounded-xl transform {index % 2 === 0 ? '' : '-'}rotate-2"
+            id={`placeholder${index}`}
+          ></div>
+        </div>
+      </article>
+    {/each}
+  </div>
 </section>
 
-
-<StatsPanel />
 <!--
 <section class="relative overflow-x-auto w-full">
   <div

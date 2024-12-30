@@ -174,6 +174,7 @@
     </article>
   </section>
 
+  <!--Example images-->
   <section>
     <div class="space-y-3 m-3">
         <!-- Row 1 -->
@@ -188,7 +189,7 @@
             <div class="-mt-6 bg-moody-light rounded-xl w-1/2 h-48 transform -rotate-2"></div>
         </div>
     </div>
-</section>
+  </section>
 
 
   <main class="flex-1 overflow-y-auto">

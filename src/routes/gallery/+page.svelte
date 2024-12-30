@@ -7,6 +7,7 @@
     import Footer from "../../components/Footer.svelte";
     import "../../app.css";
     import { onMount } from "svelte";
+    import StatsPanel from "../../components/StatsPanel.svelte";
   
     let galleryImages = [
       { src: "/images/template1.png", text: "Artwork 1" },
@@ -46,7 +47,7 @@
     }
   </script>
   
-  <section class="flex flex-col h-screen bg-white">
+  <section class="flex flex-col h-screen bg-white ">
     <Header />
     <!-- <div class="absolute top-0 left-0 h-[40%]">
       <img 
@@ -57,12 +58,8 @@
     </div> -->
   
     <main class="flex-1 overflow-y-auto">
-      <Gallery
-        {positionedImages}
-        {isEditingGallery}
-        on:updateGallery={updateGallery}
-      />
-  
+      <StatsPanel/>
+
       <section class="flex justify-center items-center">
         <button
           on:click={addImageToGallery}
@@ -77,6 +74,12 @@
           {isEditingGallery ? "Save Changes" : "Edit Gallery"}
         </button>
       </section>
+
+      <Gallery
+        {positionedImages}
+        {isEditingGallery}
+        on:updateGallery={updateGallery}
+      />
     </main>
     <Footer />
   </section>
