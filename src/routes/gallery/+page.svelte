@@ -48,13 +48,13 @@
   
   <section class="flex flex-col h-screen bg-white">
     <Header />
-    <div class="absolute top-0 left-0 h-[40%]">
+    <!-- <div class="absolute top-0 left-0 h-[40%]">
       <img 
         src="images/ornaments.jpg" 
         alt="Ornaments" 
         class="object-cover mix-blend-multiply opacity-70" 
       />
-    </div>
+    </div> -->
   
     <main class="flex-1 overflow-y-auto">
       <Gallery

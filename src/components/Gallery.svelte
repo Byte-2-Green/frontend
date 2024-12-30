@@ -10,7 +10,7 @@
   let selectedImage = null;
 
   let numFrames = 5;
-  let frameWidth = 250;
+  let frameWidth = 350;
   let frameHeight = 400;
 
   // Handles image selection
@@ -110,35 +110,34 @@
   }
 </script>
 
-<section class="relative overflow-x-auto">
-  <!-- Container for the images -->
-  <div class="flex items-center space-x-6 w-64 h-full">
+<section class="relative overflow-x-auto mt-6">
+  <div class="flex items-center space-x-4 h-max w-[400vw]">
     {#each Array(numFrames) as _, index}
-      <!-- Create a unique layout based on the index -->
-      <article class="">
+      <article class="relative">
         <img
           src="images/frame.png"
           alt={`Frame ${index + 1}`}
-          class={`transition-all duration-500 ease-in-out`}
+          class="transition-all duration-500 ease-in-out z-10"
           style="
-          width: ${frameWidth}px;
-          height: ${frameHeight}px;
-          object-fit: cover;"
+            width: ${frameWidth * 1.5}px; /* Increase the frame width */
+            height: ${frameHeight * 1.5}px; /* Increase the frame height */
+            object-fit: cover;"
         />
+
         <div
-          class="w-[45vw] h-[27vh] flex justify-center items-center"
+          class="absolute inset-0 flex justify-center items-center z-3"
           role="button"
           tabindex="0"
           on:click={() => handlePlaceholderClick(index)}
           on:keydown={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
+            if (e.key === 'Enter' || e.key === ' ') {
               handlePlaceholderClick(index);
             }
           }}
           aria-label={`Placeholder ${index}`}
         >
           <div
-            class="w-[75vw] h-[100%] border-4 border-orange-200"
+            class="w-[50vw] h-[73%]"
             id={`placeholder${index}`}
           ></div>
         </div>
@@ -146,6 +145,7 @@
     {/each}
   </div>
 </section>
+
 
 <StatsPanel />
 <!--

@@ -154,6 +154,7 @@
         <span class="text-primary">Museum</span> Museum
       </h1>
       <p class="italic text-3xl text-moody-light">CO2 Expert</p>
+      <a href="/gallery" class="italic text-sm text-moody-light">See you museum</a>
     </article>
 
     <!-- Stats Section -->
