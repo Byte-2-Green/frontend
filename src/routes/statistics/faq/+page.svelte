@@ -1,8 +1,6 @@
 <script>
     import Header from "../../../components/Header.svelte";
     import Footer from "../../../components/Footer.svelte";
-    import "../../app.css";
-
     const faqs = [
         {
             question: "How do digital activities contribute to CO2 emissions?",
@@ -27,11 +25,11 @@
     ];
 </script>
 
-<section class="min-h-screen bg-moody-dark flex flex-col">
+<section class="min-h-screen bg-white flex flex-col">
     <!-- Header -->
     <Header />
 
-    <div class="flex flex-col px-4">
+    <div class="flex flex-col mt-5 px-4">
         <div class="flex space-x-4">
             <a
                 class="bg-primary px-4 py-2 rounded-md {window.location.pathname === '/statistics' ? 'font-bold' : ''}"
@@ -48,14 +46,14 @@
         </div>
 
         <!-- Description -->
-        <p class="text-lg max-w-lg mt-8 mb-8 text-white">
+        <p class="text-lg max-w-lg mt-8 mb-8">
             Here you can find some important information about some bad digital
             habits you might have and might not be aware they are bad at all.
             There are also some suggestions as to what you can do.
         </p>
 
         <!-- FAQ Section -->
-        <dl class="space-y-2 text-white">
+        <dl class="space-y-2">
             {#each faqs as faq}
                 <details class="group">
                     <summary

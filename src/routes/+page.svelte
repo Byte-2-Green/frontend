@@ -3,9 +3,9 @@
   // @ts-ignore
 
   import Header from "../components/Header.svelte";
-  import StatsPanel from "../components/StatsPanel.svelte";
   import Gallery from "../components/Gallery.svelte";
   import Footer from "../components/Footer.svelte";
+  import StatsPanel from "../components/StatsPanel.svelte";
   import { onMount } from "svelte";
   import "../app.css";
 
@@ -127,27 +127,7 @@
   }
 </script>
 
-<section
-  class="flex flex-col h-screen bg-gradient-to-b from-moody-brown via-moody to-black"
->
-  <!-- Gallery Section with Header Over the Image -->
-  <a href="/gallery">
-    <div
-      class="relative h-[50vh] bg-cover bg-center"
-      style="background-image: url('images/gallery01.jpg');"
-    >
-      <!-- Header placed over the image -->
-      <div class="absolute top-0 left-0 right-0">
-        <Header />
-      </div>
-
-      <!-- Optional Gradient Overlay -->
-      <div
-        class="absolute inset-0 bg-gradient-to-b from-transparent to-moody opacity-90"
-      ></div>
-    </div>
-  </a>
-
+<section class="flex flex-col h-screen bg-white">
   <!-- Active Notification Push -->
   {#if activeNotification}
     <section class="p-6 bg-blue-100 shadow-md rounded-lg mt-6">
@@ -165,22 +145,52 @@
       </button>
     </section>
   {/if}
+  <Header />
+
+  <section class="flex justify-between items-start mt-4 p-5">
+    <!-- Title Section -->
+    <article>
+      <h1 class="text-5xl font-bold">
+        <span class="text-primary">Museum</span> Museum
+      </h1>
+      <p class="italic text-3xl text-moody-light">CO2 Expert</p>
+    </article>
+
+    <!-- Stats Section -->
+    <article class="flex flex-col text-right space-y-4">
+      <div>
+        <p class="text-primary text-xl font-bold">180</p>
+        <p class="text-moody-light text-sm">artwork</p>
+      </div>
+      <div>
+        <p class="text-primary text-xl font-bold">78</p>
+        <p class="text-moody-light text-sm">likes</p>
+      </div>
+      <div>
+        <p class="text-primary text-xl font-bold">05</p>
+        <p class="text-moody-light text-sm">collections</p>
+      </div>
+    </article>
+  </section>
+
+  <section>
+    <div class="space-y-3 m-3">
+        <!-- Row 1 -->
+        <div class="flex justify-center gap-2">
+            <div class="-mt-6 bg-moody-light rounded-xl w-1/2 h-48 transform -rotate-6"></div>
+            <div class="bg-black rounded-xl w-1/2 h-36 transform rotate-6"></div>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="flex justify-center gap-2">
+            <div class="mt-4 bg-black rounded-xl w-1/2 h-36 transform rotate-6"></div>
+            <div class="-mt-6 bg-moody-light rounded-xl w-1/2 h-48 transform -rotate-2"></div>
+        </div>
+    </div>
+</section>
+
 
   <main class="flex-1 overflow-y-auto">
-    <StatsPanel />
-
-    <section class="relative text-white p-6">
-      <div class="flex flex-col items-center text-center">
-        <h2 class="text-xl font-semibold text-teal-100">
-          Small Actions, Big Results
-        </h2>
-        <p class="text-sm text-teal-200 mt-6">
-          Each small change we make can have a profound impact on the planet’s
-          future. You have the power to shape the outcome.
-        </p>
-      </div>
-    </section>
-
     <!--Food for thought modal-->
     {#if showModal}
       <section class="fixed inset-0 bg-black bg-opacity-50 z-50">

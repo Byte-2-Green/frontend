@@ -190,7 +190,7 @@
     });
 </script>
 
-<section class="flex flex-col h-screen bg-moody-dark text-white">
+<section class="flex flex-col h-screen bg-white">
     <Header />
     <main class="flex-1 overflow-y-auto">
         <!-- Modal -->

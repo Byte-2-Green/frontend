@@ -5,11 +5,11 @@
     import "../../app.css";
 </script>
 
-<section class="min-h-screen bg-moody-dark flex flex-col">
+<section class="min-h-screen bg-white flex flex-col">
     <!-- Header -->
     <Header />
 
-    <section class="flex flex-col mb-6">
+    <section class="flex flex-col mt-5 mb-6">
         <div class="flex space-x-4 px-4">
             <a
                 class="bg-primary px-4 py-2 rounded-md {window.location.pathname === '/statistics' ? 'font-bold' : ''}"
@@ -33,14 +33,14 @@
         <div class="px-6">
             <div class="space-y-6">
                 <div>
-                    <h3 class="font-semibold text-lg text-white">
+                    <h3 class="font-semibold text-lg">
                         CO2 Spent per Challenge
                     </h3>
                     <div class="h-48 bg-gray-200 mt-4 rounded-md"></div>
                 </div>
 
                 <div>
-                    <h3 class="font-semibold text-lg text-white">
+                    <h3 class="font-semibold text-lg">
                         Overall CO2 Spent per Month
                     </h3>
                     <div class="h-48 bg-gray-200 mt-4 rounded-md"></div>

@@ -2,6 +2,8 @@
   // @ts-nocheck
   // @ts-ignore
 
+  import StatsPanel from "../components/StatsPanel.svelte";
+
   export let positionedImages = [];
   export let isEditingGallery;
 
@@ -113,19 +115,39 @@
   <div class="flex items-center space-x-6 w-64 h-full">
     {#each Array(numFrames) as _, index}
       <!-- Create a unique layout based on the index -->
-      <img
-        src="images/frame.png"
-        alt={`Frame ${index + 1}`}
-        class={`transition-all duration-500 ease-in-out`}
-        style="
+      <article class="">
+        <img
+          src="images/frame.png"
+          alt={`Frame ${index + 1}`}
+          class={`transition-all duration-500 ease-in-out`}
+          style="
           width: ${frameWidth}px;
           height: ${frameHeight}px;
           object-fit: cover;"
-      />
+        />
+        <div
+          class="w-[45vw] h-[27vh] flex justify-center items-center"
+          role="button"
+          tabindex="0"
+          on:click={() => handlePlaceholderClick(index)}
+          on:keydown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              handlePlaceholderClick(index);
+            }
+          }}
+          aria-label={`Placeholder ${index}`}
+        >
+          <div
+            class="w-[75vw] h-[100%] border-4 border-orange-200"
+            id={`placeholder${index}`}
+          ></div>
+        </div>
+      </article>
     {/each}
   </div>
 </section>
 
+<StatsPanel />
 <!--
 <section class="relative overflow-x-auto w-full">
   <div

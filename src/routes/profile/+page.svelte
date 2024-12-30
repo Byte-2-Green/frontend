@@ -2,47 +2,13 @@
   import Footer from "../../components/Footer.svelte";
   import ProgressBar from "../../components/ProgressBar.svelte";
   import "../../app.css";
+  import Header from "../../components/Header.svelte";
 
   let selectedTab = "stats";
 </script>
 
-<main class="bg-moody-dark min-h-screen flex flex-col">
-  <!-- Top Gradient Lines -->
-  <section class="relative z-0">
-    <div
-      class="absolute t-0 w-full h-5 bg-primary-dark opacity-80 rounded-b-full"
-    ></div>
-    <div
-      class="absolute t-0 w-full h-10 bg-primary-dark opacity-60 rounded-b-3xl"
-    ></div>
-    <div
-      class="absolute t-0 w-full h-16 bg-primary-dark opacity-40 rounded-b-3xl"
-    ></div>
-  </section>
-
-  <!-- Profile Header -->
-  <section class="flex-grow z-10">
-    <!-- Profile Picture -->
-    <article
-      class="mt-6 rounded-full bg-primary w-24 h-24 mx-auto flex justify-center items-center shadow-lg border-2 border-primary-dark"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="h-16 w-16 text-white"
-        viewBox="0 0 24 24"
-        fill="currentColor"
-      >
-        <path
-          d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5zm0 2c-2.673 0-8 1.354-8 4v3h16v-3c0-2.646-5.327-4-8-4z"
-        />
-      </svg>
-    </article>
-
-    <!-- Username -->
-    <p class="text-2xl font-semibold text-center mt-2 mb-8 text-primary-dark">
-      me
-    </p>
-
+<main class="bg-white min-h-screen flex flex-col">
+  <Header/>
     <!-- Progress Section -->
     <ProgressBar />
 
@@ -127,7 +93,6 @@
         <div>Edit Profile Content</div>
       {/if}
     </article>
-  </section>
   <!-- Footer -->
   <Footer />
 </main>

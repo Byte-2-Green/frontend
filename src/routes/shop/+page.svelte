@@ -63,7 +63,7 @@
   }
 </script>
 
-<section class="min-h-screen bg-moody flex flex-col">
+<section class="min-h-screen bg-white flex flex-col">
   <!-- Header -->
   <Header />
 

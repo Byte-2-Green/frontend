@@ -46,7 +46,7 @@
     }
   </script>
   
-  <section class="flex flex-col h-screen bg-gradient-to-b from-moody-brown via-moody to-black">
+  <section class="flex flex-col h-screen bg-white">
     <Header />
     <div class="absolute top-0 left-0 h-[40%]">
       <img 

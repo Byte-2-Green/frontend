@@ -15,10 +15,10 @@ export default {
           dark: '#8B3619',
         },
         moody: {
-          light: '#444444',
-          dark: '#222222',
-          DEFAULT: '#141413',
-          brown: '#766d63'
+          light: '#3e515f',
+          dark: '#070a0f',
+          // DEFAULT: '#141413',
+          // brown: '#766d63'
         },
       },
       fontFamily: {
