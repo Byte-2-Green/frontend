@@ -109,7 +109,6 @@
     });
   }
 </script>
-
 <!--One line-->
 <!-- <section class="relative overflow-x-auto mt-6 ">
   <div class="flex items-center space-x-4 h-max w-[400vw]">

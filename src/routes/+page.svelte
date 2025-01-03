@@ -9,7 +9,7 @@
   import { onMount } from "svelte";
   import "../app.css";
 
-  let showModal = false;
+  let showModal = true;
 
   let galleryImages = [
     { src: "/images/template1.png", text: "Artwork 1" },
@@ -129,22 +129,29 @@
 
 <section class="flex flex-col h-screen bg-white">
   <!-- Active Notification Push -->
-  {#if activeNotification}
-    <section class="p-6 bg-blue-100 shadow-md rounded-lg mt-6">
-      <button on:click={goToChallenges} class="notification-button">
-        <h2 class="text-xl font-bold">Notifications</h2>
-        <div class="p-4 bg-blue-200 rounded-lg">
-          <h3 class="font-semibold text-lg">{activeNotification.Title}</h3>
-          <p>{activeNotification.Description}</p>
-          {#if activeNotification.timestamp}
-            <span class="text-sm text-gray-500"
-              >{activeNotification.timestamp}</span
-            >
-          {/if}
-        </div>
+<!-- Notification Popup -->
+
+<!--TODO: make the notification spawn every 24 hours, or less?-->
+{#if activeNotification}
+  <section class="fixed top-3 left-0 w-full p-4 z-50">
+    <div class="max-w-lg mx-auto p-4 bg-primary-dark border-secondary border-2 text-white rounded-lg shadow-lg flex items-start">
+      <div class="flex-grow">
+        <h3 class="font-semibold text-lg">{activeNotification.Title}</h3>
+        <p class="mt-1 text-sm">{activeNotification.Description}</p>
+        {#if activeNotification.timestamp}
+          <span class="text-xs text-gray-300">{activeNotification.timestamp}</span>
+        {/if}
+      </div>
+      <button
+        on:click={goToChallenges}
+        class="ml-4 text-sm font-bold uppercase bg-white text-moody-dark px-3 py-1 rounded hover:bg-moody-default hover:text-white"
+      >
+        View
       </button>
-    </section>
-  {/if}
+    </div>
+  </section>
+{/if}
+
   <Header />
 
   <section class="flex justify-between items-start mt-4 p-5">
@@ -197,11 +204,11 @@
     {#if showModal}
       <section class="fixed inset-0 bg-black bg-opacity-50 z-50">
         <article
-          class="bg-primary-light text-primary-dark rounded-lg shadow-lg p-6 w-full h-full flex flex-col justify-center items-center relative"
+          class="bg-moody-dark text-primary rounded-lg shadow-lg p-6 w-full h-full flex flex-col justify-center items-center relative"
         >
           <button
             on:click={closeModal}
-            class="absolute top-4 right-4 text-primary-dark"
+            class="absolute top-4 right-4 text-primary"
           >
             ✖
           </button>

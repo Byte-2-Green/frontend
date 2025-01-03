@@ -197,7 +197,7 @@
         {#if showModal}
             <section class="fixed inset-0 bg-black bg-opacity-50 z-50">
                 <article
-                    class="bg-primary-light text-primary-dark rounded-lg shadow-lg p-6 w-full h-full flex flex-col justify-center items-center relative"
+                    class="bg-moody-dark text-primary rounded-lg shadow-lg p-6 w-full h-full flex flex-col justify-center items-center relative"
                 >
                     <button
                         on:click={closeModal}
