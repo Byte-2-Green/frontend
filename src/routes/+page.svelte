@@ -129,28 +129,32 @@
 
 <section class="flex flex-col h-screen bg-white">
   <!-- Active Notification Push -->
-<!-- Notification Popup -->
+  <!-- Notification Popup -->
 
-<!--TODO: make the notification spawn every 24 hours, or less?-->
-{#if activeNotification}
-  <section class="fixed top-3 left-0 w-full p-4 z-50">
-    <div class="max-w-lg mx-auto p-4 bg-primary-dark border-secondary border-2 text-white rounded-lg shadow-lg flex items-start">
-      <div class="flex-grow">
-        <h3 class="font-semibold text-lg">{activeNotification.Title}</h3>
-        <p class="mt-1 text-sm">{activeNotification.Description}</p>
-        {#if activeNotification.timestamp}
-          <span class="text-xs text-gray-300">{activeNotification.timestamp}</span>
-        {/if}
-      </div>
-      <button
-        on:click={goToChallenges}
-        class="ml-4 text-sm font-bold uppercase bg-white text-moody-dark px-3 py-1 rounded hover:bg-moody-default hover:text-white"
+  <!--TODO: make the notification spawn every 24 hours, or less?-->
+  {#if activeNotification}
+    <section class="fixed top-3 left-0 w-full p-4 z-50">
+      <div
+        class="max-w-lg mx-auto p-4 bg-primary-dark border-secondary border-2 text-white rounded-lg shadow-lg flex items-start"
       >
-        View
-      </button>
-    </div>
-  </section>
-{/if}
+        <div class="flex-grow">
+          <h3 class="font-semibold text-lg">{activeNotification.Title}</h3>
+          <p class="mt-1 text-sm">{activeNotification.Description}</p>
+          {#if activeNotification.timestamp}
+            <span class="text-xs text-gray-300"
+              >{activeNotification.timestamp}</span
+            >
+          {/if}
+        </div>
+        <button
+          on:click={goToChallenges}
+          class="ml-4 text-sm font-bold uppercase bg-white text-moody-dark px-3 py-1 rounded hover:bg-moody-default hover:text-white"
+        >
+          View
+        </button>
+      </div>
+    </section>
+  {/if}
 
   <Header />
 
@@ -161,7 +165,9 @@
         <span class="text-primary">Museum</span> Museum
       </h1>
       <p class="italic text-3xl text-moody-light">CO2 Expert</p>
-      <a href="/gallery" class="italic text-sm text-moody-light">See you museum</a>
+      <a href="/gallery" class="italic text-sm text-moody-light"
+        >See you museum</a
+      >
     </article>
 
     <!-- Stats Section -->
@@ -184,20 +190,25 @@
   <!--Example images-->
   <section>
     <div class="space-y-3 m-3">
-        <!-- Row 1 -->
-        <div class="flex justify-center gap-2">
-            <div class="-mt-6 bg-moody-light rounded-xl w-1/2 h-48 transform -rotate-6"></div>
-            <div class="bg-black rounded-xl w-1/2 h-36 transform rotate-6"></div>
-        </div>
+      <!-- Row 1 -->
+      <div class="flex justify-center gap-2">
+        <div
+          class="-mt-6 bg-moody-light rounded-xl w-1/2 h-48 transform -rotate-6"
+        ></div>
+        <div class="bg-black rounded-xl w-1/2 h-36 transform rotate-6"></div>
+      </div>
 
-        <!-- Row 2 -->
-        <div class="flex justify-center gap-2">
-            <div class="mt-4 bg-black rounded-xl w-1/2 h-36 transform rotate-6"></div>
-            <div class="-mt-6 bg-moody-light rounded-xl w-1/2 h-48 transform -rotate-2"></div>
-        </div>
+      <!-- Row 2 -->
+      <div class="flex justify-center gap-2">
+        <div
+          class="mt-4 bg-black rounded-xl w-1/2 h-36 transform rotate-6"
+        ></div>
+        <div
+          class="-mt-6 bg-moody-light rounded-xl w-1/2 h-48 transform -rotate-2"
+        ></div>
+      </div>
     </div>
   </section>
-
 
   <main class="flex-1 overflow-y-auto">
     <!--Food for thought modal-->

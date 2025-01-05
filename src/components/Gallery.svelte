@@ -108,7 +108,9 @@
       });
     });
   }
+  
 </script>
+
 <!--One line-->
 <!-- <section class="relative overflow-x-auto mt-6 ">
   <div class="flex items-center space-x-4 h-max w-[400vw]">
@@ -146,8 +148,69 @@
   </div>
 </section> -->
 
+<section class="mt-6 grid grid-cols-1 gap-8 px-6 z-5">
+  {#each Array(numFrames) as _, index}
+    <article class="relative flex flex-col bg-black text-white rounded-lg shadow-xl overflow-hidden w-full h-[40vh]">
+      
+      <!-- Placeholder Background for Empty/No Image -->
+      <div class="absolute inset-0 bg-gradient-to-b from-gray-800 to-black transition-all duration-700 ease-in-out">
+        <div class="bg-black opacity-80 absolute inset-0"></div>
+      </div>
+
+      <!-- Image or Placeholder Background -->
+      <div class="relative z-10 flex justify-center items-center h-full">
+        <!-- No Image: Just a colored background for a museum vibe -->
+        <div class="w-[110%] h-[110%] bg-gradient-to-b from-gray-900 to-gray-700 opacity-70 rounded-xl shadow-lg transform hover:scale-105 transition-all duration-500 ease-in-out"></div>
+      </div>
+
+      <!-- Subtle Hover Effects to Enhance Museum Aesthetic -->
+      <div class="absolute inset-0 z-10 flex justify-center items-center">
+        <div class="w-[80%] h-[80%] bg-gradient-to-b from-black opacity-70 rounded-lg transform rotate-[5deg] hover:bg-gray-800 transition-all duration-500 ease-in-out">
+        </div>
+      </div>
+    </article>
+  {/each}
+</section>
+
+
+
 <!--Tilted columns-->
-<section class="mt-6">
+<!-- <section class="ml-6 space-x-4 grid-cols-6 overflow-x-auto grid w-full">
+  {#each Array(numFrames) as _, index}
+  <article class="relative flex flex-col justify-between bg-white bg-cover text-gray-800 overflow-hidden cursor-pointer w-full object-cover object-center rounded-lg shadow-md h-64 my-2"
+    style="background-image:url('https://images.unsplash.com/reserve/8T8J12VQxyqCiQFGa2ct_bahamas-atlantis.jpg?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80')">
+    <div class="relative flex flex-row items-end  h-72 w-full ">
+      <div class="p-6 rounded-lg  flex flex-col w-full z-10 ">
+        <h4 class="mt-1 text-white text-xl font-semibold  leading-tight truncate">Loremipsum..
+        </h4>
+        <div class="flex justify-between items-center ">
+          <div class="flex flex-col">
+            <h2 class="text-sm flex items-center text-gray-300 font-normal">
+              Dubai
+            </h2>
+          </div>
+        </div>
+        <div class="flex pt-4  text-sm text-gray-300">
+          <div class="flex items-center mr-auto">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-500 mr-1"
+              viewBox="0 0 20 20" fill="currentColor">
+              <path
+                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+              </path>
+            </svg>
+            <p class="font-normal">4.5</p>
+          </div>
+          <div class="flex items-center font-medium text-white ">
+            10 minutes
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+  {/each}
+</section> -->
+
+<!-- <section class="mt-6">
   <div class="grid grid-cols-2 gap-4 p-3">
     {#each Array(numFrames) as _, index}
       <article class="relative">
@@ -182,7 +245,7 @@
       </article>
     {/each}
   </div>
-</section>
+</section> -->
 
 <!--
 <section class="relative overflow-x-auto w-full">

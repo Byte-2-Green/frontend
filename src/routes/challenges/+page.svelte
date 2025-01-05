@@ -205,8 +205,7 @@
                     <!-- Close Button -->
                     <button
                         on:click={closeModal}
-                        class="absolute top-4 right-4 text-white"
-                        >✖</button
+                        class="absolute top-4 right-4 text-white">✖</button
                     >
                     {#if randomChallenge}
                         <!-- Icon Section -->
@@ -276,33 +275,56 @@
 
         <!-- challenge Modal -->
         {#if showChallengeModal}
-        <section class="fixed inset-0 bg-black bg-opacity-85 z-50 flex justify-center items-center">
-            <article class="bg-moody-dark text-white rounded-xl shadow-xl p-8 w-full max-w-md flex flex-col justify-center items-center relative m-4">
-                <!-- Close Button -->
-                <button on:click={closeChallengeModal} class="absolute top-4 right-4 text-gray-400 text-2xl">&times;</button>
-                {#if randomChallenge}
-                    <!-- Title Section -->
-                    <h2 class="text-center text-3xl font-bold mb-4">{randomChallenge.Title}</h2>
-                    <p class="text-center text-lg mb-6">{randomChallenge.Description}</p>
-                    <!-- Timer Section -->
-                    <div class="w-full mb-6">
-                        <p class="text-center text-lg font-semibold mb-2">Time Left</p>
-                        <p class="text-center text-4xl font-bold mb-2">{formatTime(remainingTime)}</p>
-                        <div class="w-full h-2 bg-gray-700 rounded-full overflow-hidden">
-                            <div class="h-full bg-primary-light rounded-full transition-all" style="width: {progress}%"></div>
+            <section
+                class="fixed inset-0 bg-black bg-opacity-85 z-50 flex justify-center items-center"
+            >
+                <article
+                    class="bg-moody-dark text-white rounded-xl shadow-xl p-8 w-full max-w-md flex flex-col justify-center items-center relative m-4"
+                >
+                    <!-- Close Button -->
+                    <button
+                        on:click={closeChallengeModal}
+                        class="absolute top-4 right-4 text-gray-400 text-2xl"
+                        >&times;</button
+                    >
+                    {#if randomChallenge}
+                        <!-- Title Section -->
+                        <h2 class="text-center text-3xl font-bold mb-4">
+                            {randomChallenge.Title}
+                        </h2>
+                        <p class="text-center text-lg mb-6">
+                            {randomChallenge.Description}
+                        </p>
+                        <!-- Timer Section -->
+                        <div class="w-full mb-6">
+                            <p class="text-center text-lg font-semibold mb-2">
+                                Time Left
+                            </p>
+                            <p class="text-center text-4xl font-bold mb-2">
+                                {formatTime(remainingTime)}
+                            </p>
+                            <div
+                                class="w-full h-2 bg-gray-700 rounded-full overflow-hidden"
+                            >
+                                <div
+                                    class="h-full bg-primary-light rounded-full transition-all"
+                                    style="width: {progress}%"
+                                ></div>
+                            </div>
                         </div>
-                    </div>
-                    <!-- Completed Button -->
-                    <button on:click={completedChallenge}
-                        class="bg-primary-light text-white font-bold py-2 px-6 rounded-lg shadow-lg">
-                        Completed
-                    </button>
-                {:else}
-                    <p>Loading...</p>
-                {/if}
-            </article>
-        </section>
-    {/if}
+                        <!-- Completed Button -->
+                        <button
+                            on:click={completedChallenge}
+                            class="bg-primary-light text-white font-bold py-2 px-6 rounded-lg shadow-lg"
+                        >
+                            Completed
+                        </button>
+                    {:else}
+                        <p>Loading...</p>
+                    {/if}
+                </article>
+            </section>
+        {/if}
 
         <!-- Challenge Accepted -->
         <div class="mt-8 p-4">
