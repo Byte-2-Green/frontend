@@ -5,6 +5,8 @@
     import Footer from "../../components/Footer.svelte";
     import "../../app.css";
     import { onMount } from "svelte";
+    import { galleryImages } from '../store.js';
+    import { goto } from '$app/navigation';
 
     let showChallengeModal = false;
 
@@ -147,7 +149,6 @@
         interval = setInterval(() => {
             if (remainingTime > 0) {
                 remainingTime--;
-                console.log(remainingTime);
             } else {
                 clearInterval(interval);
                 playAlarm();
@@ -164,11 +165,17 @@
     }
 
     // Function to handle the "Completed" button
-    function completedChallenge() {
-        // Functionality to be implemented
-        console.log("Challenge completed!");
-        closeChallengeModal();
-    }
+    async function completedChallenge() {
+    console.log("Challenge completed!");
+    goto('/gallery');
+    galleryImages.update((images) => {
+      const randomImageIndex = Math.floor(Math.random() * images.length);
+      const selectedImage = images[randomImageIndex];
+      images.splice(randomImageIndex, 1);
+      return [...images, selectedImage];
+    });
+    closeChallengeModal();
+}
 
     // Function to close the second modal
     function closeChallengeModal() {

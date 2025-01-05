@@ -1,5 +1,5 @@
 <script>
-  export let unlockedFrames = 4;
+  export let unlockedFrames;
   export let savedCO2 = 498;
 </script>
 

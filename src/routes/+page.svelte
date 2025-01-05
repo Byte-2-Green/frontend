@@ -11,23 +11,11 @@
 
   let showModal = true;
 
-  let galleryImages = [
-    { src: "/images/template1.png", text: "Artwork 1" },
-    { src: "/images/template2.png", text: "Artwork 2" },
-  ];
-
-  let isEditingGallery = false;
-
   // variable to fetch the array of thoughts from the api
   /**
    * @type {{ Description: string }[]}
    */
   export const foodForThought = [];
-
-  /**
-   * @type {string | any[]}
-   */
-  let positionedImages = [];
 
   // variable to store a random thought
   /**
@@ -79,10 +67,6 @@
       console.error("Failed to fetch data", error);
     }
   });
-
-  function goToChallenges() {
-    window.location.href = "/challenges";
-  }
 
   function closeModal() {
     showModal = false;
