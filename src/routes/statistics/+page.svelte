@@ -17,12 +17,17 @@
      */
     let showAcceptedChallenge = [];
 
-    /** 
-     * @type {boolean} 
-    */
+    /**
+     * @type {{ Week_Start: string, Week_End: string, Total_CO2: number }[] }
+     */
+    let weeklyStatistics = [];
+
+    /**
+     * @type {boolean}
+     */
     let loading = true;
 
-    // fetch the challenges from the API
+    // Fetch challenges from the API
     async function fetchChallenges() {
         try {
             const res = await fetch(
@@ -35,7 +40,7 @@
         }
     }
 
-    // fetch the accepted challenges from the API
+    // Fetch accepted challenges from the API
     async function fetchAcceptedChallenges() {
         try {
             const response = await fetch(
@@ -48,13 +53,51 @@
         }
     }
 
-    onMount(async () => {
-        await fetchChallenges();
-        await fetchAcceptedChallenges();
-        loading = false;
-    });
+    // Fetch weekly statistics
+    async function fetchWeeklyStatistics(userId) {
+        try {
+            const res = await fetch(`http://localhost:3010/stats/weekly/${userId}`);
+            weeklyStatistics = await res.json();
+            console.log(weeklyStatistics);
+        } catch (error) {
+            console.error("Failed to fetch weekly statistics", error);
+        }
+    }
 
-    // combines the challenges and accepted challenges
+    // Save weekly statistics to backend
+    async function saveWeeklyStatistics(userId, totalCO2) {
+        try {
+            const res = await fetch(`http://localhost:3010/stats/weekly/${userId}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ totalCO2 })
+            });
+
+            if (!res.ok) {
+                const errorDetails = await res.text();
+                throw new Error(`Failed with status ${res.status}: ${errorDetails}`);
+            }
+
+            const data = await res.json();
+            console.log("Weekly statistics saved:", data);
+        } catch (error) {
+            console.error("Failed to save weekly statistics:", error.message);
+        }
+    }
+
+    onMount(async () => {
+    const userId = 1;
+    await fetchChallenges();
+    await fetchAcceptedChallenges();
+
+    const totalCO2Saved = getTotalCO2Saved();
+    await saveWeeklyStatistics(userId, totalCO2Saved);
+
+    await fetchWeeklyStatistics(userId);
+    loading = false;
+});
+
+    // Combines challenges and accepted challenges
     function getCombinedChallenges() {
         return showAcceptedChallenge
             .map((accepted) => {
@@ -64,6 +107,7 @@
             .filter((combinedChallenge) => combinedChallenge !== null);
     }
 
+    // Calculate total CO2 saved
     function getTotalCO2Saved() {
         return getCombinedChallenges().reduce((total, challenge) => total + challenge.C02_emission, 0);
     }
@@ -89,46 +133,82 @@
             </a>
         </div>
         
-
         <!-- User Progress and Stats -->
         <ProgressBar />
 
         <!-- CO2 Graphs Section -->
+
+        <!-- Weekly statistics (cheating way)-->
+        <div class="px-6">
+            <h3 class="font-semibold text-lg">CO2 Saved per Week (cheating way)</h3>
+            <div class="bg-gray-200 mt-4 rounded-md p-4">
+                {#if loading}
+                    <p>Loading...</p>
+                {:else if getCombinedChallenges().length > 0}
+                    <ul>
+                        {#each getCombinedChallenges() as challenge}
+                            <li class="flex justify-between gap-x-2 py-1">
+                                <div>
+                                    <p class="text-sm/6 font-semibold text-gray-900">
+                                        {challenge.Title}
+                                    </p>
+                                    <p class="text-sm text-gray-700">
+                                        {challenge.Description}
+                                    </p>
+                                </div>
+                                <div>
+                                    <p class="text-sm/6 text-gray-900">
+                                        {challenge.C02_emission} g CO₂ Saved
+                                    </p>
+                                </div>
+                            </li>
+                        {/each}
+                    </ul>
+                    <p class="font-bold mt-4">Total: {getTotalCO2Saved()} g CO₂ Saved</p>
+                {:else}
+                    <p>No accepted challenges yet.</p>
+                {/if}
+            </div>
+        </div>
+
+        <!-- Weekly statistics (correct way but doesnt work)-->
         <div class="px-6">
             <div class="space-y-6">
                 <div>
-                    <h3 class="font-semibold text-lg">CO2 Saved per Week</h3>
+                    <h3 class="font-semibold text-lg">CO2 Saved per Week (correct way but doesnt work)</h3>
                     <div class="bg-gray-200 mt-4 rounded-md p-4">
                         {#if loading}
                             <p>Loading...</p>
-                        {:else if showAcceptedChallenge.length > 0}
+                        {:else if weeklyStatistics.length > 0}
                             <ul>
-                                {#each getCombinedChallenges() as combinedChallenge}
+                                {#each weeklyStatistics as week}
                                     <li class="flex justify-between gap-x-2 py-1">
-                                        <div class="flex min-w-0 gap-x-4">
-                                            <div class="min-w-0 flex-auto">
-                                                <p class="text-sm/6 font-semibold text-gray-900">{combinedChallenge.Title}</p>
-                                            </div>
+                                        <div>
+                                            <p class="text-sm/6 font-semibold text-gray-900">
+                                                Week {week.Week_Start} - {week.Week_End}
+                                            </p>
                                         </div>
                                         <div>
-                                            <p class="text-sm/6 text-gray-900">{combinedChallenge.C02_emission} g CO₂ Saved</p>
+                                            <p class="text-sm/6 text-gray-900">{week.Total_CO2} g CO₂ Saved</p>
                                         </div>
                                     </li>
                                 {/each}
-                                <div class="mt-4 pt-4 border-t border-gray-300">
-                                    <p class="font-bold text-gray-900">Total CO₂ Saved: {getTotalCO2Saved()} g</p>
-                                </div>
                             </ul>
                         {:else}
-                            <p>No challenges accepted yet.</p>
+                            <p>No weekly statistics available.</p>
                         {/if}
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Yearly statistics -->
+        <div class="px-6">
+            <div class="space-y-6">
                 <div>
-                    <h3 class="font-semibold text-lg">
-                        Overall CO2 Saved per Year
-                    </h3>
-                    <div class="h-48 bg-gray-200 mt-4 rounded-md"></div>
+                    <h3 class="font-semibold text-lg">CO2 Saved per Year</h3>
+                    <div class="bg-gray-200 mt-4 rounded-md p-4">
+                    </div>
                 </div>
             </div>
         </div>
