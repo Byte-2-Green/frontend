@@ -47,7 +47,8 @@
             challenges = await res.json();
 
             if (challenges.length > 0) {
-                randomChallenge = challenges[Math.floor(Math.random() * challenges.length)];
+                randomChallenge =
+                    challenges[Math.floor(Math.random() * challenges.length)];
             }
         } catch (error) {
             console.error("Failed to fetch challenges", error);
@@ -88,7 +89,7 @@
             const response = await fetch(
                 "http://localhost:3010/challenges/accepted-challenges",
             );
-            acceptedChallenges = [...await response.json()];
+            acceptedChallenges = [...(await response.json())];
             console.log(acceptedChallenges);
         } catch (error) {
             console.error("Failed to fetch accepted challenges", error);
@@ -195,47 +196,76 @@
     <main class="flex-1 overflow-y-auto">
         <!-- Modal -->
         {#if showModal}
-            <section class="fixed inset-0 bg-black bg-opacity-50 z-50">
+            <section
+                class="fixed inset-0 bg-black bg-opacity-85 z-50 flex justify-center items-center"
+            >
                 <article
-                    class="bg-moody-dark text-primary rounded-lg shadow-lg p-6 w-full h-full flex flex-col justify-center items-center relative"
+                    class="bg-moody-dark text-white rounded-xl shadow-xl p-8 w-full max-w-md flex flex-col justify-center items-center relative m-4"
                 >
+                    <!-- Close Button -->
                     <button
                         on:click={closeModal}
-                        class="absolute top-4 right-4 text-primary-dark"
+                        class="absolute top-4 right-4 text-white"
                         >✖</button
                     >
                     {#if randomChallenge}
-                        <div class="flex justify-center mb-4 ml-4">
-                            <i class="{randomChallenge.Icon} w-20 h-20 text-6xl"
+                        <!-- Icon Section -->
+                        <div class="mb-4">
+                            <i
+                                class="{randomChallenge.Icon} w-20 h-20 text-6xl text-primary-light"
                             ></i>
                         </div>
-                        <h2 class="text-center text-4xl font-bold mb-6">
+                        <!-- Title Section -->
+                        <h2 class="mb-4 text-3xl font-bold">
                             {randomChallenge.Title}
                         </h2>
-                        <p>{randomChallenge.Description}</p>
-                        <h2 class="text-center text-4xl font-bold mb-6">
-                            {randomChallenge.Timeframe} min
-                        </h2>
-                        <p>You are saving</p>
-                        <h2 class="text-center text-4xl font-bold mb-6">
-                            {randomChallenge.C02_emission} g
-                        </h2>
-                        <p>by doing this challenge.</p>
+                        <!-- Description Section -->
+                        <p class="text-center text-lg mb-6">
+                            {randomChallenge.Description}
+                        </p>
+                        <!-- Info Table -->
+                        <div class="w-full mb-6">
+                            <table class="w-full text-left">
+                                <tbody>
+                                    <tr class="border-b border-gray-700">
+                                        <td class="py-2 text-gray-400"
+                                            >Average Time:</td
+                                        >
+                                        <td
+                                            class="py-2 text-white font-semibold"
+                                            >{randomChallenge.Timeframe} min</td
+                                        >
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 text-gray-400"
+                                            >CO2 Savings:</td
+                                        >
+                                        <td
+                                            class="py-2 text-primary-light font-semibold"
+                                            >{randomChallenge.C02_emission} g</td
+                                        >
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     {:else}
                         <p>Loading...</p>
                     {/if}
-                    <!-- Accept and deny buttons -->
-                    <div class="flex space-x-4 mt-6">
+                    <!-- Buttons Section -->
+                    <div class="flex space-x-4 mt-4">
                         <button
-                            on:click={() => handleAcceptChallenge(randomChallenge.Challenge_ID)}
-                            class="bg-green-600 text-white font-bold py-2 px-4 rounded hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2"
+                            on:click={() =>
+                                handleAcceptChallenge(
+                                    randomChallenge.Challenge_ID,
+                                )}
+                            class="bg-primary-light text-white font-bold py-2 px-6 rounded-lg shadow-lg"
                         >
                             Accept
                         </button>
                         <button
                             on:click={() =>
                                 denyChallenge(randomChallenge.Challenge_ID)}
-                            class="bg-red-600 text-white font-bold py-2 px-4 rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2"
+                            class="bg-red-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg"
                         >
                             Deny
                         </button>
@@ -246,98 +276,99 @@
 
         <!-- challenge Modal -->
         {#if showChallengeModal}
-            <section class="fixed inset-0 bg-black bg-opacity-50 z-50">
-                <article
-                    class="bg-primary-light text-primary-dark rounded-lg shadow-lg p-6 w-full h-full flex flex-col justify-center items-center relative"
-                >
-                    <button
-                        on:click={closeChallengeModal}
-                        class="absolute top-4 right-4 text-primary-dark"
-                        >✖</button
-                    >
-                    {#if randomChallenge}
-                        <h2 class="text-center text-4xl font-bold mb-4">
-                            {randomChallenge.Title}
-                        </h2>
-                        <p class="mb-4">{randomChallenge.Description}</p>
-
-                        <!-- Timer with Progress Bar -->
-                        <div class="flex flex-col items-center mb-6">
-                            <p class="text-xl font-bold mb-2">Time Left</p>
-                            <p class="text-3xl font-bold mb-2">
-                                {formatTime(remainingTime)}
-                            </p>
-                            <div class="w-64 h-2 bg-gray-200 rounded-full">
-                                <div
-                                    class="h-full bg-green-500 rounded-full"
-                                    style="width: {progress}%"
-                                ></div>
-                            </div>
+        <section class="fixed inset-0 bg-black bg-opacity-85 z-50 flex justify-center items-center">
+            <article class="bg-moody-dark text-white rounded-xl shadow-xl p-8 w-full max-w-md flex flex-col justify-center items-center relative m-4">
+                <!-- Close Button -->
+                <button on:click={closeChallengeModal} class="absolute top-4 right-4 text-gray-400 text-2xl">&times;</button>
+                {#if randomChallenge}
+                    <!-- Title Section -->
+                    <h2 class="text-center text-3xl font-bold mb-4">{randomChallenge.Title}</h2>
+                    <p class="text-center text-lg mb-6">{randomChallenge.Description}</p>
+                    <!-- Timer Section -->
+                    <div class="w-full mb-6">
+                        <p class="text-center text-lg font-semibold mb-2">Time Left</p>
+                        <p class="text-center text-4xl font-bold mb-2">{formatTime(remainingTime)}</p>
+                        <div class="w-full h-2 bg-gray-700 rounded-full overflow-hidden">
+                            <div class="h-full bg-primary-light rounded-full transition-all" style="width: {progress}%"></div>
                         </div>
-
-                        <!-- Button Completed -->
-                        <button
-                            on:click={completedChallenge}
-                            class="bg-green-600 text-white font-bold py-2 px-4 rounded hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2"
-                        >
-                            Completed
-                        </button>
-                    {:else}
-                        <p>Loading...</p>
-                    {/if}
-                </article>
-            </section>
-        {/if}
-
-        <!-- Timer-->
-        {#if timerActive}
-            <div
-                class="timer mt-8 p-4 bg-white shadow-lg rounded-lg flex justify-center items-center"
-            >
-                <div class="flex flex-col items-center">
-                    <p class="text-xl font-bold mb-4">Time Left</p>
-                    <p class="text-3xl font-bold">
-                        {formatTime(remainingTime)}
-                    </p>
-                    <div class="w-64 h-2 bg-gray-200 rounded-full mt-4">
-                        <div
-                            class="h-full bg-green-500 rounded-full"
-                            style="width: {progress}%"
-                        ></div>
                     </div>
-                </div>
-            </div>
-        {/if}
-        
+                    <!-- Completed Button -->
+                    <button on:click={completedChallenge}
+                        class="bg-primary-light text-white font-bold py-2 px-6 rounded-lg shadow-lg">
+                        Completed
+                    </button>
+                {:else}
+                    <p>Loading...</p>
+                {/if}
+            </article>
+        </section>
+    {/if}
+
         <!-- Challenge Accepted -->
         <div class="mt-8 p-4">
-            <h2 class="text-2xl font-bold mb-4">Challenges Accepted</h2>
+            <h2 class="text-2xl font-bold">Challenges Accepted</h2>
             {#if acceptedChallenges.length > 0}
-                <ul>
+                <ol
+                    class="relative border-s border-gray-200 dark:border-gray-700"
+                >
                     {#each acceptedChallenges as challenge}
-                        <li class="border p-4 mb-2 rounded shadow">
-                            <h3 class="font-bold">{challenge.Title}</h3>
-                            <p>{challenge.Description}</p>
+                        <li class="mb-10 ms-4">
+                            <div
+                                class="absolute w-3 h-3 rounded-full mt-1.5 -start-1.5 border border-primary-dark bg-primary-dark"
+                            ></div>
+                            <h3 class="text-lg font-semibold text-moody-dark">
+                                {challenge.Title}
+                            </h3>
+                            <p
+                                class="mb-4 text-base font-normal text-moody-light"
+                            >
+                                {challenge.Description}
+                            </p>
+                            <path
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M1 5h12m0 0L9 1m4 4L9 9"
+                            />
                         </li>
                     {/each}
-                </ul>
+                </ol>
             {:else}
                 <p>No challenges accepted yet.</p>
             {/if}
         </div>
 
         <!-- Denied challenges -->
-        <div class="mt-8 p-4">
+        <div class="p-4">
             <h2 class="text-2xl font-bold mb-4">Challenges Denied</h2>
             {#if deniedChallenges.length > 0}
-                <ul>
+                <ol
+                    class="relative border-s border-gray-200 dark:border-gray-700"
+                >
                     {#each deniedChallenges as challenge}
-                        <li class="border p-4 mb-2 rounded shadow">
-                            <h3 class="font-bold">{challenge.Title}</h3>
-                            <p>{challenge.Description}</p>
+                        <li class="mb-10 ms-4">
+                            <div
+                                class="absolute w-3 h-3 rounded-full mt-1.5 -start-1.5 border border-red-700 bg-red-700"
+                            ></div>
+                            <h3 class="text-lg font-semibold text-moody-dark">
+                                {challenge.Title}
+                            </h3>
+                            <p
+                                class="mb-4 text-base font-normal text-moody-light"
+                            >
+                                {challenge.Description}
+                            </p>
+                            <path
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M1 5h12m0 0L9 1m4 4L9 9"
+                            />
                         </li>
                     {/each}
-                </ul>
+                </ol>
             {:else}
                 <p>No challenges denied yet.</p>
             {/if}
