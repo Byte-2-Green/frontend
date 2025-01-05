@@ -104,27 +104,6 @@
 
     return () => clearInterval(cyclingInterval); // Cleanup cycling interval on component destroy
   });
-
-  function addImageToGallery() {
-    if (galleryImages.length > 0) {
-      const randomImageIndex = Math.floor(Math.random() * galleryImages.length);
-      const selectedImage = galleryImages[randomImageIndex];
-      positionedImages = [...positionedImages, { ...selectedImage }];
-      galleryImages.splice(randomImageIndex, 1);
-    }
-  }
-
-  function toggleEditMode() {
-    isEditingGallery = !isEditingGallery;
-  }
-
-  /**
-   * @param {string | any[]} updatedImages
-   */
-  function updateGallery(updatedImages) {
-    positionedImages = updatedImages;
-    savedCO2 = 0.5 * positionedImages.length;
-  }
 </script>
 
 <section class="flex flex-col h-screen bg-white">

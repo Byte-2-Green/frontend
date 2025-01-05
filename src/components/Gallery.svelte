@@ -6,10 +6,10 @@
 
   export let positionedImages = [];
   export let isEditingGallery;
+  export let unlockedFrames;
 
   let selectedImage = null;
 
-  let numFrames = 5;
   let frameWidth = 350;
   let frameHeight = 400;
 
@@ -149,7 +149,7 @@
 </section> -->
 
 <section class="mt-6 grid grid-cols-2 gap-3 px-6 z-5">
-  {#each Array(numFrames) as _, index}
+  {#each Array(unlockedFrames) as _, index}
     <article class="relative flex flex-col bg-black text-white rounded-lg shadow-xl overflow-hidden w-full h-[30vh] transform {index % 3 === 0 ? 'rotate-2' : 'rotate-0'}">
       
       <!-- Image or Placeholder Background -->

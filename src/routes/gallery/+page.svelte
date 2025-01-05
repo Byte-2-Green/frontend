@@ -15,6 +15,7 @@
   ];
 
   let isEditingGallery = false;
+  let unlockedFrames = 0;
 
   /**
    * @type {string | any[]}
@@ -49,6 +50,8 @@
   let fovElement;
 
   onMount(() => {
+    loadGallery();
+
     fovElement = document.getElementById("fov");
     document.body.style.cursor = "none";
 
@@ -73,6 +76,21 @@
       });
     });
   });
+
+  //Fetch the gallery
+  async function loadGallery() {
+  try {
+    const response = await fetch('http://localhost:3014/gallery/1');
+    const data = await response.json();
+
+    const galleryContainer = document.getElementById('gallery-container');
+
+    unlockedFrames = data.unlocked_frames;
+  } catch (error) {
+    console.error('Failed to load gallery:', error);
+  }
+}
+
 </script>
 
 <img
@@ -115,10 +133,10 @@
     <Gallery
       {positionedImages}
       {isEditingGallery}
+      {unlockedFrames}
       on:updateGallery={updateGallery}
     />
   </main>
   <Footer />
-
-  <!-- FOV Image for Mouse Effect -->
 </section>
+ 
