@@ -148,29 +148,30 @@
   </div>
 </section> -->
 
-<section class="mt-6 grid grid-cols-1 gap-8 px-6 z-5">
+<section class="mt-6 grid grid-cols-2 gap-3 px-6 z-5">
   {#each Array(numFrames) as _, index}
-    <article class="relative flex flex-col bg-black text-white rounded-lg shadow-xl overflow-hidden w-full h-[40vh]">
+    <article class="relative flex flex-col bg-black text-white rounded-lg shadow-xl overflow-hidden w-full h-[30vh] transform {index % 3 === 0 ? 'rotate-2' : 'rotate-0'}">
       
-      <!-- Placeholder Background for Empty/No Image -->
-      <div class="absolute inset-0 bg-gradient-to-b from-gray-800 to-black transition-all duration-700 ease-in-out">
-        <div class="bg-black opacity-80 absolute inset-0"></div>
-      </div>
-
       <!-- Image or Placeholder Background -->
       <div class="relative z-10 flex justify-center items-center h-full">
-        <!-- No Image: Just a colored background for a museum vibe -->
-        <div class="w-[110%] h-[110%] bg-gradient-to-b from-gray-900 to-gray-700 opacity-70 rounded-xl shadow-lg transform hover:scale-105 transition-all duration-500 ease-in-out"></div>
-      </div>
-
-      <!-- Subtle Hover Effects to Enhance Museum Aesthetic -->
-      <div class="absolute inset-0 z-10 flex justify-center items-center">
-        <div class="w-[80%] h-[80%] bg-gradient-to-b from-black opacity-70 rounded-lg transform rotate-[5deg] hover:bg-gray-800 transition-all duration-500 ease-in-out">
-        </div>
+        <div
+          class="w-full h-full bg-gradient-to-b from-primary to-moody-dark opacity-70 rounded-xl shadow-lg"
+          role="button"
+          tabindex="0"
+          on:click={() => handlePlaceholderClick(index)}
+          on:keydown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              handlePlaceholderClick(index);
+            }
+          }}
+          aria-label={`Placeholder ${index}`}
+          id={`placeholder${index}`}
+        ></div>
       </div>
     </article>
   {/each}
 </section>
+
 
 
 
