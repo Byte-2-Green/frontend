@@ -1,6 +1,6 @@
 <script>
   export let unlockedFrames;
-  export let savedCO2 = 498;
+  export let savedCO2;
 </script>
 
 <section class="flex justify-center items-center mt-6">

@@ -13,10 +13,43 @@
 
   let isEditingGallery = false;
   let unlockedFrames = 0;
+  let savedCO2 = 0;
 
   function toggleEditMode() {
     isEditingGallery = !isEditingGallery;
   }
+
+  async function calculateSavedCO2() {
+  try {
+    // Fetch accepted challenges for user_id = 1
+    const acceptedChallengesResponse = await fetch('http://localhost:3012/accepted-challenges');
+    if (!acceptedChallengesResponse.ok) {
+      throw new Error('Failed to fetch accepted challenges');
+    }
+
+    const acceptedChallenges = await acceptedChallengesResponse.json();
+
+    const challengeIds = acceptedChallenges.map(challenge => challenge.Challenge_ID);
+
+    // Fetch challenges details to get CO2 emissions
+    const challengesResponse = await fetch('http://localhost:3012/challenges');
+    if (!challengesResponse.ok) {
+      throw new Error('Failed to fetch challenges');
+    }
+
+    const challenges = await challengesResponse.json();
+
+    // Calculate total CO2 saved
+    const totalCO2Saved = challenges
+      .filter(challenge => challengeIds.includes(challenge.Challenge_ID))
+      .reduce((total, challenge) => total + (challenge.CO2_emission || 0), 0);
+
+    return totalCO2Saved;
+  } catch (error) {
+    console.error('Error calculating saved CO2:', error);
+    return 0;
+  }
+}
 
   /**
    * @param {string | any[]} updatedImages
@@ -51,6 +84,7 @@
 
   onMount(() => {
     loadGallery();
+    calculateSavedCO2();
 
     fovElement = document.getElementById("fov");
     document.body.style.cursor = "none";
@@ -112,6 +146,7 @@
       {positionedImages}
       {isEditingGallery}
       {unlockedFrames}
+      {savedCO2}
       on:updateGallery={updateGallery}
     />
   </main>
