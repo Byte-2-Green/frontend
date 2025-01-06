@@ -3,6 +3,7 @@
   export let savedCO2;
 </script>
 
+
 <section class="flex justify-center items-center mt-6">
   <!-- Unlocked Frames -->
   <div class="flex flex-col items-center mx-4">

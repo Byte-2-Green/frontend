@@ -20,43 +20,53 @@
   }
 
   async function calculateSavedCO2() {
-  try {
-    // Fetch accepted challenges for user_id = 1
-    const acceptedChallengesResponse = await fetch('http://localhost:3012/accepted-challenges');
-    if (!acceptedChallengesResponse.ok) {
-      throw new Error('Failed to fetch accepted challenges');
+    try {
+      // Fetch accepted challenges for user_id = 1
+      const acceptedChallengesResponse = await fetch(
+        "http://localhost:3012/accepted-challenges",
+      );
+      if (!acceptedChallengesResponse.ok) {
+        throw new Error("Failed to fetch accepted challenges");
+      }
+
+      const acceptedChallenges = await acceptedChallengesResponse.json();
+
+      const challengeIds = acceptedChallenges.map(
+        (challenge) => challenge.Challenge_ID,
+      );
+
+      // Fetch challenges details to get CO2 emissions
+      const challengesResponse = await fetch(
+        "http://localhost:3012/challenges",
+      );
+      if (!challengesResponse.ok) {
+        throw new Error("Failed to fetch challenges");
+      }
+
+      const challenges = await challengesResponse.json();
+
+      for (let i = 0; i < acceptedChallenges.length; i++) {
+        const acceptedChallenge = acceptedChallenges[i];
+        
+        const challenge = challenges.find(
+          (ch) => ch.Challenge_ID === acceptedChallenge.Challenge_ID,
+        );
+        if (challenge) {
+          savedCO2 += challenge.C02_emission;
+        }
+      }
+      return savedCO2;
+    } catch (error) {
+      console.error("Error calculating saved CO2:", error);
+      return 0;
     }
-
-    const acceptedChallenges = await acceptedChallengesResponse.json();
-
-    const challengeIds = acceptedChallenges.map(challenge => challenge.Challenge_ID);
-
-    // Fetch challenges details to get CO2 emissions
-    const challengesResponse = await fetch('http://localhost:3012/challenges');
-    if (!challengesResponse.ok) {
-      throw new Error('Failed to fetch challenges');
-    }
-
-    const challenges = await challengesResponse.json();
-
-    // Calculate total CO2 saved
-    const totalCO2Saved = challenges
-      .filter(challenge => challengeIds.includes(challenge.Challenge_ID))
-      .reduce((total, challenge) => total + (challenge.CO2_emission || 0), 0);
-
-    return totalCO2Saved;
-  } catch (error) {
-    console.error('Error calculating saved CO2:', error);
-    return 0;
   }
-}
 
   /**
    * @param {string | any[]} updatedImages
    */
   function updateGallery(updatedImages) {
     positionedImages.update(() => updatedImages);
-    savedCO2 = 0.5 * positionedImages.length;
   }
 
   /**
@@ -64,6 +74,8 @@
    */
   async function loadGallery() {
     try {
+      savedCO2 = await calculateSavedCO2();
+
       // Fetch gallery data
       const response = await fetch("http://localhost:3014/gallery/1");
       const data = await response.json();
@@ -84,7 +96,6 @@
 
   onMount(() => {
     loadGallery();
-    calculateSavedCO2();
 
     fovElement = document.getElementById("fov");
     document.body.style.cursor = "none";
@@ -125,7 +136,7 @@
   <Header />
 
   <main class="flex-1 overflow-y-auto">
-    <StatsPanel {unlockedFrames} />
+    <StatsPanel {unlockedFrames} {savedCO2}/>
 
     <section class="flex justify-center items-center">
       <!-- <button
@@ -146,7 +157,6 @@
       {positionedImages}
       {isEditingGallery}
       {unlockedFrames}
-      {savedCO2}
       on:updateGallery={updateGallery}
     />
   </main>

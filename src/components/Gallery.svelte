@@ -82,6 +82,24 @@
     selectedImage = null;
   }
 
+  // Wait for images to be available before rendering them
+  $: if (images && images.length > 0) {
+    images.forEach(({ image_url, placeholder_id }, index) => {
+      const placeholder = placeholders[placeholder_id - 1];
+      if (placeholder && !placeholder.querySelector("img")) {
+        const img = document.createElement("img");
+        img.src = image_url;
+        img.alt = `Art image ${index}`;
+        img.classList.add("object-cover", "w-[75vw]", "h-[100%]", "rounded-lg", "shadow-lg");
+        img.onclick = (event) => {
+          event.stopPropagation();
+          handleImageClick(img);
+        };
+        placeholder.appendChild(img);
+      }
+    });
+  }
+
   onMount(() => {
     if (images) {
       console.log(images);
