@@ -109,12 +109,12 @@
             >
           {/if}
         </div>
-        <button
-          on:click={goToChallenges}
+        <a
+          href="/challenges"
           class="ml-4 text-sm font-bold uppercase bg-white text-moody-dark px-3 py-1 rounded hover:bg-moody-default hover:text-white"
         >
           View
-        </button>
+      </a>
       </div>
     </section>
   {/if}

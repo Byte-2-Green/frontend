@@ -5,8 +5,8 @@
     import Footer from "../../components/Footer.svelte";
     import "../../app.css";
     import { onMount } from "svelte";
-    import { galleryImages } from '../store.js';
-    import { goto } from '$app/navigation';
+    import { galleryImages, positionedImages } from "../store.js";
+    import { goto } from "$app/navigation";
 
     let showChallengeModal = false;
 
@@ -166,16 +166,40 @@
 
     // Function to handle the "Completed" button
     async function completedChallenge() {
-    console.log("Challenge completed!");
-    goto('/gallery');
-    galleryImages.update((images) => {
-      const randomImageIndex = Math.floor(Math.random() * images.length);
-      const selectedImage = images[randomImageIndex];
-      images.splice(randomImageIndex, 1);
-      return [...images, selectedImage];
-    });
-    closeChallengeModal();
-}
+        console.log("Challenge completed!");
+        goto("/gallery");
+
+        galleryImages.update((images) => {
+            const randomImageIndex = Math.floor(Math.random() * images.length);
+            const selectedImage = images[randomImageIndex];
+            images.splice(randomImageIndex, 1);
+            positionedImages.update((images) => [...images, selectedImage]);
+        });
+
+        closeChallengeModal();
+        saveImageToDatabase();
+    }
+
+    async function saveImageToDatabase(src, text) {
+        console.log("Saving image with src:", src, "and text:", text);
+        try {
+            const response = await fetch(
+                "http://localhost:3014/gallery/1/user/1/art",
+                {
+                    method: "POST",
+                    body: JSON.stringify({ src, text }),
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                },
+            );
+
+            const result = await response.json();
+            console.log("Image saved:", result);
+        } catch (error) {
+            console.error("Error saving image:", error);
+        }
+    }
 
     // Function to close the second modal
     function closeChallengeModal() {

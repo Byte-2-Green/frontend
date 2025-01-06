@@ -8,15 +8,11 @@
   import "../../app.css";
   import { onMount } from "svelte";
   import StatsPanel from "../../components/StatsPanel.svelte";
-  import { galleryImages } from "../store.js";
+
+  import { galleryImages, positionedImages } from "../store.js";
 
   let isEditingGallery = false;
   let unlockedFrames = 0;
-
-  /**
-   * @type {string | any[]}
-   */
-  let positionedImages = [];
 
   function toggleEditMode() {
     isEditingGallery = !isEditingGallery;
@@ -26,7 +22,7 @@
    * @param {string | any[]} updatedImages
    */
   function updateGallery(updatedImages) {
-    positionedImages = updatedImages;
+    positionedImages.update(() => updatedImages);
     savedCO2 = 0.5 * positionedImages.length;
   }
 
@@ -35,12 +31,17 @@
    */
   async function loadGallery() {
     try {
+      // Fetch gallery data
       const response = await fetch("http://localhost:3014/gallery/1");
       const data = await response.json();
 
-      const galleryContainer = document.getElementById("gallery-container");
+      // Fetch art images associated with the gallery
+      const artResponse = await fetch("http://localhost:3014/user/1/art");
+      const artData = await artResponse.json();
 
+      // Set unlocked frames and the images
       unlockedFrames = data.unlocked_frames;
+      positionedImages.update(() => artData);
     } catch (error) {
       console.error("Failed to load gallery:", error);
     }
@@ -90,7 +91,7 @@
   <Header />
 
   <main class="flex-1 overflow-y-auto">
-    <StatsPanel {unlockedFrames}/>
+    <StatsPanel {unlockedFrames} />
 
     <section class="flex justify-center items-center">
       <!-- <button
