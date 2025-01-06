@@ -68,7 +68,7 @@
     try {
       const response = await axios.post("http://localhost:3013/login", {
         email: loginEmail,
-        password: loginPassword,
+        passwordHash: loginPassword,
       });
       if (response.status === 200) {
         navigate("http://localhost:5173/");
@@ -158,7 +158,7 @@
 
       <div class="text-center mt-4">
         <p class="text-sm text-gray-600">
-          Already have an account? <a href="#" class="text-primary font-medium" on:click={() => showLoginPopup = true}>Sign In</a>
+          Already have an account? <a href="" class="text-primary font-medium" on:click={() => showLoginPopup = true}>Sign In</a>
         </p>
       </div>
     </div>
