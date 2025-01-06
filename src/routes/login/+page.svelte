@@ -50,9 +50,10 @@
 
     try {
       const response = await axios.post("http://localhost:3013/users", {
-        full_name: signUpFullName,
+        fullName: signUpFullName,
         email: signUpEmail,
-        password_hash: signUpPassword,
+        username: signUpFullName,
+        passwordHash: signUpPassword,
       });
       if (response.status === 201) {
         signUpSuccessMessage = "Account created successfully! You can now log in.";
