@@ -24,10 +24,17 @@
 
   let isEditingGallery = false;
 
+
   /**
    * @type {string | any[]}
    */
   let positionedImages = [];
+
+    /** * function that runs when the component is mounted */
+    onMount(async () => {
+        try {
+            const res = await fetch(`http://localhost:3010/educational/foodForThought`);
+            const data = await res.json();
 
   // variable to fetch the array of thoughts from the api
   /**
