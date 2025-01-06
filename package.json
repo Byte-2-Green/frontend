@@ -35,8 +35,10 @@
   },
   "dependencies": {
     "@sveltejs/adapter-node": "^5.2.9",
+    "axios": "^1.7.9",
     "install": "^0.13.0",
     "npm": "^10.9.1",
-    "progressbar.js": "^1.1.1"
+    "progressbar.js": "^1.1.1",
+    "svelte-routing": "^2.13.0"
   }
 }

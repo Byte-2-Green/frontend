@@ -9,6 +9,8 @@
   import { onMount } from "svelte";
   import "../app.css";
 
+  import Login from "@routes/login/+page.svelte"; // Importing Login page
+
   let showModal = true;
 
   let unlockedFrames = 4;
