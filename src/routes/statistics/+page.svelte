@@ -158,6 +158,20 @@
               userCO2NotSaved.toFixed(1),
           ],
           labels: ["Our Carbon Comeback", "My Green Vibes", "My Carbon Footprint"],
+          legend: {
+              show: true, // Enable legend
+              position: "bottom", // Position at the bottom
+              horizontalAlign: "center", // Align center
+              markers: {
+                  width: 12,
+                  height: 12,
+                  radius: 12, // Circular markers
+              },
+              itemMargin: {
+                  horizontal: 10,
+                  vertical: 5,
+              },
+          },
       };
  
       const chart = new ApexCharts(
