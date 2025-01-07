@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "@sveltejs/adapter-node": "^5.2.9",
+    "apexcharts": "^4.3.0",
     "axios": "^1.7.9",
     "install": "^0.13.0",
     "npm": "^10.9.1",
