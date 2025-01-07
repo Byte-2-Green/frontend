@@ -3,15 +3,15 @@
   import Footer from "../../components/Footer.svelte";
   import { onMount } from "svelte";
   import ApexCharts from "apexcharts"; // Import ApexCharts
-
-  let userId: string = "USER_ID_HERE"; // Define userId as a string
+ 
+  let userId: string = "1"; // Define userId as a string
   let totalCO2Saved: number = 0;
   let userCO2Saved: number = 0;
   let userCO2NotSaved: number = 0;
-
+ 
   async function fetchUserById(userId: string) { // Add type annotation
       try {
-          const res = await fetch(`http://localhost:3010/users/${userId}`);
+          const res = await fetch(`http://localhost:3010/users/users/${userId}`);
           if (!res.ok) {
               throw new Error(`Failed to fetch user data: ${res.statusText}`);
           }
@@ -21,7 +21,7 @@
           return null;
       }
   }
-
+ 
   async function fetchAcceptedChallenges() {
       try {
           const res = await fetch(`http://localhost:3010/challenges/accepted-challenges`);
@@ -34,7 +34,7 @@
           return [];
       }
   }
-
+ 
   async function fetchDeniedChallenges() {
       try {
           const res = await fetch(`http://localhost:3010/challenges/denied-challenges`);
@@ -47,7 +47,7 @@
           return [];
       }
   }
-
+ 
   async function fetchUserAcceptedChallenges(userId: string) { // Add type annotation
       try {
           const res = await fetch(`http://localhost:3010/challenges/accepted-challenges?userId=${userId}`);
@@ -60,7 +60,7 @@
           return [];
       }
   }
-
+ 
   async function fetchUserDeniedChallenges(userId: string) { // Add type annotation
       try {
           const res = await fetch(`http://localhost:3010/challenges/denied-challenges?userId=${userId}`);
@@ -73,50 +73,50 @@
           return [];
       }
   }
-
+ 
   onMount(async () => {
       try {
           if (!userId || userId === "USER_ID_HERE") {
               throw new Error("Invalid or missing user ID. Please set the correct user ID.");
           }
-
+ 
           // Fetch user data for validation (optional)
           const userData = await fetchUserById(userId);
           if (!userData) {
               throw new Error("User not found.");
           }
           console.log("User Data:", userData);
-
+ 
           // Fetch data for calculations
           const allAccepted = await fetchAcceptedChallenges();
           const allDenied = await fetchDeniedChallenges();
           const userAccepted = await fetchUserAcceptedChallenges(userId);
           const userDenied = await fetchUserDeniedChallenges(userId);
-
+ 
           // Log fetched data for debugging
           console.log("User ID:", userId);
           console.log("All Accepted Challenges:", allAccepted);
           console.log("All Denied Challenges:", allDenied);
           console.log("User Accepted Challenges:", userAccepted);
           console.log("User Denied Challenges:", userDenied);
-
+ 
           // Calculate percentages
           const totalAccepted = allAccepted.length;
           const totalDenied = allDenied.length;
           const userAcceptedCount = userAccepted.length;
           const userDeniedCount = userDenied.length;
-
+ 
           totalCO2Saved = (totalAccepted / (totalAccepted + totalDenied)) * 100 || 0;
           userCO2Saved = (userAcceptedCount / (userAcceptedCount + userDeniedCount)) * 100 || 0;
           userCO2NotSaved = (userDeniedCount / (userAcceptedCount + userDeniedCount)) * 100 || 0;
-
+ 
           // Render radial graph
           buildRadialGraph();
       } catch (error) {
           console.error("Error during initialization:", error);
       }
   });
-
+ 
   const buildRadialGraph = () => {
       const chartOptions = {
           chart: {
@@ -126,12 +126,12 @@
           colors: ["#4CAF50", "#2196F3", "#F44336"], // Green, Blue, Red
           plotOptions: {
               radialBar: {
-                  size: 185,
+                  size: 500,
                   hollow: {
-                      size: "40%",
+                      size: "55%",
                   },
                   track: {
-                      margin: 10,
+                      margin: 8.5,
                       background: "#F0F0F0",
                   },
                   dataLabels: {
@@ -159,7 +159,7 @@
           ],
           labels: ["Our Carbon Comeback", "My Green Vibes", "My Carbon Footprint"],
       };
-
+ 
       const chart = new ApexCharts(
           document.querySelector("#apex-radial-bar-chart"),
           chartOptions
@@ -167,11 +167,11 @@
       chart.render();
   };
 </script>
-
+ 
 <section class="min-h-screen bg-secondary-light flex flex-col">
   <!-- Header -->
   <Header />
-
+ 
   <section class="flex flex-col mb-6">
       <div class="flex space-x-4 px-4">
           <a
@@ -187,20 +187,17 @@
               FAQ
           </a>
       </div>
-
+ 
       <!-- CO2 Graphs Section -->
       <div class="px-6">
           <div class="space-y-6">
               <div>
-                  <h3 class="font-semibold text-lg">
-                      CO2 Saved and Spent
-                  </h3>
-                  <div id="apex-radial-bar-chart" class="h-48 bg-gray-200 mt-4 rounded-md"></div>
+                  <div id="apex-radial-bar-chart" class="h-4 mt-4 rounded-md"></div>
               </div>
           </div>
       </div>
   </section>
-
+ 
   <!-- Footer -->
   <Footer />
 </section>
