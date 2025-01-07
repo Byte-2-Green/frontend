@@ -9,6 +9,12 @@
   import { onMount } from "svelte";
   import "../app.css";
 
+  // variable to fetch the array of thoughts from the api
+  /**
+   * @type {{ Description: string }[]}
+   */
+   export const foodForThought = [];
+
   let showModal = true;
 
   let unlockedFrames = 4;
@@ -28,17 +34,7 @@
    */
   let positionedImages = [];
 
-    /** * function that runs when the component is mounted */
-    onMount(async () => {
-        try {
-            const res = await fetch(`http://localhost:3010/educational/foodForThought`);
-            const data = await res.json();
 
-  // variable to fetch the array of thoughts from the api
-  /**
-   * @type {{ Description: string }[]}
-   */
-  export const foodForThought = [];
 
   // variable to store a random thought
   /**
