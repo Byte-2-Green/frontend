@@ -229,6 +229,7 @@
             if (response.ok) {
                 await response.json();
                 closeFeedbackModal();
+                completedChallenge();
             } else {
                 const errorData = await response.json();
                 console.error("Feedback not saved:", errorData.error);
@@ -274,12 +275,14 @@
         remainingTime = 0;
     }
 
-    // Function to handle the "Completed" button
-    //TODO - make the order CHALLENGE->SAMUELE FEEDBACK->IMAGE TO GALLERY
-    async function completedChallenge() {
+    // Function to handle the "Completed" challenge form reflection & rating
+    async function completeForm() {
         closeChallengeModal();
         showFeedbackModal = true;
+    }
 
+    //Handles the redirection after the challenge is completed
+    async function completedChallenge() {
         console.log("Challenge completed!");
         goto("/gallery");
 
@@ -459,7 +462,7 @@
                         </div>
                         <!-- Completed Button -->
                         <button
-                            on:click={completedChallenge}
+                            on:click={completeForm}
                             class="bg-primary-light text-white font-bold py-2 px-6 rounded-lg shadow-lg"
                         >
                             Completed
