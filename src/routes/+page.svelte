@@ -125,11 +125,11 @@
     <!-- Title Section -->
     <article>
       <h1 class="text-5xl font-bold">
-        <span class="text-primary">Museum</span> Museum
+        <span class="text-primary">Your</span> Museum
       </h1>
       <p class="italic text-3xl text-moody-light">CO2 Expert</p>
       <a href="/gallery" class="italic text-sm text-moody-light"
-        >See you museum</a
+        >See your museum</a
       >
     </article>
 
