@@ -84,7 +84,7 @@
         notificationIndex = (notificationIndex + 1) % notifications.length;
         activeNotification = notifications[notificationIndex];
       }
-    }, 5000); // Change notification every 5 seconds
+    }, 120000); // Change notification every 5 seconds
 
     return () => clearInterval(cyclingInterval); // Cleanup cycling interval on component destroy
   });
@@ -93,8 +93,6 @@
 <section class="flex flex-col h-screen bg-white">
   <!-- Active Notification Push -->
   <!-- Notification Popup -->
-
-  <!--TODO: make the notification spawn every 24 hours, or less?-->
   {#if activeNotification}
     <section class="fixed top-3 left-0 w-full p-4 z-50">
       <div
@@ -156,18 +154,18 @@
       <!-- Row 1 -->
       <div class="flex justify-center gap-2">
         <div
-          class="-mt-6 bg-moody-light rounded-xl w-1/2 h-48 transform -rotate-6"
+          class="-mt-6 bg-moody-light rounded-xl w-1/2 h-48"
         ></div>
-        <div class="bg-black rounded-xl w-1/2 h-36 transform rotate-6"></div>
+        <div class="bg-black rounded-xl w-1/2 h-36"></div>
       </div>
 
       <!-- Row 2 -->
       <div class="flex justify-center gap-2">
         <div
-          class="mt-4 bg-black rounded-xl w-1/2 h-36 transform rotate-6"
+          class="mt-4 bg-black rounded-xl w-1/2 h-36"
         ></div>
         <div
-          class="-mt-6 bg-moody-light rounded-xl w-1/2 h-48 transform -rotate-2"
+          class="-mt-6 bg-moody-light rounded-xl w-1/2 h-48"
         ></div>
       </div>
     </div>
