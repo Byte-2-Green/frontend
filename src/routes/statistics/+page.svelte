@@ -4,13 +4,12 @@
 
     import Header from "../../components/Header.svelte";
     import Footer from "../../components/Footer.svelte";
-    import ProgressBar from "../../components/ProgressBar.svelte";
     import "../../app.css";
 
     import ApexCharts from "apexcharts";
     import { onMount } from "svelte";
 
-    let userId = "1"; // Define userId as a string
+    let userId = 1;
     let totalCO2Saved = 0;
     let userCO2Saved = 0;
     let userCO2NotSaved = 0;
@@ -19,7 +18,7 @@
         // Add type annotation
         try {
             const res = await fetch(
-                `http://localhost:3010/users/users/${userId}`,
+                `http://localhost:3010/users/user/${userId}`,
             );
             if (!res.ok) {
                 throw new Error(`Failed to fetch user data: ${res.statusText}`);
@@ -245,9 +244,6 @@
                 FAQ
             </a>
         </div>
-
-        <!-- User Progress and Stats -->
-        <ProgressBar />
 
         <!-- CO2 Graphs Section -->
         <div class="px-6">
