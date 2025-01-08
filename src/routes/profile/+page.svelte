@@ -1,6 +1,5 @@
 <script>
   import Footer from "../../components/Footer.svelte";
-  import ProgressBar from "../../components/ProgressBar.svelte";
   import "../../app.css";
   import Header from "../../components/Header.svelte";
 
@@ -9,9 +8,6 @@
 
 <main class="bg-white min-h-screen flex flex-col">
   <Header/>
-    <!-- Progress Section -->
-    <ProgressBar />
-
     <!-- Invite and View Friends Buttons -->
     <article class="text-center m-4 text-lg">
       <button
