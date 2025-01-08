@@ -112,7 +112,7 @@
           class="ml-4 text-sm font-bold uppercase bg-white text-moody-dark px-3 py-1 rounded hover:bg-moody-default hover:text-white"
         >
           View
-      </a>
+        </a>
       </div>
     </section>
   {/if}
@@ -123,7 +123,7 @@
     <!-- Title Section -->
     <article>
       <h1 class="text-5xl font-bold">
-        <span class="text-primary">Your</span> Museum
+        <span class="text-primary">My</span> Museum
       </h1>
       <p class="italic text-3xl text-moody-light">CO2 Expert</p>
       <a href="/gallery" class="italic text-sm text-moody-light"
@@ -150,23 +150,41 @@
 
   <!--Example images-->
   <section>
-    <div class="space-y-3 m-3">
+    <div class="space-y-3 m-4">
       <!-- Row 1 -->
       <div class="flex justify-center gap-2">
-        <div
-          class="-mt-6 bg-moody-light rounded-xl w-1/2 h-48"
-        ></div>
-        <div class="bg-black rounded-xl w-1/2 h-36"></div>
+        <div class="-mt-6 bg-moody-light rounded-xl w-1/2 h-48">
+          <img
+            src="/images/home01.png"
+            alt="Home Page 1"
+            class="w-full h-full object-cover rounded-xl"
+          />
+        </div>
+        <div class="bg-black rounded-xl w-1/2 h-36">
+          <img
+            src="/images/home02.png"
+            alt="Home Page 2"
+            class="w-full h-full object-cover rounded-xl"
+          />
+        </div>
       </div>
 
       <!-- Row 2 -->
       <div class="flex justify-center gap-2">
-        <div
-          class="mt-4 bg-black rounded-xl w-1/2 h-36"
-        ></div>
-        <div
-          class="-mt-6 bg-moody-light rounded-xl w-1/2 h-48"
-        ></div>
+        <div class="mt-4 bg-black rounded-xl w-1/2 h-36">
+          <img
+            src="/images/home03.png"
+            alt="Home Page 3"
+            class="w-full h-full object-cover rounded-xl"
+          />
+        </div>
+        <div class="-mt-6 bg-moody-light rounded-xl w-1/2 h-42">
+          <img
+            src="/images/home04.png"
+            alt="Home Page 4"
+            class="w-full h-full object-cover rounded-xl"
+          />
+        </div>
       </div>
     </div>
   </section>
