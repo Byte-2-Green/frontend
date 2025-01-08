@@ -24,9 +24,9 @@
         />
         Invite your friends
       </button>
-      <button class="w-full bg-primary px-6 py-3 rounded-lg shadow-md mb-5">
+      <a href="/profile/friendsList" class="w-full bg-primary px-6 py-3 rounded-lg shadow-md mb-5">
         View friends' galleries
-      </button>
+      </a>
     </article>
 
     <!-- Stats, Global, Edit Buttons (Clickable Tabs) -->
