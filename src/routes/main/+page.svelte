@@ -23,21 +23,6 @@
    */
   let randomThought = null;
 
-  // variable to fetch the array of notifications from the backend
-  /**
-   * @type {{ Title: string, Description: string, timestamp?: string }[]}
-   */
-  let notifications = [];
-
-  // variable to store the active notification
-  /**
-   * @type {{ Title: any; Description: any; timestamp?: any; } | null}
-   */
-  let activeNotification = null;
-
-  // index to track the current notification being displayed
-  let notificationIndex = 0;
-
   // function that runs when the component is mounted
   onMount(async () => {
     try {
@@ -48,21 +33,6 @@
       if (foodData.length > 0) {
         randomThought = foodData[Math.floor(Math.random() * foodData.length)];
       }
-
-      // Fetching notifications
-      const notifRes = await fetch(
-        `http://localhost:3010/challenges/notifications`,
-      );
-      notifications = await notifRes.json();
-
-      if (notifications.length > 0) {
-        activeNotification = notifications[notificationIndex];
-      }
-
-      // Logging fetched data
-      console.log("Random Thought:", randomThought);
-      console.log("Notifications:", notifications);
-      console.log("Active Notification:", activeNotification);
     } catch (error) {
       console.error("Failed to fetch data", error);
     }
@@ -91,32 +61,6 @@
 </script>
 
 <section class="flex flex-col h-screen bg-white">
-  <!-- Active Notification Push -->
-  <!-- Notification Popup -->
-  {#if activeNotification}
-    <section class="fixed top-3 left-0 w-full p-4 z-50">
-      <div
-        class="max-w-lg mx-auto p-4 bg-primary-dark border-secondary border-2 text-white rounded-lg shadow-lg flex items-start"
-      >
-        <div class="flex-grow">
-          <h3 class="font-semibold text-lg">{activeNotification.Title}</h3>
-          <p class="mt-1 text-sm">{activeNotification.Description}</p>
-          {#if activeNotification.timestamp}
-            <span class="text-xs text-gray-300"
-              >{activeNotification.timestamp}</span
-            >
-          {/if}
-        </div>
-        <a
-          href="/challenges"
-          class="ml-4 text-sm font-bold uppercase bg-white text-moody-dark px-3 py-1 rounded hover:bg-moody-default hover:text-white"
-        >
-          View
-        </a>
-      </div>
-    </section>
-  {/if}
-
   <Header />
 
   <section class="flex justify-between items-start mt-4 p-5">

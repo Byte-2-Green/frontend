@@ -1,36 +1,63 @@
 <script>
+    // @ts-nocheck
+    // @ts-ignore
+
     import { onMount } from "svelte";
+    import { goto } from "$app/navigation";
 
-    export let notifications = [];
-    export let unreadNotifications = [];
+    let unreadNotifications = [];
     let showPopup = false;
+    let notificationIdCounter = 0;
 
-    onMount(async () => {
+    // Simulate fetching predefined notifications from the database
+    async function fetchNotifications() {
         try {
             const notifRes = await fetch(
-                `http://localhost:3010/challenges/notifications`
+                "http://localhost:3010/challenges/notifications",
             );
-            notifications = await notifRes.json();
-            unreadNotifications = notifications.map((notif) => ({
-                ...notif,
-                read: false,
-            }));
+            const predefinedNotifications = await notifRes.json();
+
+            setInterval(() => {
+                if (
+                    unreadNotifications.length < predefinedNotifications.length
+                ) {
+                    // Spawn new notification if not all have been added
+                    const newNotif =
+                        predefinedNotifications[notificationIdCounter];
+                    unreadNotifications = [
+                        ...unreadNotifications,
+                        { ...newNotif, id: notificationIdCounter, read: false },
+                    ];
+                    notificationIdCounter++;
+                }
+            }, 10000);
         } catch (error) {
             console.error("Failed to fetch notifications:", error);
         }
-    });
+    }
 
+    // Toggle popup visibility
     function togglePopup() {
         showPopup = !showPopup;
     }
 
-    function markAsRead(index) {
-        unreadNotifications[index].read = true;
+    // Mark notification as read and redirect to the challenge
+    function markAsReadAndRedirect(notificationId) {
+        unreadNotifications = unreadNotifications.filter(
+            (notif) => notif.id !== notificationId,
+        ); // Remove notification from list
+        goto("/challenges"); // Redirect to the challenge
+        closePopup(); // Close the popup
     }
 
+    // Close the popup
     function closePopup() {
         showPopup = false;
     }
+
+    onMount(() => {
+        fetchNotifications();
+    });
 </script>
 
 <!-- Notification Icon -->
@@ -52,42 +79,64 @@
         </svg>
 
         <!-- Notification Badge -->
-        {#if unreadNotifications.some((notif) => !notif.read)}
+        {#if unreadNotifications.length > 0}
             <span
                 class="absolute top-0 right-0 inline-flex items-center justify-center w-3 h-3 text-xs font-bold text-white bg-red-500 rounded-full"
             >
-                {unreadNotifications.filter((notif) => !notif.read).length}
+                {unreadNotifications.length}
             </span>
         {/if}
     </button>
 
     <!-- Popup -->
     {#if showPopup}
+        <!-- svelte-ignore a11y_click_events_have_key_events -->
+        <!-- svelte-ignore a11y_no_static_element_interactions -->
         <div
             class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50"
             on:click={closePopup}
         >
             <div
-                class="bg-black rounded-lg shadow-lg p-4 w-80 max-h-64 overflow-y-auto"
+                class="bg-black rounded-lg shadow-lg p-4 w-96 max-h-80 overflow-y-auto m-4"
                 on:click|stopPropagation
             >
+                <!-- Header: "Notifications" -->
+                <h2 class="text-white text-2xl font-semibold mb-4">
+                    Notifications
+                </h2>
+
                 {#if unreadNotifications.length > 0}
-                    {#each unreadNotifications as notif, index}
-                        <button
-                            class="p-4 hover:bg-gray-100 cursor-pointer"
-                            on:click={() => markAsRead(index)}
+                    {#each unreadNotifications as notif}
+                        <div
+                            class="notification-item p-4 mb-4 rounded-lg"
+                            class:bg-gray-800={notif.read === false}
                         >
-                            <h3 class="font-semibold text-lg text-white">{notif.Title}</h3>
-                            <p class="text-sm text-white">{notif.Description}</p>
+                            <h3 class="font-semibold text-lg text-white">
+                                {notif.Title}
+                                <!-- Make sure this key matches the structure of your data -->
+                            </h3>
+                            <p class="text-sm text-gray-300">
+                                {notif.Description}
+                                <!-- Make sure this key matches the structure of your data -->
+                            </p>
                             {#if notif.timestamp}
                                 <span class="text-xs text-gray-500"
                                     >{notif.timestamp}</span
                                 >
                             {/if}
-                        </button>
+
+                            <button
+                                class="mt-2 bg-blue-500 text-white px-4 py-2 rounded-lg"
+                                on:click={() => markAsReadAndRedirect(notif.id)}
+                            >
+                                View Challenge
+                            </button>
+                        </div>
                     {/each}
                 {:else}
-                    <p class="p-4 text-center text-gray-500">No notifications</p>
+                    <p class="p-4 text-center text-gray-500">
+                        No unread notifications
+                    </p>
                 {/if}
             </div>
         </div>
