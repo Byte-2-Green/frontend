@@ -25,7 +25,9 @@ const runTest = (script) =>
    
     // Run system test
     await runTest('test/systemTest.js');
- 
+    
+    await runTest('test/testFeedback.js');
+
     console.log('🎉 All tests passed!');
   } catch (err) {
     console.error('❌ One or more tests failed!', err.message);
