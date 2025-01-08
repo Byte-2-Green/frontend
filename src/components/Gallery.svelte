@@ -1,18 +1,29 @@
 <script>
+  // @ts-nocheck
   // @ts-ignore
-  export let positionedImages = [];
-  // @ts-ignore
-  export let isEditingGallery;
 
-  // @ts-ignore
+  import StatsPanel from "../components/StatsPanel.svelte";
+  import { positionedImages } from "../routes/store.js";
+  import { onMount } from "svelte";
+
+  let images;
+  positionedImages.subscribe((value) => {
+    images = value;
+  });
+
+  export let isEditingGallery;
+  export let unlockedFrames;
+
   let selectedImage = null;
 
+  let frameWidth = 350;
+  let frameHeight = 400;
+
+  let placeholders = [];
+
   // Handles image selection
-  // @ts-ignore
   function handleImageClick(image) {
-    // @ts-ignore
     if (isEditingGallery) {
-      // @ts-ignore
       if (!selectedImage) {
         selectedImage = image;
         selectedImage.classList.add("opacity-50");
@@ -38,15 +49,12 @@
   }
 
   // Handles placeholder clicks to move or swap images
-  // @ts-ignore
   function handlePlaceholderClick(placeholderId) {
-    // @ts-ignore
     if (!isEditingGallery) {
       console.warn("Gallery is not in editing mode.");
       return;
     }
 
-    // @ts-ignore
     if (!selectedImage) {
       console.warn("No image selected to move!");
       return;
@@ -74,21 +82,15 @@
     selectedImage = null;
   }
 
-  $: {
-    // @ts-ignore
-    positionedImages.forEach(({ src, text }, index) => {
-      const placeholder = document.getElementById(`placeholder${index + 1}`);
+  // Wait for images to be available before rendering them
+  $: if (images && images.length > 0) {
+    images.forEach(({ image_url, placeholder_id }, index) => {
+      const placeholder = placeholders[placeholder_id - 1];
       if (placeholder && !placeholder.querySelector("img")) {
         const img = document.createElement("img");
-        img.src = src;
-        img.alt = text;
-        img.classList.add(
-          "object-cover",
-          "w-[75vw]",
-          "h-[100%]",
-          "rounded-lg",
-          "shadow-lg",
-        );
+        img.src = image_url;
+        img.alt = `Art image ${index}`;
+        img.classList.add("object-cover", "w-[75vw]", "h-[100%]", "rounded-lg", "shadow-lg");
         img.onclick = (event) => {
           event.stopPropagation();
           handleImageClick(img);
@@ -97,70 +99,60 @@
       }
     });
   }
+
+  onMount(() => {
+    if (images) {
+      console.log(images);
+      images.forEach(({ image_url, placeholder_id }, index) => {
+        const placeholder = placeholders[placeholder_id - 1];
+        if (placeholder && !placeholder.querySelector("img")) {
+          const img = document.createElement("img");
+          img.src = image_url;
+          img.alt = `Art image ${index}`;
+          img.classList.add(
+            "object-cover",
+            "w-[75vw]",
+            "h-[100%]",
+            "rounded-lg",
+            "shadow-lg"
+          );
+          img.onclick = (event) => {
+            event.stopPropagation();
+            handleImageClick(img);
+          };
+          placeholder.appendChild(img);
+        }
+      });
+    }
+  });
 </script>
 
-<section class="relative overflow-x-auto w-full">
-  <div
-    class="relative flex justify-start items-start w-full"
-    style="height: 60vh;"
-  >
-    <div class="flex justify-start items-start w-max h-full">
-      {#each [1, 2, 3, 4] as column}
-        <section
-          class="relative flex justify-center items-start w-[80vw] h-[60vh] px-2"
-        >
-          <div
-            class="absolute bottom-0 left-0 right-0 h-[27%] bg-secondary z-0"
-          ></div>
-          <div class="w-full h-full p-4 rounded-lg relative">
-            <div class="flex flex-col w-full h-full">
-              <!-- Lamp -->
-              <div class="h-[10%] flex justify-center items-center z-10">
-                <img
-                  src="/images/lamp.png"
-                  alt="lamp"
-                  class="object-contain w-[90%] h-auto"
-                />
-              </div>
-              <!-- Placeholder -->
-              <div
-                class="h-[50%] flex justify-center items-center"
-                role="button"
-                tabindex="0"
-                on:click={() => handlePlaceholderClick(column)}
-                on:keydown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    handlePlaceholderClick(column);
-                  }
-                }}
-                aria-label={`Placeholder ${column}`}
-              >
-                <div
-                  class="w-[75vw] h-[100%] bg-gradient-to-br from-primary-light to-primary relative border-8 border-orange-200 rounded shadow-lg"
-                  id={`placeholder${column}`}
-                ></div>
-              </div>
-
-              <!-- Rope -->
-              <div class="h-[12%] flex justify-center items-center z-0">
-                <img
-                  src="/images/rope.png"
-                  alt="rope"
-                  class="object-contain w-[75vw] h-auto"
-                />
-              </div>
-              <!-- Bench -->
-              <div class="h-[18%] flex justify-center items-center">
-                <img
-                  src="/images/bench.png"
-                  alt="bench"
-                  class="object-contain w-[90%] h-auto"
-                />
-              </div>
-            </div>
-          </div>
-        </section>
-      {/each}
-    </div>
-  </div>
+<section class="mt-6 grid grid-cols-2 gap-3 px-6 z-5">
+  {#each Array(unlockedFrames) as _, index}
+    <article
+      class="relative flex flex-col bg-black text-white rounded-lg shadow-xl overflow-hidden w-full h-[30vh] transform {index %
+        3 ===
+      0
+        ? 'rotate-2'
+        : 'rotate-0'}"
+    >
+      <!-- Placeholder -->
+      <div class="relative z-10 flex justify-center items-center h-full">
+        <div
+          class="w-full h-full bg-gradient-to-b from-primary to-moody-dark opacity-70 rounded-xl shadow-lg"
+          role="button"
+          tabindex="0"
+          on:click={() => handlePlaceholderClick(index)}
+          on:keydown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              handlePlaceholderClick(index);
+            }
+          }}
+          aria-label={`Placeholder ${index}`}
+          bind:this={placeholders[index]}
+          id="placeholder${index}"
+        ></div>
+      </div>
+    </article>
+  {/each}
 </section>

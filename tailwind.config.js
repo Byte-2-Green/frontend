@@ -5,17 +5,20 @@ export default {
     extend: {
       colors: {
         primary: {
-          light: '#BFDBFE',
-          DEFAULT: '#3B82F6',
-          dark: '#1E40AF',
+          light: '#3AB795',
+          DEFAULT: '#4C9FC4',
+          dark: '#006D77',
         },
         secondary: {
           light: '#FFCE96',
-          DEFAULT: '#E78D46',
+          DEFAULT: '#FFC857',
           dark: '#8B3619',
         },
-        background: {
-          
+        moody: {
+          light: '#3e515f',
+          dark: '#070a0f',
+          // DEFAULT: '#141413',
+          // brown: '#766d63'
         },
       },
       fontFamily: {

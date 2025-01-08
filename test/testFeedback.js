@@ -1,5 +1,4 @@
 // @ts-nocheck
-import http from "http";
 
 /**
  * Test the Feedback endpoint
