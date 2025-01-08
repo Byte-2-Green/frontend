@@ -92,45 +92,10 @@
     }
   }
 
-  let fovElement;
-
   onMount(() => {
     loadGallery();
-
-    fovElement = document.getElementById("fov");
-    document.body.style.cursor = "none";
-
-    // Update FOV position on mouse movement
-    const handleMouseMove = (e) => {
-      if (fovElement) {
-        const { clientX, clientY } = e;
-
-        fovElement.style.left = `${clientX - fovElement.width / 2}px`;
-        fovElement.style.top = `${clientY - fovElement.height / 2}px`;
-        fovElement.style.transform = "scale(10)";
-      }
-    };
-
-    document.addEventListener("mousemove", handleMouseMove);
-
-    document.addEventListener("touchmove", (e) => {
-      const touch = e.touches[0];
-      handleMouseMove({
-        clientX: touch.clientX,
-        clientY: touch.clientY,
-      });
-    });
   });
 </script>
-
-<img
-  bind:this={fovElement}
-  src="/images/FOV.png"
-  id="fov"
-  alt="Field of View"
-  class="absolute pointer-events-none overflow-hidden"
-  style="z-index: 15"
-/>
 
 <section class="flex flex-col h-screen bg-white">
   <Header />

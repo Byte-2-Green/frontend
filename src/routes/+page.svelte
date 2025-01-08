@@ -61,7 +61,7 @@
           passwordHash: loginPassword,
         });
         if (response.status === 200) {
-          goto("http://localhost:5174/main");
+          goto("http://localhost:5173/main");
         }
       } catch (err: any) {
         loginErrorMessage = err.response?.data?.message || "Login failed. Please check your credentials.";

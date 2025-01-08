@@ -130,12 +130,7 @@
 <section class="mt-6 grid grid-cols-2 gap-3 px-6 z-5">
   {#each Array(unlockedFrames) as _, index}
     <article
-      class="relative flex flex-col bg-black text-white rounded-lg shadow-xl overflow-hidden w-full h-[30vh] transform {index %
-        3 ===
-      0
-        ? 'rotate-2'
-        : 'rotate-0'}"
-    >
+      class="relative flex flex-col bg-black text-white rounded-lg shadow-xl overflow-hidden w-full h-[30vh]">
       <!-- Placeholder -->
       <div class="relative z-10 flex justify-center items-center h-full">
         <div
