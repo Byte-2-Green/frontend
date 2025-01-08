@@ -59,7 +59,7 @@
     class="absolute -top-8 mx-auto w-16 h-16 rounded-full bg-secondary-light flex items-center justify-center"
 
   >
-    <a href="/">
+    <a href="/main">
       <img
         width="150"
         height="150"

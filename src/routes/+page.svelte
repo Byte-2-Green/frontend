@@ -1,205 +1,235 @@
-<script>
-  // @ts-nocheck
-  // @ts-ignore
-
-  import Header from "../components/Header.svelte";
-  import StatsPanel from "../components/StatsPanel.svelte";
-  import Gallery from "../components/Gallery.svelte";
-  import Footer from "../components/Footer.svelte";
-  import { onMount } from "svelte";
+<script lang="ts">
+  import axios from "axios";
+  import { goto } from "$app/navigation";
   import "../app.css";
 
-  let showModal = true;
+  let signUpFullName = "";
+  let signUpEmail = "";
+  let signUpPassword = "";
+  let signUpErrorMessage = "";
+  let signUpSuccessMessage = "";
+  let fieldErrors = { fullName: "", email: "", password: "" };
+  let loginEmail = "";
+  let loginPassword = "";
+  let loginErrorMessage = "";
+  let showLoginPopup = false;
 
-  let unlockedFrames = 4;
+  const isPasswordStrong = (password: string): boolean => {
+    const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return strongPasswordRegex.test(password);
+  };
 
-  let savedCO2 = 0.5;
+  const validateFields = (): boolean => {
+    let isValid = true;
 
-  let galleryImages = [
-    { src: "/images/template1.png", text: "Artwork 1" },
-    { src: "/images/template2.png", text: "Artwork 2" },
-  ];
+    // Reset errors
+    fieldErrors = { fullName: "", email: "", password: "" };
 
-  let isEditingGallery = false;
+    if (!signUpFullName.trim()) {
+      fieldErrors.fullName = "Name is required.";
+      isValid = false;
+    }
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(signUpEmail)) {
+      fieldErrors.email = "Please enter a valid email address.";
+      isValid = false;
+    }
 
-  /**
-   * @type {string | any[]}
-   */
-  let positionedImages = [];
+    if (!isPasswordStrong(signUpPassword)) {
+      fieldErrors.password = "Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, a number, and a special character.";
+      isValid = false;
+    }
 
-    /** * function that runs when the component is mounted */
-    onMount(async () => {
-        try {
-            const res = await fetch(`http://localhost:3010/educational/foodForThought`);
-            const data = await res.json();
+    return isValid;
+  };
 
-  // variable to fetch the array of thoughts from the api
-  /**
-   * @type {{ Description: string }[]}
-   */
-  export const foodForThought = [];
+  const handleSignUp = async () => {
+    if (!validateFields()) {
+      return;
+    }
 
-  // variable to store a random thought
-  /**
-   * @type {{ Description: any; } | null}
-   */
-  let randomThought = null;
-
-  // variable to fetch the array of notifications from the backend
-  /**
-   * @type {{ Title: string, Description: string, timestamp?: string }[]}
-   */
-  let notifications = [];
-
-  // variable to store the active notification
-  /**
-   * @type {{ Title: any; Description: any; timestamp?: any; } | null}
-   */
-  let activeNotification = null;
-
-  // index to track the current notification being displayed
-  let notificationIndex = 0;
-
-  // function that runs when the component is mounted
-  onMount(async () => {
     try {
-      // Fetching food for thought
-      const foodRes = await fetch(`http://localhost:3011/foodForThought`);
-      const foodData = await foodRes.json();
-
-      if (foodData.length > 0) {
-        randomThought = foodData[Math.floor(Math.random() * foodData.length)];
+      const response = await axios.post("http://localhost:3013/users", {
+        fullName: signUpFullName,
+        email: signUpEmail,
+        username: signUpFullName,
+        passwordHash: signUpPassword,
+      });
+      if (response.status === 201) {
+        signUpSuccessMessage = "Account created successfully! You can now log in.";
+        signUpErrorMessage = "";
       }
-
-      // Fetching notifications
-      const notifRes = await fetch(
-        `http://localhost:3010/challenges/notifications`,
-      );
-      notifications = await notifRes.json();
-
-      if (notifications.length > 0) {
-        activeNotification = notifications[notificationIndex];
-      }
-
-      // Logging fetched data
-      console.log("Random Thought:", randomThought);
-      console.log("Notifications:", notifications);
-      console.log("Active Notification:", activeNotification);
-    } catch (error) {
-      console.error("Failed to fetch data", error);
+    } catch (err: any) {
+      signUpErrorMessage = err.response?.data?.message || "Sign up failed due to an unexpected error.";
     }
-  });
+  };
 
-  function goToChallenges() {
-    window.location.href = "/challenges";
-  }
-
-  function closeModal() {
-    showModal = false;
-  }
-
-  // Periodically cycle through notifications for push notifications
-  /**
-   * @type {string | number | NodeJS.Timeout | undefined}
-   */
-  let cyclingInterval;
-  onMount(() => {
-    cyclingInterval = setInterval(() => {
-      if (notifications.length > 0) {
-        // Cycle to the next notification
-        notificationIndex = (notificationIndex + 1) % notifications.length;
-        activeNotification = notifications[notificationIndex];
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post("http://localhost:3013/login", {
+        email: loginEmail,
+        passwordHash: loginPassword,
+      });
+      if (response.status === 200) {
+        goto("http://localhost:5173/main");
       }
-    }, 5000); // Change notification every 5 seconds
-
-    return () => clearInterval(cyclingInterval); // Cleanup cycling interval on component destroy
-  });
-
-  function addImageToGallery() {
-    if (galleryImages.length > 0) {
-      const randomImageIndex = Math.floor(Math.random() * galleryImages.length);
-      const selectedImage = galleryImages[randomImageIndex];
-      positionedImages = [...positionedImages, { ...selectedImage }];
-      galleryImages.splice(randomImageIndex, 1);
+    } catch (err: any) {
+      loginErrorMessage = err.response?.data?.message || "Login failed. Please check your credentials.";
     }
-  }
-
-  function toggleEditMode() {
-    isEditingGallery = !isEditingGallery;
-  }
-
-  /**
-   * @param {string | any[]} updatedImages
-   */
-  function updateGallery(updatedImages) {
-    positionedImages = updatedImages;
-    savedCO2 = 0.5 * positionedImages.length;
-  }
+  };
 </script>
 
-<section class="flex flex-col h-screen bg-secondary-light">
-  <Header />
-  <main class="flex-1 overflow-y-auto">
-    <StatsPanel {unlockedFrames} {savedCO2} />
-    <button
-      on:click={addImageToGallery}
-      class="m-4 px-6 py-3 bg-secondary-dark text-white font-semibold rounded transition-all"
-    >
-      Add Image
-    </button>
-    <button
-      on:click={toggleEditMode}
-      class="m-4 px-6 py-3 bg-secondary-dark text-white font-semibold rounded transition-all"
-    >
-      {isEditingGallery ? "Save Changes" : "Edit Gallery"}
-    </button>
-    <Gallery
-      {positionedImages}
-      {isEditingGallery}
-      on:updateGallery={updateGallery}
-    />
-    {#if showModal}
-      <section class="fixed inset-0 bg-black bg-opacity-50 z-50">
-        <article
-          class="bg-secondary-light text-secondary-dark rounded-lg shadow-lg p-6 w-full h-full flex flex-col justify-center items-center relative"
-        >
-          <button
-            on:click={closeModal}
-            class="absolute top-4 right-4 text-secondary-dark"
-          >
-            ✖
-          </button>
-          {#if randomThought}
-            <div class="flex justify-center mb-4 ml-4">
-              <i class="{randomThought.Icon} w-20 h-20 text-6xl"></i>
-            </div>
-            <h2 class="text-center text-4xl font-bold mb-6">Did you know?</h2>
-            <p>{randomThought.Description}</p>
-          {:else}
-            <p>Loading...</p>
-          {/if}
-        </article>
-      </section>
-    {/if}
+<section class="min-h-screen bg-secondary-light flex flex-col">
+  <!-- Header -->
+  <header class="flex px-4 py-5 justify-between items-center">
+    <h1 class="text-lg font-bold text-black font-digital">
+      MuseTrail v2.0
+    </h1>
+  </header>
 
-    <!-- Active Notification Push -->
-    {#if activeNotification}
-      <section class="p-6 bg-blue-100 shadow-md rounded-lg mt-6">
-        <button on:click={goToChallenges} class="notification-button">
-          <h2 class="text-xl font-bold">Notifications</h2>
-          <div class="p-4 bg-blue-200 rounded-lg">
-            <h3 class="font-semibold text-lg">{activeNotification.Title}</h3>
-            <p>{activeNotification.Description}</p>
-            {#if activeNotification.timestamp}
-              <span class="text-sm text-gray-500"
-                >{activeNotification.timestamp}</span
-              >
-            {/if}
-          </div>
+  <!-- Content -->
+  <div class="flex flex-col items-center justify-center flex-grow bg-secondary-light py-10">
+    <div class="bg-white rounded-lg shadow-lg max-w-4xl w-full p-8">
+      <h1 class="text-2xl font-bold text-black mb-2">Welcome to MuseTrail!</h1>
+      <p class="text-gray-600 mb-6">Register your account</p>
+
+      <form on:submit|preventDefault={handleSignUp}>
+        <div class="mb-4">
+          <label for="fullName" class="block text-sm font-medium text-gray-700">Name <span class="text-red-500">*</span></label>
+          <input
+            id="fullName"
+            type="text"
+            bind:value={signUpFullName}
+            placeholder="Enter your full name"
+            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-primary focus:border-primary"
+            required
+          />
+          {#if fieldErrors.fullName}
+            <p class="text-red-500 text-sm mt-1">{fieldErrors.fullName}</p>
+          {/if}
+        </div>
+
+        <div class="mb-4">
+          <label for="email" class="block text-sm font-medium text-gray-700">Email <span class="text-red-500">*</span></label>
+          <input
+            id="email"
+            type="email"
+            bind:value={signUpEmail}
+            placeholder="Enter your email"
+            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-primary focus:border-primary"
+            required
+          />
+          {#if fieldErrors.email}
+            <p class="text-red-500 text-sm mt-1">{fieldErrors.email}</p>
+          {/if}
+        </div>
+
+        <div class="mb-4">
+          <label for="password" class="block text-sm font-medium text-gray-700">Password <span class="text-red-500">*</span></label>
+          <input
+            id="password"
+            type="password"
+            bind:value={signUpPassword}
+            placeholder="8+ characters, with upper/lowercase, a number, and special character"
+            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-primary focus:border-primary"
+            required
+          />
+          {#if fieldErrors.password}
+            <p class="text-red-500 text-sm mt-1">{fieldErrors.password}</p>
+          {/if}
+        </div>
+
+        {#if signUpErrorMessage}
+          <p class="text-red-500 text-sm mb-4">{signUpErrorMessage}</p>
+        {/if}
+
+        {#if signUpSuccessMessage}
+          <p class="text-green-500 text-sm mb-4">{signUpSuccessMessage}</p>
+        {/if}
+
+        <button
+          type="submit"
+          class="w-full bg-primary text-white font-medium py-2 px-4 rounded-lg hover:bg-primary-dark"
+          disabled={!validateFields()}
+        >
+          Sign Up
         </button>
-      </section>
-    {/if}
-  </main>
-  <Footer />
+      </form>
+
+      <div class="text-center mt-4">
+        <p class="text-sm text-gray-600">
+          <!-- svelte-ignore a11y_invalid_attribute -->
+          Already have an account? <a href="" class="text-primary font-medium" on:click={() => showLoginPopup = true}>Sign In</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Login Popup -->
+  {#if showLoginPopup}
+    <div class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
+      <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
+        <h2 class="text-lg font-bold mb-4">Login</h2>
+        <form on:submit|preventDefault={handleLogin}>
+          <div class="mb-4">
+            <label for="loginEmail" class="block text-sm font-medium text-gray-700">Email</label>
+            <input
+              id="loginEmail"
+              type="email"
+              bind:value={loginEmail}
+              placeholder="Enter your email"
+              class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-primary focus:border-primary"
+              required
+            />
+          </div>
+          <div class="mb-4">
+            <label for="loginPassword" class="block text-sm font-medium text-gray-700">Password</label>
+            <input
+              id="loginPassword"
+              type="password"
+              bind:value={loginPassword}
+              placeholder="Enter your password"
+              class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-primary focus:border-primary"
+              required
+            />
+          </div>
+          {#if loginErrorMessage}
+            <p class="text-red-500 text-sm mb-4">{loginErrorMessage}</p>
+          {/if}
+          <div class="flex justify-end">
+            <button
+              type="button"
+              class="bg-gray-500 text-white font-medium py-2 px-4 rounded-lg hover:bg-gray-600 mr-2"
+              on:click={() => { showLoginPopup = false; loginErrorMessage = ""; }}
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              class="bg-primary text-white font-medium py-2 px-4 rounded-lg hover:bg-primary-dark"
+            >
+              Login
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  {/if}
+
+  <!-- Footer -->
+  <footer class="relative bg-white h-20 flex items-center justify-center shadow-md w-full">
+    <!-- Center home button -->
+    <button
+      class="absolute -top-8 mx-auto w-16 h-16 rounded-full bg-secondary-light flex items-center justify-center shadow-md">
+      <a href="/">
+        <img
+          width="150"
+          height="150"
+          src="https://img.icons8.com/bubbles/150/museum.png"
+          alt="museum"
+        />
+      </a>
+    </button>
+  </footer>
 </section>
