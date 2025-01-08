@@ -8,6 +8,37 @@
   import StatsPanel from "../../components/StatsPanel.svelte";
   import { onMount } from "svelte";
   import "../../app.css";
+  import { fade } from "svelte/transition";
+
+  let EmojiPicker;
+
+  let emojis = ["😀", "😍", "😎", "🥳"];
+  let selectedEmoji = null;
+  let flyingEmoji = null;
+
+  function selectEmoji(emoji) {
+    flyingEmoji = emoji;
+    selectedEmoji = emoji;
+
+    setTimeout(() => {
+      flyingEmoji = null;
+      selectedEmoji = null;
+    }, 1000);
+  }
+
+  function toggleEmojiPicker() {
+    if (EmojiPicker) {
+      showEmojiPicker = !showEmojiPicker;
+      console.log("Found");
+    } else {
+      console.log("No emoji picker found");
+    }
+  }
+
+  function handleEmojiSelect(event) {
+    selectedEmoji = event.detail.unicode;
+    showEmojiPicker = false;
+  }
 
   let showModal = true;
 
@@ -25,6 +56,11 @@
 
   // function that runs when the component is mounted
   onMount(async () => {
+    if (typeof window !== "undefined") {
+      const module = await import("emoji-picker-element");
+      EmojiPicker = module.default || module;
+    }
+
     try {
       // Fetching food for thought
       const foodRes = await fetch(`http://localhost:3011/foodForThought`);
@@ -119,9 +155,11 @@
   <main class="flex-1 overflow-y-auto">
     <!--Food for thought modal-->
     {#if showModal}
-      <section class="fixed inset-0 bg-black bg-opacity-50 z-50">
+      <section
+        class="fixed inset-0 bg-black bg-opacity-50 z-50 justify-center items-center"
+      >
         <article
-          class="bg-moody-dark text-primary rounded-lg shadow-lg p-6 w-full h-full flex flex-col justify-center items-center relative"
+          class="bg-moody-dark text-primary rounded-lg shadow-lg p-6 w-full h-full flex flex-col items-center relative pt-48"
         >
           <button
             on:click={closeModal}
@@ -129,6 +167,8 @@
           >
             ✖
           </button>
+
+          <!-- Random Thought -->
           {#if randomThought}
             <div class="flex justify-center mb-4 ml-4">
               <i class="{randomThought.Icon} w-20 h-20 text-6xl"></i>
@@ -138,6 +178,28 @@
           {:else}
             <p>Loading...</p>
           {/if}
+
+          <div class="flex flex-col items-center justify-center flex-1">
+            <h2>Give your reaction:</h2>
+            <!-- Emoji Selection -->
+            <div class="flex space-x-4">
+              {#each emojis as emoji}
+                <button
+                  class="text-xl hover:scale-110 transition-transform duration-200"
+                  on:click={() => selectEmoji(emoji)}
+                >
+                  {emoji}
+                </button>
+              {/each}
+            </div>
+
+            <!-- Flying Emoji -->
+            {#if flyingEmoji}
+              <span class="text-6xl animate-flyOff absolute">
+                {flyingEmoji}
+              </span>
+            {/if}
+          </div>
         </article>
       </section>
     {/if}

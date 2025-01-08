@@ -3,6 +3,18 @@ export default {
   content: ['./src/**/*.{html,js,svelte,ts}'],
   theme: {
     extend: {
+      animation: {
+        flyOff: 'flyOff 3s forwards',
+      },
+      keyframes: {
+        flyOff: {
+          '0%': { transform: 'translateY(0) translateX(0)', opacity: '1' },
+          '100%': {
+            transform: 'translateY(-200vh) translateX(200vw)',
+            opacity: '0',
+          },
+        },
+      },
       colors: {
         primary: {
           light: '#3AB795',
