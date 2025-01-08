@@ -2,7 +2,7 @@
   <!-- Navigation items -->
   <section class="flex w-full justify-between px-6">
     <!-- Home -->
-    <a href="/">
+    <a href="/main">
       <button class="flex flex-col items-center">
         <img
           width="30"

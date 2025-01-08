@@ -1,201 +1,280 @@
-<script>
-  // @ts-nocheck
-  // @ts-ignore
-
-  import Header from "../components/Header.svelte";
-  import Gallery from "../components/Gallery.svelte";
-  import Footer from "../components/Footer.svelte";
-  import StatsPanel from "../components/StatsPanel.svelte";
-  import { onMount } from "svelte";
-  import "../app.css";
-
-  let showModal = true;
-
-  // variable to fetch the array of thoughts from the api
-  /**
-   * @type {{ Description: string }[]}
-   */
-  export const foodForThought = [];
-
-  // variable to store a random thought
-  /**
-   * @type {{ Description: any; } | null}
-   */
-  let randomThought = null;
-
-  // variable to fetch the array of notifications from the backend
-  /**
-   * @type {{ Title: string, Description: string, timestamp?: string }[]}
-   */
-  let notifications = [];
-
-  // variable to store the active notification
-  /**
-   * @type {{ Title: any; Description: any; timestamp?: any; } | null}
-   */
-  let activeNotification = null;
-
-  // index to track the current notification being displayed
-  let notificationIndex = 0;
-
-  // function that runs when the component is mounted
-  onMount(async () => {
-    try {
-      // Fetching food for thought
-      const foodRes = await fetch(`http://localhost:3011/foodForThought`);
-      const foodData = await foodRes.json();
-
-      if (foodData.length > 0) {
-        randomThought = foodData[Math.floor(Math.random() * foodData.length)];
-      }
-
-      // Fetching notifications
-      const notifRes = await fetch(
-        `http://localhost:3010/challenges/notifications`,
-      );
-      notifications = await notifRes.json();
-
-      if (notifications.length > 0) {
-        activeNotification = notifications[notificationIndex];
-      }
-
-      // Logging fetched data
-      console.log("Random Thought:", randomThought);
-      console.log("Notifications:", notifications);
-      console.log("Active Notification:", activeNotification);
-    } catch (error) {
-      console.error("Failed to fetch data", error);
-    }
-  });
-
-  function closeModal() {
-    showModal = false;
-  }
-
-  // Periodically cycle through notifications for push notifications
-  /**
-   * @type {string | number | NodeJS.Timeout | undefined}
-   */
-  let cyclingInterval;
-  onMount(() => {
-    cyclingInterval = setInterval(() => {
-      if (notifications.length > 0) {
-        // Cycle to the next notification
-        notificationIndex = (notificationIndex + 1) % notifications.length;
-        activeNotification = notifications[notificationIndex];
-      }
-    }, 120000); // Change notification every 5 seconds
-
-    return () => clearInterval(cyclingInterval); // Cleanup cycling interval on component destroy
-  });
+<script lang="ts">
+    import axios from "axios";
+    import { goto } from "$app/navigation";
+    import "../app.css";
+    let signUpFullName = "";
+    let signUpEmail = "";
+    let signUpPassword = "";
+    let signUpErrorMessage = "";
+    let signUpSuccessMessage = "";
+    let fieldErrors = { fullName: "", email: "", password: "" };
+    let loginEmail = "";
+    let loginPassword = "";
+    let loginErrorMessage = "";
+    let showLoginPopup = false;
+    const isPasswordStrong = (password: string): boolean => {
+        const strongPasswordRegex =
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        return strongPasswordRegex.test(password);
+    };
+    const validateFields = (): boolean => {
+        let isValid = true;
+        // Reset errors
+        fieldErrors = { fullName: "", email: "", password: "" };
+        if (!signUpFullName.trim()) {
+            fieldErrors.fullName = "Name is required.";
+            isValid = false;
+        }
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(signUpEmail)) {
+            fieldErrors.email = "Please enter a valid email address.";
+            isValid = false;
+        }
+        if (!isPasswordStrong(signUpPassword)) {
+            fieldErrors.password =
+                "Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, a number, and a special character.";
+            isValid = false;
+        }
+        return isValid;
+    };
+    const handleSignUp = async () => {
+        if (!validateFields()) {
+            return;
+        }
+        try {
+            const response = await axios.post("http://localhost:3013/users", {
+                fullName: signUpFullName,
+                email: signUpEmail,
+                username: signUpFullName,
+                passwordHash: signUpPassword,
+            });
+            if (response.status === 201) {
+                signUpSuccessMessage =
+                    "Account created successfully! You can now log in.";
+                signUpErrorMessage = "";
+            }
+        } catch (err: any) {
+            signUpErrorMessage =
+                err.response?.data?.message ||
+                "Sign up failed due to an unexpected error.";
+        }
+    };
+    const handleLogin = async () => {
+        try {
+            const response = await axios.post("http://localhost:3013/login", {
+                email: loginEmail,
+                passwordHash: loginPassword,
+            });
+            if (response.status === 200) {
+                goto("http://localhost:5173/main");
+            }
+        } catch (err: any) {
+            loginErrorMessage =
+                err.response?.data?.message ||
+                "Login failed. Please check your credentials.";
+        }
+    };
 </script>
 
-<section class="flex flex-col h-screen bg-white">
-  <!-- Active Notification Push -->
-  <!-- Notification Popup -->
-  {#if activeNotification}
-    <section class="fixed top-3 left-0 w-full p-4 z-50">
-      <div
-        class="max-w-lg mx-auto p-4 bg-primary-dark border-secondary border-2 text-white rounded-lg shadow-lg flex items-start"
-      >
-        <div class="flex-grow">
-          <h3 class="font-semibold text-lg">{activeNotification.Title}</h3>
-          <p class="mt-1 text-sm">{activeNotification.Description}</p>
-          {#if activeNotification.timestamp}
-            <span class="text-xs text-gray-300"
-              >{activeNotification.timestamp}</span
-            >
-          {/if}
-        </div>
-        <a
-          href="/challenges"
-          class="ml-4 text-sm font-bold uppercase bg-white text-moody-dark px-3 py-1 rounded hover:bg-moody-default hover:text-white"
-        >
-          View
-      </a>
-      </div>
-    </section>
-  {/if}
+<section class="min-h-screen bg-secondary-light flex flex-col">
+    <!-- Header -->
+    <header class="flex px-4 py-5 justify-between items-center">
+        <h1 class="text-lg font-bold text-black font-digital">
+            MuseTrail v2.0
+        </h1>
+    </header>
 
-  <Header />
+    <!-- Content -->
+    <div
+        class="flex flex-col items-center justify-center flex-grow bg-secondary-light py-10"
+    >
+        <div class="bg-white rounded-lg shadow-lg max-w-4xl w-full p-8">
+            <h1 class="text-2xl font-bold text-black mb-2">
+                Welcome to MuseTrail!
+            </h1>
+            <p class="text-gray-600 mb-6">Register your account</p>
 
-  <section class="flex justify-between items-start mt-4 p-5">
-    <!-- Title Section -->
-    <article>
-      <h1 class="text-5xl font-bold">
-        <span class="text-primary">Your</span> Museum
-      </h1>
-      <p class="italic text-3xl text-moody-light">CO2 Expert</p>
-      <a href="/gallery" class="italic text-sm text-moody-light"
-        >See your museum</a
-      >
-    </article>
+            <form on:submit|preventDefault={handleSignUp}>
+                <div class="mb-4">
+                    <label
+                        for="fullName"
+                        class="block text-sm font-medium text-gray-700"
+                        >Name <span class="text-red-500">*</span></label
+                    >
+                    <input
+                        id="fullName"
+                        type="text"
+                        bind:value={signUpFullName}
+                        placeholder="Enter your full name"
+                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-primary focus:border-primary"
+                        required
+                    />
+                    {#if fieldErrors.fullName}
+                        <p class="text-red-500 text-sm mt-1">
+                            {fieldErrors.fullName}
+                        </p>
+                    {/if}
+                </div>
 
-    <!-- Stats Section -->
-    <article class="flex flex-col text-right space-y-4">
-      <div>
-        <p class="text-primary text-xl font-bold">180</p>
-        <p class="text-moody-light text-sm">artwork</p>
-      </div>
-      <div>
-        <p class="text-primary text-xl font-bold">78</p>
-        <p class="text-moody-light text-sm">likes</p>
-      </div>
-      <div>
-        <p class="text-primary text-xl font-bold">05</p>
-        <p class="text-moody-light text-sm">collections</p>
-      </div>
-    </article>
-  </section>
+                <div class="mb-4">
+                    <label
+                        for="email"
+                        class="block text-sm font-medium text-gray-700"
+                        >Email <span class="text-red-500">*</span></label
+                    >
+                    <input
+                        id="email"
+                        type="email"
+                        bind:value={signUpEmail}
+                        placeholder="Enter your email"
+                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-primary focus:border-primary"
+                        required
+                    />
+                    {#if fieldErrors.email}
+                        <p class="text-red-500 text-sm mt-1">
+                            {fieldErrors.email}
+                        </p>
+                    {/if}
+                </div>
 
-  <!--Example images-->
-  <section>
-    <div class="space-y-3 m-3">
-      <!-- Row 1 -->
-      <div class="flex justify-center gap-2">
-        <div
-          class="-mt-6 bg-moody-light rounded-xl w-1/2 h-48"
-        ></div>
-        <div class="bg-black rounded-xl w-1/2 h-36"></div>
-      </div>
+                <div class="mb-4">
+                    <label
+                        for="password"
+                        class="block text-sm font-medium text-gray-700"
+                        >Password <span class="text-red-500">*</span></label
+                    >
+                    <input
+                        id="password"
+                        type="password"
+                        bind:value={signUpPassword}
+                        placeholder="8+ characters, with upper/lowercase, a number, and special character"
+                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-primary focus:border-primary"
+                        required
+                    />
+                    {#if fieldErrors.password}
+                        <p class="text-red-500 text-sm mt-1">
+                            {fieldErrors.password}
+                        </p>
+                    {/if}
+                </div>
 
-      <!-- Row 2 -->
-      <div class="flex justify-center gap-2">
-        <div
-          class="mt-4 bg-black rounded-xl w-1/2 h-36"
-        ></div>
-        <div
-          class="-mt-6 bg-moody-light rounded-xl w-1/2 h-48"
-        ></div>
-      </div>
-    </div>
-  </section>
+                {#if signUpErrorMessage}
+                    <p class="text-red-500 text-sm mb-4">
+                        {signUpErrorMessage}
+                    </p>
+                {/if}
 
-  <main class="flex-1 overflow-y-auto">
-    <!--Food for thought modal-->
-    {#if showModal}
-      <section class="fixed inset-0 bg-black bg-opacity-50 z-50">
-        <article
-          class="bg-moody-dark text-primary rounded-lg shadow-lg p-6 w-full h-full flex flex-col justify-center items-center relative"
-        >
-          <button
-            on:click={closeModal}
-            class="absolute top-4 right-4 text-primary"
-          >
-            ✖
-          </button>
-          {#if randomThought}
-            <div class="flex justify-center mb-4 ml-4">
-              <i class="{randomThought.Icon} w-20 h-20 text-6xl"></i>
+                {#if signUpSuccessMessage}
+                    <p class="text-green-500 text-sm mb-4">
+                        {signUpSuccessMessage}
+                    </p>
+                {/if}
+
+                <button
+                    type="submit"
+                    class="w-full bg-primary text-white font-medium py-2 px-4 rounded-lg hover:bg-primary-dark"
+                    disabled={!validateFields()}
+                >
+                    Sign Up
+                </button>
+            </form>
+
+            <div class="text-center mt-4">
+                <p class="text-sm text-gray-600">
+                    <!-- svelte-ignore a11y_invalid_attribute -->
+                    Already have an account?
+                    <a
+                        href=""
+                        class="text-primary font-medium"
+                        on:click={() => (showLoginPopup = true)}>Sign In</a
+                    >
+                </p>
             </div>
-            <h2 class="text-center text-4xl font-bold mb-6">Did you know?</h2>
-            <p>{randomThought.Description}</p>
-          {:else}
-            <p>Loading...</p>
-          {/if}
-        </article>
-      </section>
+        </div>
+    </div>
+
+    <!-- Login Popup -->
+    {#if showLoginPopup}
+        <div
+            class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center"
+        >
+            <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
+                <h2 class="text-lg font-bold mb-4">Login</h2>
+                <form on:submit|preventDefault={handleLogin}>
+                    <div class="mb-4">
+                        <label
+                            for="loginEmail"
+                            class="block text-sm font-medium text-gray-700"
+                            >Email</label
+                        >
+                        <input
+                            id="loginEmail"
+                            type="email"
+                            bind:value={loginEmail}
+                            placeholder="Enter your email"
+                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-primary focus:border-primary"
+                            required
+                        />
+                    </div>
+                    <div class="mb-4">
+                        <label
+                            for="loginPassword"
+                            class="block text-sm font-medium text-gray-700"
+                            >Password</label
+                        >
+                        <input
+                            id="loginPassword"
+                            type="password"
+                            bind:value={loginPassword}
+                            placeholder="Enter your password"
+                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-primary focus:border-primary"
+                            required
+                        />
+                    </div>
+                    {#if loginErrorMessage}
+                        <p class="text-red-500 text-sm mb-4">
+                            {loginErrorMessage}
+                        </p>
+                    {/if}
+                    <div class="flex justify-end">
+                        <button
+                            type="button"
+                            class="bg-gray-500 text-white font-medium py-2 px-4 rounded-lg hover:bg-gray-600 mr-2"
+                            on:click={() => {
+                                showLoginPopup = false;
+                                loginErrorMessage = "";
+                            }}
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            type="submit"
+                            class="bg-primary text-white font-medium py-2 px-4 rounded-lg hover:bg-primary-dark"
+                        >
+                            Login
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     {/if}
-  </main>
-  <Footer />
+
+    <!-- Footer -->
+    <footer
+        class="relative bg-white h-20 flex items-center justify-center shadow-md w-full"
+    >
+        <!-- Center home button -->
+        <button
+            class="absolute -top-8 mx-auto w-16 h-16 rounded-full bg-secondary-light flex items-center justify-center shadow-md"
+        >
+            <a href="/">
+                <img
+                    width="150"
+                    height="150"
+                    src="https://img.icons8.com/bubbles/150/museum.png"
+                    alt="museum"
+                />
+            </a>
+        </button>
+    </footer>
 </section>
