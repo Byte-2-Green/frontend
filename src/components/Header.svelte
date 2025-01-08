@@ -1,5 +1,9 @@
+<script>
+  import Notification from "./Notification.svelte";
+</script>
+
 <header
-  class="relative bg-black text-white overflow-hidden shadow-lg p-5 flex justify-between items-center"
+  class="relative bg-black text-white overflow-hidden shadow-lg p-5 flex justify-between items-center z-50"
   style="border-bottom-right-radius: 50% 108px;"
 >
   <!-- Left Section: Title and Profile Info -->
@@ -22,15 +26,8 @@
   <!-- Right Section: Notifications and Profile Image -->
   <div class="flex items-center gap-4 -mt-2 mr-4">
     <!-- Notification Icon -->
-    <div class="relative cursor-pointer">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
-           stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-white">
-        <path stroke-linecap="round" stroke-linejoin="round" 
-              d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14V9a6 6 0 00-12 0v5c0 .386-.149.735-.405 1.005L4 17h5m6 0a3 3 0 11-6 0m6 0H9" />
-      </svg>
-      <!-- Notification Indicator -->
-      <span id="notification-indicator" 
-            class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500 ring-2 ring-white"></span>
+    <div class="relative cursor-pointe">
+      <Notification />
     </div>
 
     <!-- Profile Image with Link -->
