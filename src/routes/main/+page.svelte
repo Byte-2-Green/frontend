@@ -41,29 +41,12 @@
   function closeModal() {
     showModal = false;
   }
-
-  // Periodically cycle through notifications for push notifications
-  /**
-   * @type {string | number | NodeJS.Timeout | undefined}
-   */
-  let cyclingInterval;
-  onMount(() => {
-    cyclingInterval = setInterval(() => {
-      if (notifications.length > 0) {
-        // Cycle to the next notification
-        notificationIndex = (notificationIndex + 1) % notifications.length;
-        activeNotification = notifications[notificationIndex];
-      }
-    }, 120000); // Change notification every 5 seconds
-
-    return () => clearInterval(cyclingInterval); // Cleanup cycling interval on component destroy
-  });
 </script>
 
 <section class="flex flex-col h-screen bg-white">
   <Header />
 
-  <section class="flex justify-between items-start mt-4 p-5">
+  <section class="flex justify-between items-start p-5">
     <!-- Title Section -->
     <article>
       <h1 class="text-5xl font-bold">
