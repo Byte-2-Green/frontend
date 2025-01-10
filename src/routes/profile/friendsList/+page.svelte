@@ -15,7 +15,7 @@
 
         <!-- Description -->
         <p class="text-lg max-w-lg -mb-8">
-            Check out who of your friends already has an exibition live!
+            See which of your friends have a live exhibition!
         </p>
     </div>
 
