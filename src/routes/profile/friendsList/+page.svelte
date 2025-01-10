@@ -11,7 +11,7 @@
     <Header />
 
     <div class="flex flex-col py-6 px-4">
-        <h1 class="text-3xl font-bold mb-5">Your Friends</h1>
+        <h1 class="text-3xl font-bold mb-5">My Friends</h1>
 
         <!-- Description -->
         <p class="text-lg max-w-lg -mb-8">
