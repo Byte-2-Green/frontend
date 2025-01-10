@@ -4,6 +4,7 @@
     import Header from "../../../components/Header.svelte";
 
     let selectedTab = "stats";
+    let showExhibitionPopup = false;
 </script>
 
 <main class="bg-white min-h-screen flex flex-col">
@@ -20,8 +21,8 @@
 
     <section class="p-4 text-gray-900">
         <ul role="list" class="max-w-sm divide-y divide-gray-700 m-2">
-            <!-- User 1 -->
-            <li class="py-4">
+             <!-- User 1 -->
+             <li class="py-4">
                 <div class="flex items-center gap-4">
                     <div class="flex-shrink-0">
                         <img
@@ -41,8 +42,11 @@
                     <span
                         class="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300"
                     >
-                        <span class="w-2 h-2 me-1 bg-green-500 rounded-full"></span>
-                        Exhibition <br>Available
+                    <span class="w-2 h-2 me-1 bg-green-500 rounded-full"></span>
+                    <button 
+                    on:click={() => showExhibitionPopup = true}>
+                    Exhibition <br>Available</button>
+
                     </span>
                 </div>
             </li>
@@ -95,8 +99,11 @@
                     <span
                         class="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300"
                     >
-                        <span class="w-2 h-2 me-1 bg-green-500 rounded-full"></span>
-                        Exhibition <br>Available
+                    <span class="w-2 h-2 me-1 bg-green-500 rounded-full"></span>
+                    <button 
+                    on:click={() => showExhibitionPopup = true}>
+                    Exhibition <br>Available</button>
+
                     </span>
                 </div>
             </li>
@@ -156,6 +163,35 @@
             </li>
         </ul>
     </section>
-    
+    <section>
+        <!-- Popup -->
+{#if showExhibitionPopup}
+<div class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-20">
+  <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
+    <h2 class="text-lg font-bold mb-4 text-center">Welcome to Neil's Exhibition</h2>
+    <div class="mb-4">
+      <img 
+        src="/images/neil'sexhibition.png" 
+        alt="Neil's Exhibition" 
+        class="w-full rounded-lg shadow"
+      />
+    </div>
+    <p class="text-sm text-gray-700 text-center">
+      Challenges completed: <strong>5</strong><br>
+      Frames unlocked: <strong>1</strong><br>
+      Saved CO2: <strong>1.8 Kg</strong>
+    </p>
+    <div class="mt-6 text-center">
+      <button
+        class="bg-primary text-white font-medium py-2 px-4 rounded-lg hover:bg-primary-dark"
+        on:click={() => showExhibitionPopup = false}
+      >
+        Close
+      </button>
+    </div>
+  </div>
+</div>
+{/if}
+        </section>
     <Footer />
 </main>
