@@ -2,6 +2,7 @@
     import axios from "axios";
     import { goto } from "$app/navigation";
     import "../app.css";
+
     let signUpFullName = "";
     let signUpEmail = "";
     let signUpPassword = "";
