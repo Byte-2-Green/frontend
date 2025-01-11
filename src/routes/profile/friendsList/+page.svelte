@@ -15,7 +15,7 @@
 
         <!-- Description -->
         <p class="text-lg max-w-lg -mb-8">
-            See which of your friends have a live exhibition!
+            See which of your friends have a live exhibition
         </p>
     </div>
 
@@ -167,7 +167,7 @@
         <!-- Popup -->
 {#if showExhibitionPopup}
 <div class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-20">
-  <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
+  <div class="bg-moody-dark text-white rounded-xl shadow-xl p-8 w-full max-w-md flex flex-col justify-center items-center relative m-4">
     <h2 class="text-lg font-bold mb-4 text-center">Welcome to Neil's Exhibition</h2>
     <div class="mb-4">
       <img 
@@ -176,7 +176,7 @@
         class="w-full rounded-lg shadow"
       />
     </div>
-    <p class="text-sm text-gray-700 text-center">
+    <p class="text-sm text-white-700 text-center">
       Challenges completed: <strong>5</strong><br>
       Frames unlocked: <strong>1</strong><br>
       Saved CO2: <strong>1.8 Kg</strong>
