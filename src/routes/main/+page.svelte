@@ -97,16 +97,16 @@
     <!-- Stats Section -->
     <article class="flex flex-col text-right space-y-4">
       <div>
-        <p class="text-primary text-xl font-bold">180</p>
-        <p class="text-moody-light text-sm">artwork</p>
+        <p class="text-primary text-xl font-bold">4</p>
+        <p class="text-moody-light text-sm">frames</p>
       </div>
       <div>
         <p class="text-primary text-xl font-bold">78</p>
         <p class="text-moody-light text-sm">likes</p>
       </div>
       <div>
-        <p class="text-primary text-xl font-bold">05</p>
-        <p class="text-moody-light text-sm">collections</p>
+        <p class="text-primary text-xl font-bold">10</p>
+        <p class="text-moody-light text-sm">friends</p>
       </div>
     </article>
   </section>

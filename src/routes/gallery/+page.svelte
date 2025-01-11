@@ -21,7 +21,6 @@
 
   async function calculateSavedCO2() {
     try {
-      // Fetch accepted challenges for user_id = 1
       const acceptedChallengesResponse = await fetch(
         "http://localhost:3012/accepted-challenges",
       );
@@ -37,8 +36,9 @@
 
       // Fetch challenges details to get CO2 emissions
       const challengesResponse = await fetch(
-        "http://localhost:3012/challenges",
+        "http://localhost:3012/all",
       );
+
       if (!challengesResponse.ok) {
         throw new Error("Failed to fetch challenges");
       }
@@ -47,7 +47,7 @@
 
       for (let i = 0; i < acceptedChallenges.length; i++) {
         const acceptedChallenge = acceptedChallenges[i];
-        
+
         const challenge = challenges.find(
           (ch) => ch.Challenge_ID === acceptedChallenge.Challenge_ID,
         );
@@ -58,6 +58,42 @@
       return savedCO2;
     } catch (error) {
       console.error("Error calculating saved CO2:", error);
+      return 0;
+    }
+  }
+
+  let percentageCompleted = 0;
+
+  async function calculatePercentageCompleted() {
+    try {
+      const acceptedChallengesResponse = await fetch(
+        "http://localhost:3012/accepted-challenges",
+      );
+      if (!acceptedChallengesResponse.ok) {
+        throw new Error("Failed to fetch accepted challenges");
+      }
+      const acceptedChallenges = await acceptedChallengesResponse.json();
+
+      const declinedChallengesResponse = await fetch(
+        "http://localhost:3012/denied-challenges",
+      );
+      if (!declinedChallengesResponse.ok) {
+        throw new Error("Failed to fetch declined challenges");
+      }
+      const declinedChallenges = await declinedChallengesResponse.json();
+
+      const totalChallenges =
+        acceptedChallenges.length + declinedChallenges.length;
+
+      if (totalChallenges === 0) {
+        return 0;
+      }
+
+      const percentageCompleted =
+        (acceptedChallenges.length / totalChallenges) * 100;
+      return Math.round(percentageCompleted);
+    } catch (error) {
+      console.error("Error calculating percentage completed:", error);
       return 0;
     }
   }
@@ -75,6 +111,7 @@
   async function loadGallery() {
     try {
       savedCO2 = await calculateSavedCO2();
+      percentageCompleted = await calculatePercentageCompleted();
 
       // Fetch gallery data
       const response = await fetch("http://localhost:3014/gallery/1");
@@ -101,7 +138,7 @@
   <Header />
 
   <main class="flex-1 overflow-y-auto">
-    <StatsPanel {unlockedFrames} {savedCO2}/>
+    <StatsPanel {unlockedFrames} {savedCO2} {percentageCompleted} />
 
     <section class="flex justify-center items-center">
       <!-- <button
