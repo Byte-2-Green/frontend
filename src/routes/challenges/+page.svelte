@@ -176,7 +176,7 @@
      * 3) Splits into words
      * 4) Returns true if any word is in bannedWords
      */
-     function containsOffensiveWords(text) {
+    function containsOffensiveWords(text) {
         // Remove punctuation & lower
         const noPunctuation = text.replace(/[^\w\s]|_/g, "").toLowerCase();
         // Split on spaces
@@ -217,14 +217,14 @@
             const feedbackData = {
                 Challenge_ID: randomChallenge?.Challenge_ID,
                 feedback_text: feedbackText,
-                rating: userRating
+                rating: userRating,
             };
             const response = await fetch(
                 `http://localhost:3010/challenges/challenges/feedback?rating=${feedbackData.rating}&Challenge_ID=${feedbackData.Challenge_ID}&feedback_text=${feedbackData.feedback_text}`,
                 {
                     method: "POST",
-                    headers: { "Content-Type": "application/json" }
-                }
+                    headers: { "Content-Type": "application/json" },
+                },
             );
             if (response.ok) {
                 await response.json();
@@ -553,12 +553,12 @@
                 aria-labelledby="feedback-modal-title"
             >
                 <article
-                    class="bg-secondary-light text-secondary-dark rounded-lg shadow-lg p-6 w-11/12 md:w-1/2 flex flex-col justify-center items-center relative"
+                    class="bg-moody-dark text-white rounded-lg shadow-lg p-6 w-11/12 md:w-1/2 flex flex-col justify-center items-center relative"
                 >
                     <!-- Close Button -->
                     <button
                         on:click={closeFeedbackModal}
-                        class="absolute top-4 right-4 text-secondary-dark"
+                        class="absolute top-4 right-4 text-white"
                         aria-label="Close feedback modal"
                     >
                         ✖
@@ -611,7 +611,7 @@
                     </div>
                     <!-- Save Feedback Button -->
                     <button
-                        class="bg-green-600 text-white font-bold py-2 px-4 rounded hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2"
+                        class="bg-primary-dark text-white font-bold py-2 px-4 rounded"
                         on:click={saveUserFeedback}
                     >
                         Save
