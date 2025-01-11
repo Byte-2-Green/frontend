@@ -9,7 +9,7 @@
 <main class="bg-white min-h-screen flex flex-col">
   <Header/>
     <!-- Invite and View Friends Buttons -->
-    <article class="text-center m-4 text-lg">
+    <article class="text-center m-4 text-lg mt-20">
       <button
         class="w-full bg-primary px-6 py-3 rounded-lg shadow-md mb-4 flex items-center"
       >
@@ -55,7 +55,7 @@
 
     <!-- Dynamic Content Based on Selected Tab -->
     <article
-      class="mt-4 bg-primary-dark text-white text-center mx-4 rounded-lg px-6 py-6"
+      class="mt-4 bg-primary-dark text-white text-center mx-4 rounded-lg px-6 py-6 mb-64"
     >
       {#if selectedTab == "stats"}
         <div class="flex justify-around items-center">

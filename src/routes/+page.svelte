@@ -12,10 +12,12 @@
     let loginPassword = "";
     let loginErrorMessage = "";
     let showLoginPopup = false;
+
     const isPasswordStrong = (password: string): boolean => {
       const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
       return strongPasswordRegex.test(password);
     };
+
     const validateFields = (): boolean => {
       let isValid = true;
       // Reset errors
@@ -35,6 +37,7 @@
       }
       return isValid;
     };
+
     const handleSignUp = async () => {
       if (!validateFields()) {
         return;
@@ -54,6 +57,7 @@
         signUpErrorMessage = err.response?.data?.message || "Sign up failed due to an unexpected error.";
       }
     };
+
     const handleLogin = async () => {
       try {
         const response = await axios.post("http://localhost:3013/login", {
@@ -69,23 +73,15 @@
     };
   </script>
   
-  <section class="min-h-screen bg-secondary-light flex flex-col">
-    <!-- Header -->
-    <header class="flex px-4 py-5 justify-between items-center">
-      <h1 class="text-lg font-bold text-black font-digital">
-        MuseTrail v2.0
-      </h1>
-    </header>
-  
+  <section class="min-h-screen flex flex-col">
     <!-- Content -->
-    <div class="flex flex-col items-center justify-center flex-grow bg-secondary-light py-10">
-      <div class="bg-white rounded-lg shadow-lg max-w-4xl w-full p-8">
-        <h1 class="text-2xl font-bold text-black mb-2">Welcome to MuseTrail!</h1>
+    <div class="flex flex-col items-center justify-center flex-grow bg-moody-dark py-10 p-8">
+        <h1 class="text-2xl font-bold text-white mb-2">Welcome to MuseTrail!</h1>
         <p class="text-gray-600 mb-6">Register your account</p>
   
         <form on:submit|preventDefault={handleSignUp}>
           <div class="mb-4">
-            <label for="fullName" class="block text-sm font-medium text-gray-700">Name <span class="text-red-500">*</span></label>
+            <label for="fullName" class="block text-sm font-medium text-gray-400">Name <span class="text-red-500">*</span></label>
             <input
               id="fullName"
               type="text"
@@ -100,7 +96,7 @@
           </div>
   
           <div class="mb-4">
-            <label for="email" class="block text-sm font-medium text-gray-700">Email <span class="text-red-500">*</span></label>
+            <label for="email" class="block text-sm font-medium text-gray-400">Email <span class="text-red-500">*</span></label>
             <input
               id="email"
               type="email"
@@ -115,7 +111,7 @@
           </div>
   
           <div class="mb-4">
-            <label for="password" class="block text-sm font-medium text-gray-700">Password <span class="text-red-500">*</span></label>
+            <label for="password" class="block text-sm font-medium text-gray-400">Password <span class="text-red-500">*</span></label>
             <input
               id="password"
               type="password"
@@ -152,13 +148,12 @@
             Already have an account? <a href="" class="text-primary font-medium" on:click={() => showLoginPopup = true}>Sign In</a>
           </p>
         </div>
-      </div>
     </div>
   
     <!-- Login Popup -->
     {#if showLoginPopup}
       <div class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
-        <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
+        <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-md m-5">
           <h2 class="text-lg font-bold mb-4">Login</h2>
           <form on:submit|preventDefault={handleLogin}>
             <div class="mb-4">
@@ -205,20 +200,4 @@
         </div>
       </div>
     {/if}
-  
-    <!-- Footer -->
-    <footer class="relative bg-white h-20 flex items-center justify-center shadow-md w-full">
-      <!-- Center home button -->
-      <button
-        class="absolute -top-8 mx-auto w-16 h-16 rounded-full bg-secondary-light flex items-center justify-center shadow-md">
-        <a href="/">
-          <img
-            width="150"
-            height="150"
-            src="https://img.icons8.com/bubbles/150/museum.png"
-            alt="museum"
-          />
-        </a>
-      </button>
-    </footer>
   </section>
