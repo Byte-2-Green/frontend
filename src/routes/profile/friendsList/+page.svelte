@@ -178,10 +178,10 @@
         <div
           class="bg-moody-dark text-white rounded-xl shadow-xl p-8 w-full max-w-md flex flex-col justify-center items-center relative m-4"
         >
-          <h2 class="text-lg font-bold mb-4 text-center">
-            Welcome to Neil's Exhibition
+          <h2 class="text-lg font-bold mb-4 text-center"> <br>
+            Welcome to Neil's Exhibition 
           </h2>
-          <div class="mb-4">
+          <div class="mb-4"> <br>
             <img
               src="/images/neil'sexhibition.png"
               alt="Neil's Exhibition"
