@@ -85,13 +85,14 @@
   <section class="flex justify-between items-start p-5">
     <!-- Title Section -->
     <article>
-      <h1 class="text-5xl font-bold">
+      <h1 class="text-5xl font-bold mb-2">
         <span class="text-primary">My</span> Museum
       </h1>
-      <p class="italic text-3xl text-moody-light">CO2 Expert</p>
-      <a href="/gallery" class="italic text-sm text-moody-light"
-        >See your museum</a
-      >
+      <p class="italic text-3xl text-moody-light mb-6">CO2 Expert</p>
+      <a href="/gallery" class="border border-primary text-primary px-4 py-2 rounded-md text-sm font-medium">
+        See your museum
+      </a>
+      
     </article>
 
     <!-- Stats Section -->
