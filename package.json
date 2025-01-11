@@ -40,6 +40,7 @@
     "@sveltejs/adapter-node": "^5.2.9",
     "apexcharts": "^4.3.0",
     "axios": "^1.7.9",
+    "emoji-picker-element": "^1.26.0",
     "install": "^0.13.0",
     "npm": "^10.9.1",
     "progressbar.js": "^1.1.1",
