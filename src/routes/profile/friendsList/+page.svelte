@@ -11,7 +11,7 @@
   let showExhibitionPopup = false;
   let EmojiPicker;
 
-  let emojis = ["👍🏻", "❤️"];
+  let emojis = ["❤️", "💔"];
 
   let selectedEmoji = null;
   let flyingEmoji = null;
