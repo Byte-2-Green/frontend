@@ -21,7 +21,7 @@
         Invite your friends
       </button>
       <a href="/profile/friendsList" class="w-full bg-primary px-6 py-3 rounded-lg shadow-md mb-5">
-        View friends' galleries
+        View Friends' Galleries
       </a>
     </article>
 

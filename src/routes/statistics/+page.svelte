@@ -236,12 +236,12 @@
             </a>
             <a
                 class="bg-primary px-4 py-2 rounded-md {window.location
-                    .pathname === '/statistics/faq'
+                    .pathname === '/statistics/ecoinsights'
                     ? 'font-bold'
                     : ''}"
-                href="/statistics/faq"
+                href="/statistics/ecoinsights"
             >
-                FAQ
+            Eco Insights
             </a>
         </div>
 
