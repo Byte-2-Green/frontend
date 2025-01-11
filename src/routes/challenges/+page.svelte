@@ -205,7 +205,13 @@
      */
     async function saveUserFeedback() {
         // Clear any previous error
+        if (!feedbackText || !userRating) {
+            errorMessage = "Please add text or mark stars before submitting.";
+            console.log(errorMessage);
+            return;
+        }
         errorMessage = "";
+        
         // Final check before sending
         if (containsOffensiveWords(feedbackText)) {
             errorMessage =
@@ -435,6 +441,7 @@
                         class="absolute top-4 right-4 text-gray-400 text-2xl"
                         >&times;</button
                     >
+
                     {#if randomChallenge}
                         <!-- Title Section -->
                         <h2 class="text-center text-3xl font-bold mb-4">
@@ -443,6 +450,7 @@
                         <p class="text-center text-lg mb-6">
                             {randomChallenge.Description}
                         </p>
+
                         <!-- Timer Section -->
                         <div class="w-full mb-6">
                             <p class="text-center text-lg font-semibold mb-2">
@@ -460,6 +468,7 @@
                                 ></div>
                             </div>
                         </div>
+
                         <!-- Completed Button -->
                         <button
                             on:click={completeForm}
@@ -576,7 +585,7 @@
                     {/if}
                     <!-- Textarea (no real-time replacement, just store raw) -->
                     <textarea
-                        class="border rounded w-full p-2 mb-4"
+                        class="border rounded w-full p-2 mb-4 text-black"
                         placeholder="Write your feedback here..."
                         bind:value={feedbackText}
                     ></textarea>
@@ -616,6 +625,12 @@
                     >
                         Save
                     </button>
+                    <!-- Error Message -->
+                    {#if errorMessage}
+                    <p class="text-red-500 text-sm mt-4">
+                        {errorMessage}
+                    </p>
+                {/if}
                 </article>
             </section>
         {/if}
