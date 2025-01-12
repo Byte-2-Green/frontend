@@ -153,7 +153,7 @@
     </div>
   </section>
 
-  <main class="flex-1 overflow-y-auto">
+  <main class="flex-1 overflow-y-auto justify-center text-center">
     <!--Food for thought modal-->
     {#if showModal}
       <section

@@ -35,9 +35,7 @@
       );
 
       // Fetch challenges details to get CO2 emissions
-      const challengesResponse = await fetch(
-        "http://localhost:3012/all",
-      );
+      const challengesResponse = await fetch("http://localhost:3012/all");
 
       if (!challengesResponse.ok) {
         throw new Error("Failed to fetch challenges");
@@ -140,20 +138,12 @@
   <main class="flex-1 overflow-y-auto">
     <StatsPanel {unlockedFrames} {savedCO2} {percentageCompleted} />
 
-    <section class="flex justify-center items-center">
-      <!-- <button
-        on:click={addImageToGallery}
-        class="m-4 px-6 py-1 bg-moody-dark text-white font-semibold rounded transition-all"
-      >
-        Add Image
-      </button> -->
-      <!-- <button
-        on:click={toggleEditMode}
-        class="m-4 px-6 py-1 bg-moody-dark text-white font-semibold rounded transition-all"
-      > -->
-      <!-- {isEditingGallery ? "Save Changes" : "Edit Gallery"}
-      </button> -->
-    </section>
+    <button
+      on:click={toggleEditMode}
+      class="m-4 px-6 py-1 bg-moody-dark text-white font-semibold rounded transition-all"
+    >
+      {isEditingGallery ? "Save Changes" : "Edit Gallery"}
+    </button>
 
     <Gallery
       {positionedImages}
