@@ -1,58 +1,99 @@
 <script>
+  // @ts-nocheck
   // @ts-ignore
-  export let positionedImages = [];
-  // @ts-ignore
-  export let isEditingGallery;
 
-  // @ts-ignore
+  import StatsPanel from "../components/StatsPanel.svelte";
+  import { positionedImages } from "../routes/store.js";
+  import { onMount } from "svelte";
+
+  let images;
+  positionedImages.subscribe((value) => {
+    images = value;
+  });
+
+  export let isEditingGallery;
+  export let unlockedFrames;
+
   let selectedImage = null;
 
+  let frameWidth = 350;
+  let frameHeight = 400;
+
+  let placeholders = [];
+
   // Handles image selection
-  // @ts-ignore
   function handleImageClick(image) {
-    // @ts-ignore
-    if (isEditingGallery) {
-      // @ts-ignore
-      if (!selectedImage) {
-        selectedImage = image;
-        selectedImage.classList.add("opacity-50");
-        console.log("Selected Image:", selectedImage);
-      } else if (selectedImage === image) {
-        selectedImage.classList.remove("opacity-50");
-        selectedImage = null;
-        console.log("Deselected Image.");
-      } else {
-        const parentOfSelectedImage = selectedImage.parentElement;
-        const parentOfClickedImage = image.parentElement;
-        parentOfSelectedImage.appendChild(image);
-        parentOfClickedImage.appendChild(selectedImage);
-
-        console.log("Swapped images:", selectedImage, image);
-
-        selectedImage.classList.remove("opacity-50");
-        selectedImage = null;
-      }
-    } else {
-      console.warn("Gallery is not in editing mode.");
-    }
+  if (!isEditingGallery) {
+    console.warn("Gallery is not in editing mode.");
+    return;
   }
 
+  if (!selectedImage) {
+    // Select the current image
+    selectedImage = image;
+    selectedImage.classList.add("opacity-50");
+  } else if (selectedImage === image) {
+    // Deselect if clicking the same image
+    selectedImage.classList.remove("opacity-50");
+    selectedImage = null;
+    console.log("Deselected Image.");
+  } else {
+    // Swap logic
+    const parentOfSelectedImage = selectedImage.parentElement;
+    const parentOfClickedImage = image.parentElement;
+
+    // Placeholder IDs
+    const selectedPlaceholderId = parentOfSelectedImage.dataset.placeholderId;
+    const clickedPlaceholderId = parentOfClickedImage.dataset.placeholderId;
+
+    // Extract image IDs
+    const selectedImageId = selectedImage.dataset.artId;
+    const clickedImageId = image.dataset.artId;
+
+    if (!selectedImageId || !clickedImageId) {
+      console.error("Art ID is undefined. Ensure images have data-art-id set.");
+      return;
+    }
+
+    if (!selectedPlaceholderId || !clickedPlaceholderId) {
+      console.error(
+        "Placeholder ID is undefined. Ensure placeholders have data-placeholder-id set."
+      );
+      return;
+    }
+
+    // Swap images in DOM
+    parentOfSelectedImage.appendChild(image);
+    parentOfClickedImage.appendChild(selectedImage);
+
+    // Update database for both images
+    updateArt(selectedImageId, selectedImage.src, 1, 1, clickedPlaceholderId); // Update selected image
+    updateArt(clickedImageId, image.src, 1, 1, selectedPlaceholderId); // Update clicked image
+
+    console.log(
+      `Swapped images: Image ${selectedImageId} to Placeholder ${clickedPlaceholderId}, Image ${clickedImageId} to Placeholder ${selectedPlaceholderId}`
+    );
+
+    // Reset selection
+    selectedImage.classList.remove("opacity-50");
+    selectedImage = null;
+  }
+}
+
   // Handles placeholder clicks to move or swap images
-  // @ts-ignore
   function handlePlaceholderClick(placeholderId) {
-    // @ts-ignore
     if (!isEditingGallery) {
       console.warn("Gallery is not in editing mode.");
       return;
     }
 
-    // @ts-ignore
     if (!selectedImage) {
       console.warn("No image selected to move!");
       return;
     }
 
     const placeholder = document.getElementById(`placeholder${placeholderId}`);
+    console.log(placeholder);
     if (!placeholder) {
       console.error(`Placeholder with ID ${placeholderId} not found.`);
       return;
@@ -70,18 +111,49 @@
 
     placeholder.appendChild(selectedImage);
 
+    // Extract data attributes from the selected image
+    const artId = selectedImage.dataset.artId; // Ensure the image element has this data
+    const imageUrl = selectedImage.src;
+    const userId = 1; // Replace with dynamic user ID if applicable
+    const galleryId = 1; // Replace with dynamic gallery ID if applicable
+
+    updateArt(artId, imageUrl, userId, galleryId, placeholderId + 1);
+    console.log(`Art ${artId} updated to placeholder ${placeholderId + 1}`);
+
     selectedImage.classList.remove("opacity-50");
     selectedImage = null;
   }
 
-  $: {
-    // @ts-ignore
-    positionedImages.forEach(({ src, text }, index) => {
-      const placeholder = document.getElementById(`placeholder${index + 1}`);
+  async function updateArt(artId, imageUrl, userId, galleryId, placeholderId) {
+    try {
+      const response = await fetch(`http://localhost:3014/art/${artId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ imageUrl, userId, galleryId, placeholderId }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update art in the database");
+      }
+
+      const data = await response.json();
+      console.log("Art updated successfully:", data.message);
+    } catch (error) {
+      console.error("Error updating art:", error);
+    }
+  }
+
+  // Wait for images to be available before rendering them
+  $: if (images && images.length > 0) {
+    images.forEach(({ image_url, placeholder_id }, index) => {
+      const placeholder = placeholders[placeholder_id - 1];
       if (placeholder && !placeholder.querySelector("img")) {
         const img = document.createElement("img");
-        img.src = src;
-        img.alt = text;
+        img.dataset.artId = index + 1;
+        img.src = image_url;
+        img.alt = `Art image ${index}`;
         img.classList.add(
           "object-cover",
           "w-[75vw]",
@@ -97,70 +169,55 @@
       }
     });
   }
+
+  onMount(() => {
+    if (images) {
+      images.forEach(({ image_url, placeholder_id }, index) => {
+        const placeholder = placeholders[placeholder_id - 1];
+        if (placeholder && !placeholder.querySelector("img")) {
+          const img = document.createElement("img");
+          img.src = image_url;
+          img.alt = `Art image ${index}`;
+          img.classList.add(
+            "object-cover",
+            "w-[75vw]",
+            "h-[100%]",
+            "rounded-lg",
+            "shadow-lg",
+          );
+          img.onclick = (event) => {
+            event.stopPropagation();
+            handleImageClick(img);
+          };
+          placeholder.appendChild(img);
+        }
+      });
+    }
+  });
 </script>
 
-<section class="relative overflow-x-auto w-full">
-  <div
-    class="relative flex justify-start items-start w-full"
-    style="height: 60vh;"
-  >
-    <div class="flex justify-start items-start w-max h-full">
-      {#each [1, 2, 3, 4] as column}
-        <section
-          class="relative flex justify-center items-start w-[80vw] h-[60vh] px-2"
-        >
-          <div
-            class="absolute bottom-0 left-0 right-0 h-[27%] bg-secondary z-0"
-          ></div>
-          <div class="w-full h-full p-4 rounded-lg relative">
-            <div class="flex flex-col w-full h-full">
-              <!-- Lamp -->
-              <div class="h-[10%] flex justify-center items-center z-10">
-                <img
-                  src="/images/lamp.png"
-                  alt="lamp"
-                  class="object-contain w-[90%] h-auto"
-                />
-              </div>
-              <!-- Placeholder -->
-              <div
-                class="h-[50%] flex justify-center items-center"
-                role="button"
-                tabindex="0"
-                on:click={() => handlePlaceholderClick(column)}
-                on:keydown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    handlePlaceholderClick(column);
-                  }
-                }}
-                aria-label={`Placeholder ${column}`}
-              >
-                <div
-                  class="w-[75vw] h-[100%] bg-gradient-to-br from-primary-light to-primary relative border-8 border-orange-200 rounded shadow-lg"
-                  id={`placeholder${column}`}
-                ></div>
-              </div>
-
-              <!-- Rope -->
-              <div class="h-[12%] flex justify-center items-center z-0">
-                <img
-                  src="/images/rope.png"
-                  alt="rope"
-                  class="object-contain w-[75vw] h-auto"
-                />
-              </div>
-              <!-- Bench -->
-              <div class="h-[18%] flex justify-center items-center">
-                <img
-                  src="/images/bench.png"
-                  alt="bench"
-                  class="object-contain w-[90%] h-auto"
-                />
-              </div>
-            </div>
-          </div>
-        </section>
-      {/each}
-    </div>
-  </div>
+<section class="mt-6 grid grid-cols-2 gap-3 px-6 z-5">
+  {#each Array(unlockedFrames) as _, index}
+    <article
+      class="relative flex flex-col bg-black text-white rounded-lg shadow-xl overflow-hidden w-full h-[30vh]"
+    >
+      <!-- Placeholder -->
+      <div class="relative z-10 flex justify-center items-center h-full">
+        <div
+          class="w-full h-full bg-gradient-to-b from-primary to-moody-dark opacity-70 rounded-xl shadow-lg"
+          role="button"
+          tabindex="0"
+          on:click={() => handlePlaceholderClick(index + 1)}
+          on:keydown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              handlePlaceholderClick(index + 1);
+            }
+          }}
+          aria-label={`Placeholder ${index + 1}`}
+          bind:this={placeholders[index]}
+          id={`placeholder${index + 1}`}
+        ></div>
+      </div>
+    </article>
+  {/each}
 </section>

@@ -1,7 +1,6 @@
 <script>
     import Header from "../../../components/Header.svelte";
     import Footer from "../../../components/Footer.svelte";
-
     const faqs = [
         {
             question: "How do digital activities contribute to CO2 emissions?",
@@ -26,31 +25,33 @@
     ];
 </script>
 
-<section class="min-h-screen bg-secondary-light flex flex-col">
+<section class="min-h-screen bg-white flex flex-col">
     <!-- Header -->
     <Header />
 
-    <div class="flex flex-col px-4">
+    <div class="flex flex-col mt-5 px-4">
         <div class="flex space-x-4">
             <a
-                class="bg-secondary px-4 py-2 rounded-md {window.location.pathname === '/statistics' ? 'font-bold' : ''}"
+                class="bg-primary px-4 py-2 rounded-md {window.location.pathname === '/statistics' ? 'font-bold' : ''}"
                 href="/statistics"
             >
                 Overview
             </a>
             <a
-                class="bg-secondary px-4 py-2 rounded-md {window.location.pathname === '/statistics/faq' ? 'font-bold' : ''}"
-                href="/statistics/faq"
+                class="bg-primary px-4 py-2 rounded-md {window.location.pathname === '/statistics/ecoinsights' ? 'font-bold' : ''}"
+                href="/statistics/ecoinsights"
             >
-                FAQ
+            Eco Insights
             </a>
         </div>
 
         <!-- Description -->
         <p class="text-lg max-w-lg mt-8 mb-8">
-            Here you can find some important information about some bad digital
-            habits you might have and might not be aware they are bad at all.
-            There are also some suggestions as to what you can do.
+            Here, you can discover valuable insights into how digital 
+            activities impact the environment, particularly their 
+            contribution to CO2 emissions. 
+            Explore practical suggestions to adopt more sustainable 
+            digital habits and reduce your environmental footprint.
         </p>
 
         <!-- FAQ Section -->
