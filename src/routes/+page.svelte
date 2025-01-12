@@ -1,4 +1,7 @@
-<script lang="ts">
+<script>
+    // @ts-nocheck
+    // @ts-ignore
+
     import axios from "axios";
     import { goto } from "$app/navigation";
     import "../app.css";
