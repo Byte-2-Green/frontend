@@ -34,23 +34,20 @@
   
   <!-- Invite and View Friends Buttons -->
   <article class="text-center m-4 text-lg">
-    <button
-      class="w-full bg-primary px-6 py-3 rounded-lg shadow-md mb-4 flex items-center"
-    >
-      <img
-        src="/images/friendsIcon.png"
-        alt="Friends Icon"
-        class="-ml-4 mr-4 -mb-3 -mt-8 w-24 h-24"
-      />
-      Invite your friends
-    </button>
-    <a
-      href="/profile/friendsList"
-      class="w-full bg-primary px-6 py-3 rounded-lg shadow-md mb-5"
-    >
-      View friends' galleries
-    </a>
-  </article>
+      <button
+        class="w-full bg-primary px-6 py-3 rounded-lg shadow-md mb-4 flex items-center"
+      >
+        <img
+          src="/images/friendsIcon.png"
+          alt="Friends Icon"
+          class="-ml-4 mr-4 -mb-3 -mt-8 w-24 h-24"
+        />
+        Invite your friends
+      </button>
+      <a href="/profile/friendsList" class="w-full bg-primary px-6 py-3 rounded-lg shadow-md mb-5">
+        View Friends' Galleries
+      </a>
+    </article>
 
   <!-- Stats, Global, Edit Buttons (Clickable Tabs) -->
   <section class="flex justify-around mt-4 text-lg">

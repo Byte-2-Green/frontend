@@ -38,18 +38,20 @@
                 Overview
             </a>
             <a
-                class="bg-primary px-4 py-2 rounded-md {window.location.pathname === '/statistics/faq' ? 'font-bold' : ''}"
-                href="/statistics/faq"
+                class="bg-primary px-4 py-2 rounded-md {window.location.pathname === '/statistics/ecoinsights' ? 'font-bold' : ''}"
+                href="/statistics/ecoinsights"
             >
-                FAQ
+            Eco Insights
             </a>
         </div>
 
         <!-- Description -->
         <p class="text-lg max-w-lg mt-8 mb-8">
-            Here you can find some important information about some bad digital
-            habits you might have and might not be aware they are bad at all.
-            There are also some suggestions as to what you can do.
+            Here, you can discover valuable insights into how digital 
+            activities impact the environment, particularly their 
+            contribution to CO2 emissions. 
+            Explore practical suggestions to adopt more sustainable 
+            digital habits and reduce your environmental footprint.
         </p>
 
         <!-- FAQ Section -->
