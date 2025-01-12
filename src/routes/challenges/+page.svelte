@@ -176,7 +176,7 @@
      * 3) Splits into words
      * 4) Returns true if any word is in bannedWords
      */
-     function containsOffensiveWords(text) {
+    function containsOffensiveWords(text) {
         // Remove punctuation & lower
         const noPunctuation = text.replace(/[^\w\s]|_/g, "").toLowerCase();
         // Split on spaces
@@ -205,7 +205,13 @@
      */
     async function saveUserFeedback() {
         // Clear any previous error
+        if (!feedbackText || !userRating) {
+            errorMessage = "Please add text or mark stars before submitting.";
+            console.log(errorMessage);
+            return;
+        }
         errorMessage = "";
+
         // Final check before sending
         if (containsOffensiveWords(feedbackText)) {
             errorMessage =
@@ -217,14 +223,14 @@
             const feedbackData = {
                 Challenge_ID: randomChallenge?.Challenge_ID,
                 feedback_text: feedbackText,
-                rating: userRating
+                rating: userRating,
             };
             const response = await fetch(
                 `http://localhost:3010/challenges/challenges/feedback?rating=${feedbackData.rating}&Challenge_ID=${feedbackData.Challenge_ID}&feedback_text=${feedbackData.feedback_text}`,
                 {
                     method: "POST",
-                    headers: { "Content-Type": "application/json" }
-                }
+                    headers: { "Content-Type": "application/json" },
+                },
             );
             if (response.ok) {
                 await response.json();
@@ -337,6 +343,50 @@
         fetchDeniedChallenges();
         fetchAcceptedChallenges();
     });
+
+    let currentPageAccepted = 1;
+    let currentPageDenied = 1;
+    const challengesPerPage = 2;
+
+    // Paginate Accepted Challenges
+    $: sortedAcceptedChallenges = [...acceptedChallenges].sort(
+        (a, b) => new Date(b.accepted_at) - new Date(a.accepted_at),
+    );
+    $: paginatedAcceptedChallenges = sortedAcceptedChallenges.slice(
+        (currentPageAccepted - 1) * challengesPerPage,
+        currentPageAccepted * challengesPerPage,
+    );
+
+    // Paginate Denied Challenges
+    $: sortedDeniedChallenges = [...deniedChallenges].sort(
+        (a, b) => new Date(b.denied_at) - new Date(a.denied_at),
+    );
+    $: paginatedDeniedChallenges = sortedDeniedChallenges.slice(
+        (currentPageDenied - 1) * challengesPerPage,
+        currentPageDenied * challengesPerPage,
+    );
+
+    // Total Pages
+    $: totalAcceptedPages = Math.ceil(
+        sortedAcceptedChallenges.length / challengesPerPage,
+    );
+    $: totalDeniedPages = Math.ceil(
+        sortedDeniedChallenges.length / challengesPerPage,
+    );
+
+    function changePage(type, direction) {
+        if (type === "accepted") {
+            currentPageAccepted =
+                direction === "next"
+                    ? Math.min(currentPageAccepted + 1, totalAcceptedPages)
+                    : Math.max(currentPageAccepted - 1, 1);
+        } else if (type === "denied") {
+            currentPageDenied =
+                direction === "next"
+                    ? Math.min(currentPageDenied + 1, totalDeniedPages)
+                    : Math.max(currentPageDenied - 1, 1);
+        }
+    }
 </script>
 
 <section class="flex flex-col h-screen bg-white">
@@ -435,6 +485,7 @@
                         class="absolute top-4 right-4 text-gray-400 text-2xl"
                         >&times;</button
                     >
+
                     {#if randomChallenge}
                         <!-- Title Section -->
                         <h2 class="text-center text-3xl font-bold mb-4">
@@ -443,6 +494,7 @@
                         <p class="text-center text-lg mb-6">
                             {randomChallenge.Description}
                         </p>
+
                         <!-- Timer Section -->
                         <div class="w-full mb-6">
                             <p class="text-center text-lg font-semibold mb-2">
@@ -460,6 +512,7 @@
                                 ></div>
                             </div>
                         </div>
+
                         <!-- Completed Button -->
                         <button
                             on:click={completeForm}
@@ -477,11 +530,11 @@
         <!-- Challenge Accepted -->
         <div class="mt-8 p-4">
             <h2 class="text-2xl font-bold">Challenges Accepted</h2>
-            {#if acceptedChallenges.length > 0}
+            {#if paginatedAcceptedChallenges.length > 0}
                 <ol
                     class="relative border-s border-gray-200 dark:border-gray-700"
                 >
-                    {#each acceptedChallenges as challenge}
+                    {#each paginatedAcceptedChallenges as challenge}
                         <li class="mb-10 ms-4">
                             <div
                                 class="absolute w-3 h-3 rounded-full mt-1.5 -start-1.5 border border-primary-dark bg-primary-dark"
@@ -504,6 +557,25 @@
                         </li>
                     {/each}
                 </ol>
+                <div class="flex justify-between mt-4">
+                    <button
+                        class="px-4 py-2 bg-primary rounded disabled:opacity-50"
+                        on:click={() => changePage("accepted", "prev")}
+                        disabled={currentPageAccepted === 1}
+                    >
+                        Previous
+                    </button>
+                    <span class="text-sm"
+                        >Page {currentPageAccepted} of {totalAcceptedPages}</span
+                    >
+                    <button
+                        class="px-4 py-2 bg-primary rounded disabled:opacity-50"
+                        on:click={() => changePage("accepted", "next")}
+                        disabled={currentPageAccepted === totalAcceptedPages}
+                    >
+                        Next
+                    </button>
+                </div>
             {:else}
                 <p>No challenges accepted yet.</p>
             {/if}
@@ -512,11 +584,11 @@
         <!-- Denied challenges -->
         <div class="p-4">
             <h2 class="text-2xl font-bold mb-4">Challenges Denied</h2>
-            {#if deniedChallenges.length > 0}
+            {#if paginatedDeniedChallenges.length > 0}
                 <ol
                     class="relative border-s border-gray-200 dark:border-gray-700"
                 >
-                    {#each deniedChallenges as challenge}
+                    {#each paginatedDeniedChallenges as challenge}
                         <li class="mb-10 ms-4">
                             <div
                                 class="absolute w-3 h-3 rounded-full mt-1.5 -start-1.5 border border-red-700 bg-red-700"
@@ -539,6 +611,25 @@
                         </li>
                     {/each}
                 </ol>
+                <div class="flex justify-between mt-4">
+                    <button
+                        class="px-4 py-2 bg-primary rounded disabled:opacity-50"
+                        on:click={() => changePage("denied", "prev")}
+                        disabled={currentPageDenied === 1}
+                    >
+                        Previous
+                    </button>
+                    <span class="text-sm"
+                        >Page {currentPageDenied} of {totalDeniedPages}</span
+                    >
+                    <button
+                        class="px-4 py-2 bg-primary rounded disabled:opacity-50"
+                        on:click={() => changePage("denied", "next")}
+                        disabled={currentPageDenied === totalDeniedPages}
+                    >
+                        Next
+                    </button>
+                </div>
             {:else}
                 <p>No challenges denied yet.</p>
             {/if}
@@ -553,12 +644,12 @@
                 aria-labelledby="feedback-modal-title"
             >
                 <article
-                    class="bg-secondary-light text-secondary-dark rounded-lg shadow-lg p-6 w-11/12 md:w-1/2 flex flex-col justify-center items-center relative"
+                    class="bg-moody-dark text-white rounded-lg shadow-lg p-6 w-11/12 md:w-1/2 flex flex-col justify-center items-center relative"
                 >
                     <!-- Close Button -->
                     <button
                         on:click={closeFeedbackModal}
-                        class="absolute top-4 right-4 text-secondary-dark"
+                        class="absolute top-4 right-4 text-white"
                         aria-label="Close feedback modal"
                     >
                         ✖
@@ -576,7 +667,7 @@
                     {/if}
                     <!-- Textarea (no real-time replacement, just store raw) -->
                     <textarea
-                        class="border rounded w-full p-2 mb-4"
+                        class="border rounded w-full p-2 mb-4 text-black"
                         placeholder="Write your feedback here..."
                         bind:value={feedbackText}
                     ></textarea>
@@ -611,11 +702,17 @@
                     </div>
                     <!-- Save Feedback Button -->
                     <button
-                        class="bg-green-600 text-white font-bold py-2 px-4 rounded hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2"
+                        class="bg-primary-dark text-white font-bold py-2 px-4 rounded"
                         on:click={saveUserFeedback}
                     >
                         Save
                     </button>
+                    <!-- Error Message -->
+                    {#if errorMessage}
+                        <p class="text-red-500 text-sm mt-4">
+                            {errorMessage}
+                        </p>
+                    {/if}
                 </article>
             </section>
         {/if}

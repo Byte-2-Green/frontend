@@ -223,7 +223,7 @@
     <!-- Header -->
     <Header />
 
-    <section class="flex flex-col mt-5 mb-6">
+    <section class="flex flex-col mt-5 mb-56">
         <div class="flex space-x-4 px-4">
             <a
                 class="bg-primary px-4 py-2 rounded-md {window.location
