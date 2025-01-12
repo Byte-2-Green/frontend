@@ -211,7 +211,7 @@
             return;
         }
         errorMessage = "";
-        
+
         // Final check before sending
         if (containsOffensiveWords(feedbackText)) {
             errorMessage =
@@ -343,6 +343,50 @@
         fetchDeniedChallenges();
         fetchAcceptedChallenges();
     });
+
+    let currentPageAccepted = 1;
+    let currentPageDenied = 1;
+    const challengesPerPage = 2;
+
+    // Paginate Accepted Challenges
+    $: sortedAcceptedChallenges = [...acceptedChallenges].sort(
+        (a, b) => new Date(b.accepted_at) - new Date(a.accepted_at),
+    );
+    $: paginatedAcceptedChallenges = sortedAcceptedChallenges.slice(
+        (currentPageAccepted - 1) * challengesPerPage,
+        currentPageAccepted * challengesPerPage,
+    );
+
+    // Paginate Denied Challenges
+    $: sortedDeniedChallenges = [...deniedChallenges].sort(
+        (a, b) => new Date(b.denied_at) - new Date(a.denied_at),
+    );
+    $: paginatedDeniedChallenges = sortedDeniedChallenges.slice(
+        (currentPageDenied - 1) * challengesPerPage,
+        currentPageDenied * challengesPerPage,
+    );
+
+    // Total Pages
+    $: totalAcceptedPages = Math.ceil(
+        sortedAcceptedChallenges.length / challengesPerPage,
+    );
+    $: totalDeniedPages = Math.ceil(
+        sortedDeniedChallenges.length / challengesPerPage,
+    );
+
+    function changePage(type, direction) {
+        if (type === "accepted") {
+            currentPageAccepted =
+                direction === "next"
+                    ? Math.min(currentPageAccepted + 1, totalAcceptedPages)
+                    : Math.max(currentPageAccepted - 1, 1);
+        } else if (type === "denied") {
+            currentPageDenied =
+                direction === "next"
+                    ? Math.min(currentPageDenied + 1, totalDeniedPages)
+                    : Math.max(currentPageDenied - 1, 1);
+        }
+    }
 </script>
 
 <section class="flex flex-col h-screen bg-white">
@@ -486,11 +530,11 @@
         <!-- Challenge Accepted -->
         <div class="mt-8 p-4">
             <h2 class="text-2xl font-bold">Challenges Accepted</h2>
-            {#if acceptedChallenges.length > 0}
+            {#if paginatedAcceptedChallenges.length > 0}
                 <ol
                     class="relative border-s border-gray-200 dark:border-gray-700"
                 >
-                    {#each acceptedChallenges as challenge}
+                    {#each paginatedAcceptedChallenges as challenge}
                         <li class="mb-10 ms-4">
                             <div
                                 class="absolute w-3 h-3 rounded-full mt-1.5 -start-1.5 border border-primary-dark bg-primary-dark"
@@ -513,6 +557,25 @@
                         </li>
                     {/each}
                 </ol>
+                <div class="flex justify-between mt-4">
+                    <button
+                        class="px-4 py-2 bg-primary rounded disabled:opacity-50"
+                        on:click={() => changePage("accepted", "prev")}
+                        disabled={currentPageAccepted === 1}
+                    >
+                        Previous
+                    </button>
+                    <span class="text-sm"
+                        >Page {currentPageAccepted} of {totalAcceptedPages}</span
+                    >
+                    <button
+                        class="px-4 py-2 bg-primary rounded disabled:opacity-50"
+                        on:click={() => changePage("accepted", "next")}
+                        disabled={currentPageAccepted === totalAcceptedPages}
+                    >
+                        Next
+                    </button>
+                </div>
             {:else}
                 <p>No challenges accepted yet.</p>
             {/if}
@@ -521,11 +584,11 @@
         <!-- Denied challenges -->
         <div class="p-4">
             <h2 class="text-2xl font-bold mb-4">Challenges Denied</h2>
-            {#if deniedChallenges.length > 0}
+            {#if paginatedDeniedChallenges.length > 0}
                 <ol
                     class="relative border-s border-gray-200 dark:border-gray-700"
                 >
-                    {#each deniedChallenges as challenge}
+                    {#each paginatedDeniedChallenges as challenge}
                         <li class="mb-10 ms-4">
                             <div
                                 class="absolute w-3 h-3 rounded-full mt-1.5 -start-1.5 border border-red-700 bg-red-700"
@@ -548,6 +611,25 @@
                         </li>
                     {/each}
                 </ol>
+                <div class="flex justify-between mt-4">
+                    <button
+                        class="px-4 py-2 bg-primary rounded disabled:opacity-50"
+                        on:click={() => changePage("denied", "prev")}
+                        disabled={currentPageDenied === 1}
+                    >
+                        Previous
+                    </button>
+                    <span class="text-sm"
+                        >Page {currentPageDenied} of {totalDeniedPages}</span
+                    >
+                    <button
+                        class="px-4 py-2 bg-primary rounded disabled:opacity-50"
+                        on:click={() => changePage("denied", "next")}
+                        disabled={currentPageDenied === totalDeniedPages}
+                    >
+                        Next
+                    </button>
+                </div>
             {:else}
                 <p>No challenges denied yet.</p>
             {/if}
@@ -627,10 +709,10 @@
                     </button>
                     <!-- Error Message -->
                     {#if errorMessage}
-                    <p class="text-red-500 text-sm mt-4">
-                        {errorMessage}
-                    </p>
-                {/if}
+                        <p class="text-red-500 text-sm mt-4">
+                            {errorMessage}
+                        </p>
+                    {/if}
                 </article>
             </section>
         {/if}
