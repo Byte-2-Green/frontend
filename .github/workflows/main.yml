@@ -1,41 +1,38 @@
 name: CI for CO2 App Frontend
- 
-on: 
-  push: 
-    branches: 
+
+on:
+  push:
+    branches:
       - main
- 
-jobs: 
-  build: 
+
+jobs:
+  build:
     runs-on: ubuntu-22.04
- 
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      
-       - name: Clone backend repository
+
+      - name: Trigger backend deployment
         run: |
-          git clone https://github.com/Byte-2-Green/backend.git
-          cd backend
-          docker compose up -d
+          curl -X POST \
+          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          --data '{"event_type": "deploy-backend"}' \
+          https://api.github.com/repos/Byte-2-Green/backend/dispatches
+
+      - name: Wait for backend to be ready
+        run: |
+          echo "Waiting for backend..."
+          timeout 60 bash -c 'until curl -sf http://localhost:${PORT}; do echo "Backend is not ready yet..."; sleep 5; done'
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
-      - name: Generate package-lock.json
-        run: |
-          npm install --package-lock-only
-
       - name: Install dependencies
         run: |
           npm ci
-
-      - name: Wait for backend to be ready
-        run: |
-          echo "Waiting for backend..."
-          timeout 60 bash -c 'until curl -sf http://localhost:${PORT}; do echo "Backend is not ready yet..."; sleep 5; done'
 
       - name: Run linting
         run: |
@@ -45,8 +42,3 @@ jobs:
       - name: Run tests
         run: |
           npm test
-      
-      - name: Clean up backend
-        run: |
-          cd backend
-          docker compose down
