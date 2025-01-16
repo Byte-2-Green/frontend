@@ -13,18 +13,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Trigger backend deployment
-        run: |
-          curl -X POST \
-          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-          --data '{"event_type": "deploy-backend"}' \
-          https://api.github.com/repos/Byte-2-Green/backend/dispatches
-
-      - name: Wait for backend to be ready
-        run: |
-          echo "Waiting for backend..."
-          timeout 60 bash -c 'until curl -sf http://localhost:${PORT}; do echo "Backend is not ready yet..."; sleep 5; done'
-
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
@@ -33,6 +21,21 @@ jobs:
       - name: Install dependencies
         run: |
           npm ci
+      
+      - name: Checkout backend code
+        run: |
+          git clone https://github.com/Byte-2-Green/backend.git
+          cd backend
+      
+      - name: Start backend services
+        run: |
+          cd backend
+          docker compose up -d
+
+      - name: Wait for backend services to be ready
+        run: |
+          echo "Waiting for backend services..."
+          timeout 180 bash -c 'until curl -sf http://localhost:3010; do echo "API Gateway is not ready yet..."; sleep 5; done'
 
       - name: Run linting
         run: |
@@ -42,3 +45,8 @@ jobs:
       - name: Run tests
         run: |
           npm test
+
+      - name: Clean up backend services
+        run: |
+          cd backend
+          docker compose down
