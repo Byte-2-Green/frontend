@@ -26,10 +26,18 @@ const runTest = (script) =>
     //Run unit test for the feedback form
     await runTest('test/testFeedback.js');
    
+    await runTest('test/testNotification.js');    
+    await runTest('test/testLogin.js');
+    await runTest('test/testStatistics.js');
+    await runTest('test/testChallenges.js');
+
+
+
     // Run system test
     await runTest('test/systemTest.js');
     
     await runTest('test/testFeedback.js');
+
 
     console.log('🎉 All tests passed!');
   } catch (err) {
