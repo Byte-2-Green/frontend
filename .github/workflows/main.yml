@@ -14,6 +14,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      
+       - name: Clone backend repository
+        run: |
+          git clone https://github.com/Byte-2-Green/backend.git
+          cd backend
+          docker compose up -d
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
@@ -41,3 +47,8 @@ jobs:
       - name: Run tests
         run: |
           npm test
+      
+      - name: Clean up backend
+        run: |
+          cd backend
+          docker compose down
