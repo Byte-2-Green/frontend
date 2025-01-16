@@ -1,19 +1,20 @@
 import globals from "globals";
-// import { Linter } from "eslint";
 import svelteParser from "svelte-eslint-parser";
 import sveltePlugin from "eslint-plugin-svelte";
+import tseslint from "@typescript-eslint/eslint-plugin";
+import tsParser from "@typescript-eslint/parser";
 
-/** @type {Linter.FlatConfig[]} */
+/** @type {import("eslint").Linter.FlatConfig[]} */
 export default [
   {
     // Define patterns for files and directories to ignore during linting.
     ignores: [
-      "**/node_modules/**", 
-      "**/.svelte-kit/**",  
-      "**/vite.config.js",  
-      "**/postcss.config.js", 
-      "**/svelte.config.js", 
-      "**/build/**",    
+      "**/node_modules/**",
+      "**/.svelte-kit/**",
+      "**/vite.config.js",
+      "**/postcss.config.js",
+      "**/svelte.config.js",
+      "**/build/**",
     ],
     languageOptions: {
       parserOptions: {
@@ -27,6 +28,9 @@ export default [
       "no-unused-vars": ["warn"], // Warn about variables declared but not used.
       "no-console": "off", // Allow the use of `console.log` and similar statements.
       "indent": ["error", 2], // Enforce 2-space indentation.
+      "complexity": ["error", 10], // Limit cyclomatic complexity to 10.
+      "max-lines": ["warn", 200], // Warn if a file has more than 200 lines.
+      "max-params": ["warn", 4], // Warn if a function has more than 4 parameters.
     },
   },
   {
@@ -41,15 +45,23 @@ export default [
     rules: {
       "svelte/no-unused-class-name": ["warn"], // Warn about unused class names in `.svelte` files.
       "svelte/valid-prop-naming": ["error"], // Enforce valid property naming conventions in `.svelte` components.
+      "complexity": ["error", 10], // Limit cyclomatic complexity in Svelte files as well.
     },
   },
   {
     // Apply specific configurations for JavaScript and TypeScript files.
     files: ["*.js", "*.ts"],
+    languageOptions: {
+      parser: tsParser, // Use the TypeScript parser for TypeScript files.
+    },
+    plugins: {
+      "@typescript-eslint": tseslint, // Enable TypeScript ESLint plugin.
+    },
     rules: {
-      "no-unused-vars": ["warn"], // Warn about unused variables.
+      "@typescript-eslint/no-unused-vars": ["warn"], // Warn about unused variables in TypeScript.
       "no-console": "off", // Allow console statements.
       "indent": ["error", 2], // Enforce 2-space indentation.
+      "complexity": ["error", 10], // Limit cyclomatic complexity to 10 for TypeScript and JavaScript files.
     },
   },
   {
