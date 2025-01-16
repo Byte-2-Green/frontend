@@ -1,8 +1,6 @@
 name: CI for CO2 App Frontend
  
 on: 
-  repository_dispatch:
-    types: [deploy-frontend]
   push: 
     branches: 
       - main
