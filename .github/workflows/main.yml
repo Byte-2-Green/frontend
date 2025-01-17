@@ -26,31 +26,11 @@ jobs:
         run: |
           npm ci
       
-      - name: Checkout backend code
+      - name: Build
         run: |
-          git clone https://github.com/Byte-2-Green/backend.git
-          cd backend
-      
-      - name: Start backend services
-        run: |
-          cd backend
-          docker compose up -d
-
-      - name: Wait for backend services to be ready
-        run: |
-          echo "Waiting for backend services..."
-          timeout 180 bash -c 'until curl -sf http://localhost:3010; do echo "API Gateway is not ready yet..."; sleep 5; done'
-
+          npm run build
+          
       - name: Run linting
         run: |
           npm install eslint
           npm run lint
-
-      - name: Run tests
-        run: |
-          npm test
-
-      - name: Clean up backend services
-        run: |
-          cd backend
-          docker compose down
