@@ -1,14 +1,17 @@
 name: CI for CO2 App Frontend
- 
-on: 
-  push: 
-    branches: 
+
+on:
+  push:
+    branches:
       - main
- 
-jobs: 
-  build: 
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
     runs-on: ubuntu-22.04
- 
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -18,44 +21,25 @@ jobs:
         with:
           node-version: '18'
 
+      - name: Generate package-lock.json
+        run: |
+          npm install --package-lock-only
+
       - name: Install dependencies
         run: |
           npm ci
-
-      - name: Trigger backend deployment 
-        run: | 
-          curl -X POST \
-          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-          --data '{"event_type": "deploy-backend"}' \
-          https://api.github.com/repos/Byte-2-Green/backend/dispatches
-
-      - name: Wait for backend to be ready
+      
+      - name: Build
         run: |
-          echo "Waiting for backend..."
-          timeout 60 bash -c 'until curl -sf http://localhost:${PORT}; do echo "Backend is not ready yet..."; sleep 5; done'
+          npm run build
 
-      - name: Run linting
+      - name: Run tests and collect coverage
         run: |
-          npm install eslint
-          npm run lint
+          npm run coverage
+      
+      - name: Upload code coverage report
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: ./coverage
 
-      - name: Run tests
-        run: |
-          npm test
-
-      - name: Set up Docker
-        uses: docker/setup-buildx-action@v2
-
-      - name: Build frontend Docker image
-        run: |
-          docker build -t frontend-image ./frontend
-
-      - name: Run frontend in Docker
-        run: |
-          docker run -d --name frontend-container frontend-image
-
-      - name: Clean up Docker
-        run: |
-          docker stop frontend-container
-          docker rm frontend-container
-          docker rmi frontend-image
