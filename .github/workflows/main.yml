@@ -41,9 +41,4 @@ jobs:
       - name: Comment Coverage Report
          uses: lucassabreu/comment-coverage-clover@main
         with:
-<<<<<<< HEAD
-          clover-file: coverage/clover.xml
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-=======
           file: coverage.xml
->>>>>>> 11cca02 (Changing the yml file)
