@@ -36,10 +36,13 @@ jobs:
       - name: Execute tests (Unit test)
         run: |
           npm test --coverage-clover=coverage.xml
-           if [ ! -f coverage/clover.xml ]; then
-            mv coverage/clover.xml coverage.xml
+          if [ ! -f coverage/clover.xml ]; then
+            echo "Coverage file not found. Creating an empty coverage.xml..."
             mkdir -p coverage
             echo '<?xml version="1.0" encoding="UTF-8"?><coverage></coverage>' > coverage/clover.xml
+          else
+            echo "Coverage file found. Moving to coverage.xml..."
+            mv coverage/clover.xml coverage.xml
           fi
 
       - name: Coverage Report as Comment (Clover)
