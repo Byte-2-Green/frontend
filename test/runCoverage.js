@@ -1,6 +1,6 @@
-// @ts-nocheck
-import { exec } from 'child_process';
- 
+import { exec } from "child_process";
+
+// Start the server
 const server = exec("npm run preview", { shell: true });
 
 server.stdout.on("data", (data) => {
@@ -9,6 +9,7 @@ server.stdout.on("data", (data) => {
   if (data.includes("Local:")) {
     console.log("Server is running, starting tests...");
 
+    // Run tests with coverage
     exec("nyc mocha", (err, stdout, stderr) => {
       if (err) {
         console.error(`Error running tests: ${stderr}`);
