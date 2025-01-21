@@ -43,8 +43,7 @@ jobs:
             exit 1
           fi
 
-      - name: Comment Coverage Report
+      - name: Coverage Report as Comment (Clover)
         uses: lucassabreu/comment-coverage-clover@main
         with:
           file: coverage.xml
-          github-token: ${{ secrets.GITHUB_TOKEN }}
