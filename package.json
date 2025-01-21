@@ -9,6 +9,7 @@
     "check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
     "test": "node test/runTests.js",
+    "coverage": "node test/runCoverage.js",
     "test:watch": "npm run test -- --watch",
     "lint": "eslint .",
     "lint:fix": "eslint \"**/*.{js,svelte}\" --fix"
@@ -28,7 +29,10 @@
     "jest-cli": "^29.7.0",
     "jsdom": "^25.0.1",
     "mocha": "^11.0.1",
+    "nyc": "^17.1.0",
+    "patch-package": "^8.0.0",
     "postcss": "^8.4.49",
+    "postinstall-postinstall": "^2.1.0",
     "svelte": "^5.0.0",
     "svelte-check": "^4.0.0",
     "svelte-eslint-parser": "^0.43.0",
@@ -48,5 +52,12 @@
     "svelte-apexcharts": "^1.0.2",
     "svelte-routing": "^2.13.0",
     "svelte-transitions-fade": "^1.0.0"
+  },
+  "nyc": {
+    "check-coverage": true,
+    "branches": 80,
+    "functions": 80,
+    "lines": 80,
+    "statements": 80
   }
 }
