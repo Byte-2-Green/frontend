@@ -35,7 +35,13 @@ jobs:
 
       - name: Run tests and collect coverage
         run: |
-          npm run test --coverage-clover=coverage.xml
+          npm run test 
+          if [ -f coverage/clover.xml ]; then
+            mv coverage/clover.xml coverage.xml
+          else
+            echo "Coverage file not found! Exiting."
+            exit 1
+          fi
 
       - name: Comment Coverage Report
         uses: lucassabreu/comment-coverage-clover@main
