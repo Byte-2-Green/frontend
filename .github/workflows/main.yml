@@ -38,7 +38,7 @@ jobs:
           npm run test --coverage-clover=coverage.xml
 
       - name: Comment Coverage Report
-        uses: lucassabreu/comment-coverage@main
+        uses: lucassabreu/comment-coverage-clover@main
         with:
           file: coverage.xml
           github-token: ${{ secrets.GITHUB_TOKEN }}
