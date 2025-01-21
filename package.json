@@ -54,6 +54,7 @@
     "svelte-transitions-fade": "^1.0.0"
   },
   "nyc": {
+    "reporter": ["clover", "text"],
     "check-coverage": true,
     "branches": 80,
     "functions": 80,

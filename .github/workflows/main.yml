@@ -36,10 +36,9 @@ jobs:
       - name: Run tests and collect coverage
         run: |
           npm run coverage
-      
-      - name: Upload code coverage report
-        uses: actions/upload-artifact@v3
-        with:
-          name: coverage-report
-          path: ./coverage
 
+      - name: Comment Coverage Report
+        uses: lucassabreu/comment-coverage-clover@v1
+        with:
+          clover-file: coverage/clover.xml
+          github-token: ${{ secrets.GITHUB_TOKEN }}
