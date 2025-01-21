@@ -28,13 +28,13 @@ jobs:
       - name: Install dependencies
         run: |
           npm ci
-      
+          
       - name: Build
         run: |
           npm run build
 
       - name: Execute tests (Unit test)
-        run:
+        run: |
           if [ -f coverage/clover.xml ]; then
             mv coverage/clover.xml coverage.xml
           fi
