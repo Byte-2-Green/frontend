@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
@@ -25,7 +28,25 @@ jobs:
       - name: Install dependencies
         run: |
           npm ci
-      
+          
       - name: Build
         run: |
           npm run build
+
+      - name: Execute tests (Unit test)
+        run: |
+          npm test --coverage-clover=coverage.xml
+          if [ ! -f coverage/clover.xml ]; then
+            echo "Coverage file not found. Creating an empty coverage.xml..."
+            mkdir -p coverage
+            echo '<?xml version="1.0" encoding="UTF-8"?><coverage></coverage>' > coverage/clover.xml
+          else
+            echo "Coverage file found. Moving to coverage.xml..."
+            mv coverage/clover.xml coverage.xml
+          fi
+
+      - name: Coverage Report as Comment (Clover)
+        uses: lucassabreu/comment-coverage-clover@main
+        with:
+          file: coverage.xml
+          github-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
