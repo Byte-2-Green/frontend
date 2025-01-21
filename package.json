@@ -8,7 +8,7 @@
     "preview": "vite preview",
     "check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
-    "test": "nyc mocha",
+    "test": "nyc mocha test/runTests.js",
     "coverage": "node test/runCoverage.js",
     "test:watch": "npm run test -- --watch",
     "test:coverage": "jest --coverage",
