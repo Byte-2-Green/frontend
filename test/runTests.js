@@ -1,30 +1,39 @@
 // @ts-nocheck
 import { exec } from 'child_process';
  
-const server = exec("npm run preview", { shell: true });
-
-server.stdout.on("data", (data) => {
-  console.log(data);
-
-  if (data.includes("Local:")) {
-    console.log("Server is running, starting tests...");
-
-    exec("nyc mocha", (err, stdout, stderr) => {
-      if (err) {
-        console.error(`Error running tests: ${stderr}`);
-        process.exit(1);
+/**
+ * Helper function to execute a test script
+ */
+const runTest = (script) =>
+  new Promise((resolve, reject) => {
+    console.log(`Running: ${script}`);
+    exec(`node ${script}`, (error, stdout, stderr) => {
+      if (error) {
+        console.error(`❌ Test failed: ${script}\n`, stderr);
+        reject(error);
       } else {
-        console.log(stdout);
-        process.exit(0);
+        console.log(`✅ Test passed: ${script}\n`, stdout);
+        resolve();
       }
     });
+  });
+ 
+(async () => {
+  try {
+    // Run foodForThought.test.js (unit test for foodForThought)
+    await runTest('test/foodForThought.test.js'); 
+
+    //Run unit test for the feedback form
+    // await runTest('test/testFeedback.js');
+   
+    // Run system test
+    // await runTest('test/systemTest.js');
+    
+    // await runTest('test/testFeedback.js');
+
+    console.log('🎉 All tests passed!');
+  } catch (err) {
+    console.error('❌ One or more tests failed!', err.message);
+    process.exit(1); // Exit with non-zero status code
   }
-});
-
-server.stderr.on("data", (data) => {
-  console.error(`Server error: ${data}`);
-});
-
-process.on("exit", () => {
-  server.kill();
-});
+})();

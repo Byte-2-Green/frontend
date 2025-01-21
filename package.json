@@ -11,6 +11,10 @@
     "test": "node test/runTests.js",
     "coverage": "node test/runCoverage.js",
     "test:watch": "npm run test -- --watch",
+    "test:coverage": "jest --coverage",
+    "test:unit": "vitest",
+    "test:e2e": "npx cypress run",
+    "test:foodforthought": "nyc mocha test/foodForThought.test.js",
     "lint": "eslint .",
     "lint:fix": "eslint \"**/*.{js,svelte}\" --fix"
   },
@@ -22,6 +26,7 @@
     "@typescript-eslint/eslint-plugin": "^8.16.0",
     "@typescript-eslint/parser": "^8.16.0",
     "autoprefixer": "^10.4.20",
+    "cypress": "^13.1.0",
     "eslint": "^9.15.0",
     "eslint-plugin-svelte": "^2.46.0",
     "globals": "^15.12.0",

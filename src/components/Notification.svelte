@@ -30,7 +30,7 @@
                     ];
                     notificationIdCounter++;
                 }
-            }, 100000);
+            }, 10000);
         } catch (error) {
             console.error("Failed to fetch notifications:", error);
         }
