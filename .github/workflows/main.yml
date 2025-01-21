@@ -35,7 +35,7 @@ jobs:
 
       - name: Run tests and collect coverage
         run: |
-          npm run test --coverage-clover=coverage.xml
+          npm run test:foodforthought --coverage-clover=coverage.xml
 
       - name: Comment Coverage Report
         uses: lucassabreu/comment-coverage-clover@main
