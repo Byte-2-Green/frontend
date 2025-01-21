@@ -37,6 +37,7 @@ jobs:
         run:
           if [ -f coverage/clover.xml ]; then
             mv coverage/clover.xml coverage.xml
+          fi
           npm test --coverage-clover=coverage.xml
 
       - name: Coverage Report as Comment (Clover)
