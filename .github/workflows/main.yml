@@ -35,10 +35,12 @@ jobs:
 
       - name: Execute tests (Unit test)
         run: |
-          if [ -f coverage/clover.xml ]; then
-            mv coverage/clover.xml coverage.xml
-          fi
           npm test --coverage-clover=coverage.xml
+           if [ ! -f coverage/clover.xml ]; then
+            mv coverage/clover.xml coverage.xml
+            mkdir -p coverage
+            echo '<?xml version="1.0" encoding="UTF-8"?><coverage></coverage>' > coverage/clover.xml
+          fi
 
       - name: Coverage Report as Comment (Clover)
         uses: lucassabreu/comment-coverage-clover@main
