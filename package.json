@@ -57,12 +57,5 @@
     "svelte-apexcharts": "^1.0.2",
     "svelte-routing": "^2.13.0",
     "svelte-transitions-fade": "^1.0.0"
-  },
-  "nyc": {
-    "include": ["src/**/*.js", "src/**/*.svelte"],
-    "exclude": ["test/**"],
-    "extension": [".js", ".svelte"],
-    "reporter": ["clover", "html", "text"],
-    "all": true
   }
 }
