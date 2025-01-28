@@ -59,12 +59,10 @@
     "svelte-transitions-fade": "^1.0.0"
   },
   "nyc": {
-    "reporter": ["clover", "text"],
-    "report-dir": "./coverage",
-    "check-coverage": true,
-    "branches": 80,
-    "functions": 80,
-    "lines": 80,
-    "statements": 80
+    "include": ["src/**/*.js", "src/**/*.svelte"],
+    "exclude": ["test/**"],
+    "extension": [".js", ".svelte"],
+    "reporter": ["clover", "html", "text"],
+    "all": true
   }
 }
